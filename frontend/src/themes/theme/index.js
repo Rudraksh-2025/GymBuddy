@@ -21,22 +21,35 @@ export default function Default(colors) {
     A700: grey[14],
     A800: grey[16]
   };
-  const contrastText = '#fff';
+  const contrastText = '#1C1C1C';
 
   return {
     primary: {
-      lighter: orange[0],
-      100: orange[1],
-      200: orange[2],
-      light: orange[3],
-      400: orange[4],
-      main: orange[5],
-      dark: orange[6],
-      700: orange[7],
-      darker: orange[8],
-      900: orange[9],
+      lighter: cyan[0],
+      100: cyan[1],
+      200: cyan[2],
+      light: cyan[3],
+      400: cyan[4],
+      main: cyan[5],
+      dark: cyan[6],
+      700: cyan[7],
+      darker: cyan[8],
+      900: cyan[9],
       contrastText
     },
+    // primary: {
+    //   lighter: greyColors[0],
+    //   100: greyColors[100],
+    //   200: greyColors[200],
+    //   light: greyColors[300],
+    //   400: greyColors[400],
+    //   main: greyColors[500],
+    //   dark: greyColors[600],
+    //   700: greyColors[700],
+    //   darker: greyColors[800],
+    //   900: greyColors[900],
+    //   contrastText
+    // },
     secondary: {
       lighter: greyColors[100],
       100: greyColors[100],

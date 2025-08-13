@@ -12,13 +12,13 @@ export default function DrawerHeader({ open }) {
       open={open}
       sx={{
         minHeight: '60px',
-        width: 'initial',
+        width: '100%',
         paddingTop: '8px',
         paddingBottom: '8px',
         paddingLeft: open ? '24px' : 0
       }}
     >
-      <Logo isIcon={!open} sx={{ width: open ? 'auto' : 35, height: 35 }} />
+      <Logo isIcon={!open} sx={{ width: open ? 35 : 35, height: 35 }} />
     </DrawerHeaderStyled>
   );
 }

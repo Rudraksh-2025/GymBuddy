@@ -159,11 +159,11 @@ export default function IncomeAreaChart({ view }) {
         <defs>
           <linearGradient id="gradientActiveUsers" gradientTransform="rotate(90)">
             <stop offset="10%" stopColor={alpha(theme.palette.primary.main, 0.4)} />
-            <stop offset="90%" stopColor={alpha(theme.palette.background.default, 0.4)} />
+            <stop offset="90%" stopColor={alpha(theme.palette.primary.main, 0)} />
           </linearGradient>
           <linearGradient id="gradientSignups" gradientTransform="rotate(90)">
-            <stop offset="10%" stopColor={alpha(theme.palette.primary[700], 0.4)} />
-            <stop offset="90%" stopColor={alpha(theme.palette.background.default, 0.4)} />
+            <stop offset="10%" stopColor={alpha(theme.palette.secondary.main, 0.4)} />
+            <stop offset="90%" stopColor={alpha(theme.palette.secondary.main, 0)} />
           </linearGradient>
         </defs>
       </LineChart>

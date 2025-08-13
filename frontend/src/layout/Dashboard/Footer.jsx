@@ -9,7 +9,7 @@ export default function Footer() {
       <Typography variant="caption">
         &copy; All rights reserved{' '}
         <Link href="/" underline="hover">
-          Buzzi
+          Gym Buddy
         </Link>
       </Typography>
       <Stack direction="row" sx={{ gap: 1.5, alignItems: 'center', justifyContent: 'space-between' }}>

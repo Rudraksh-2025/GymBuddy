@@ -16,7 +16,7 @@ export default function AuthFooter() {
         <Typography variant="subtitle2" color="secondary">
           © All rights reserved {' '}
           <Link href="" underline="hover">
-            Buzzi
+            Gym Buddy
           </Link>
         </Typography>
 
