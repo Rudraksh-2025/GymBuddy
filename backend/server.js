@@ -6,6 +6,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.js';
+import weightRoutes from "./routes/weightRoutes.js"
+import exerciseRoutes from './routes/exerciseRoutes.js'
 import cors from 'cors'
 
 const app = express();
@@ -13,6 +15,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
+app.use("/api/weight", weightRoutes);
+app.use('/api/exercises',exerciseRoutes)
 
 app.get('/', (req, res) => res.send('Auth API running'));
 
