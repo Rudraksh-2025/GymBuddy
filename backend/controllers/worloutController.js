@@ -1,5 +1,5 @@
 // controllers/exerciseController.js
-import ExerciseLog from "../models/ExerciseLog.js";
+import ExerciseLog from "../models/Workout.js";
 
 // Add log
 export const addExerciseLog = async (req, res) => {
@@ -63,35 +63,34 @@ export const deleteExerciseLog = async (req, res) => {
 };
 // controllers/exerciseController.js (extra)
 export const getExerciseProgress = async (req, res) => {
-    try {
-      const { start, end, exerciseName } = req.query;
-      if (!exerciseName) {
-        return res.status(400).json({ message: "Exercise name is required" });
-      }
-  
-      let match = { userId: req.user.id, exerciseName };
-  
-      if (start && end) {
-        match.date = { $gte: new Date(start), $lte: new Date(end) };
-      }
-  
-      const progress = await ExerciseLog.aggregate([
-        { $match: match },
-        { $unwind: "$sets" },
-        {
-          $group: {
-            _id: { date: { $dateToString: { format: "%Y-%m-%d", date: "$date" } } },
-            avgWeight: { $avg: "$sets.weight" },
-            avgReps: { $avg: "$sets.reps" },
-            totalVolume: { $sum: { $multiply: ["$sets.weight", "$sets.reps"] } }
-          }
-        },
-        { $sort: { "_id.date": 1 } }
-      ]);
-  
-      res.json(progress);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
+  try {
+    const { start, end, exerciseName } = req.query;
+    if (!exerciseName) {
+      return res.status(400).json({ message: "Exercise name is required" });
     }
-  };
-  
+
+    let match = { userId: req.user.id, exerciseName };
+
+    if (start && end) {
+      match.date = { $gte: new Date(start), $lte: new Date(end) };
+    }
+
+    const progress = await ExerciseLog.aggregate([
+      { $match: match },
+      { $unwind: "$sets" },
+      {
+        $group: {
+          _id: { date: { $dateToString: { format: "%Y-%m-%d", date: "$date" } } },
+          avgWeight: { $avg: "$sets.weight" },
+          avgReps: { $avg: "$sets.reps" },
+          totalVolume: { $sum: { $multiply: ["$sets.weight", "$sets.reps"] } }
+        }
+      },
+      { $sort: { "_id.date": 1 } }
+    ]);
+
+    res.json(progress);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

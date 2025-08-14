@@ -35,7 +35,6 @@ export const register = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
-
 export const verifyEmail = async (req, res) => {
     try {
         const { token } = req.query;

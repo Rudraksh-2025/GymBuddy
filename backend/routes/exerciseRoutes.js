@@ -7,7 +7,7 @@ import {
   deleteExerciseLog,
   getExerciseProgress
 } from "../controllers/worloutController.js";
-import {auth} from "../middleware/auth.js";
+import { auth } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -15,6 +15,6 @@ router.post("/", auth, addExerciseLog);
 router.get("/", auth, getExerciseLogs);
 router.put("/:id", auth, updateExerciseLog);
 router.delete("/:id", auth, deleteExerciseLog);
-router.get('/progress',auth,getExerciseProgress)
+router.get('/progress', auth, getExerciseProgress)
 
 export default router;

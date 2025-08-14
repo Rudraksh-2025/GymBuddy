@@ -8,7 +8,6 @@ export const addWeight = async (req, res) => {
     if (!weight) {
       return res.status(400).json({ message: "Weight is required" });
     }
-
     const newWeight = new Weight({
       userId: req.user.id,
       weight
