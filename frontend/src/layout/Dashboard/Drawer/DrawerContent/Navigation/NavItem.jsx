@@ -37,7 +37,7 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
       setSelectedID(item.id);
     }
     if (item.onClick) {
-      logout(); 
+      logout();
     }
   };
 
@@ -75,12 +75,12 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
             ...(drawerOpen && {
               '&:hover': { bgcolor: 'primary.lighter', ...theme.applyStyles('dark', { bgcolor: 'divider' }) },
               '&.Mui-selected': {
-                bgcolor: '#ff55006c',
+                bgcolor: '#367BE0',
                 ...theme.applyStyles('dark', { bgcolor: 'divider' }),
                 borderRight: '2px solid',
-                borderColor: '#ff55006c',
-                color: iconSelectedColor,
-                '&:hover': { color: iconSelectedColor, bgcolor: '#ff55006c', ...theme.applyStyles('dark', { bgcolor: 'divider' }) }
+                borderColor: '#367BE0',
+                color: 'white',
+                '&:hover': { color: 'white', bgcolor: '#367BE0', ...theme.applyStyles('dark', { bgcolor: 'divider' }) }
               }
             }),
             ...(!drawerOpen && {
@@ -94,7 +94,7 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
             <ListItemIcon
               sx={(theme) => ({
                 minWidth: 28,
-                color: isSelected ? iconSelectedColor : textColor,
+                color: isSelected ? 'white !important' : 'black !important',
                 ...(!drawerOpen && {
                   borderRadius: 1.5,
                   width: 36,
@@ -105,7 +105,7 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
                 }),
                 ...(!drawerOpen &&
                   isSelected && {
-                  bgcolor: 'primary.lighter',
+                  bgcolor: '#367BE0',
                   ...theme.applyStyles('dark', { bgcolor: 'primary.900' }),
                   '&:hover': { bgcolor: 'primary.lighter', ...theme.applyStyles('dark', { bgcolor: 'primary.darker' }) }
                 })
@@ -117,7 +117,7 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
           {(drawerOpen || (!drawerOpen && level !== 1)) && (
             <ListItemText
               primary={
-                <Typography variant="h6" sx={{ color: isSelected ? iconSelectedColor : textColor }}>
+                <Typography variant="h6" sx={{ color: isSelected ? 'white' : textColor, fontWeight: 600, }}>
                   {item.title}
                 </Typography>
               }

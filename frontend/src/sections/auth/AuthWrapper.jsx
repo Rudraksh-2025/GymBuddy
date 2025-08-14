@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 
 // project imports
 import AuthFooter from 'components/cards/AuthFooter';
-import Logo from 'components/logo';
+
 import AuthCard from './AuthCard';
 
 // assets
@@ -16,12 +16,9 @@ import AuthBackground from './AuthBackground';
 
 export default function AuthWrapper({ children }) {
   return (
-    <Box sx={{ minHeight: '100vh' }}>
+    <Box sx={{ minHeight: '100vh' }} className='background-image'>
       <AuthBackground />
-      <Grid container direction="column" justifyContent="flex-start" sx={{ minHeight: '100vh' }}>
-        <Grid sx={{ px: 3 }} size={12}>
-          <Logo to="/" />
-        </Grid>
+      <Grid container direction="column" justifyContent="center" sx={{ minHeight: '100vh' }}>
         <Grid size={12}>
           <Grid
             container
@@ -33,9 +30,6 @@ export default function AuthWrapper({ children }) {
               <AuthCard>{children}</AuthCard>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid sx={{ p: 3 }} size={12}>
-          <AuthFooter />
         </Grid>
       </Grid>
     </Box>

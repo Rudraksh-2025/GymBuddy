@@ -174,16 +174,16 @@ export default function AuthLogin() {
                   </FormHelperText>
                 )}
               </Grid>
-              {/* <Grid sx={{ mt: -1 }} size={12}>
+              <Grid sx={{ mt: -1 }} size={12}>
                 <Stack direction="row" sx={{ gap: 2, alignItems: 'baseline', justifyContent: 'space-between' }}>
                   <Link variant="h6" component={RouterLink} to="#" color="text.primary">
                     Forgot Password?
                   </Link>
                 </Stack>
-              </Grid> */}
+              </Grid>
               <Grid size={12}>
                 <AnimateButton>
-                  <Button type="submit" fullWidth size="large" variant="contained" color="primary">
+                  <Button type="submit" sx={{ color: 'white' }} fullWidth size="large" variant="contained" color="primary">
                     Login
                   </Button>
                 </AnimateButton>

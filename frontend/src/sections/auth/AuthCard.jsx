@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import Logo from 'components/logo';
+import Grid from '@mui/material/Grid';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -21,6 +23,9 @@ export default function AuthCard({ children, ...other }) {
       boxShadow
       shadow={theme.customShadows.z1}
     >
+      <Grid sx={{ px: 3, pt: 3 }} size={12}>
+        <Logo to="/" />
+      </Grid>
       <Box sx={{ p: { xs: 2, sm: 3, md: 4, xl: 5 } }}>{children}</Box>
     </MainCard>
   );
