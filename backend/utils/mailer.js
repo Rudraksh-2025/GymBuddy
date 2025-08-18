@@ -19,16 +19,17 @@ transporter.verify((error, success) => {
     }
 });
 
-export async function sendVerificationEmail(to, token) {
-    const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+export async function sendVerificationEmail(to, otp) {
     await transporter.sendMail({
         from: process.env.EMAIL_FROM,
         to,
-        subject: 'Verify your Gym Buddy account',
-        html:
-            `<p>Welcome! Please verify your email by clicking the link below:</p>
-         <a href="${verifyUrl}">Verify email</a>
-        <p>This link expires in ${process.env.EMAIL_TOKEN_EXPIRES_IN || '1 day'}.</p>`
+        subject: "Verify your Gym Buddy account",
+        html: `
+      <p>Welcome! Please verify your email using the code below:</p>
+      <h2>${otp}</h2>
+      <p>This code will expire in 15 minutes.</p>
+    `
     });
 }
+
 

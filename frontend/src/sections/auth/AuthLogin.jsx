@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 // material-ui
+import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import FormHelperText from '@mui/material/FormHelperText';
 import Grid from '@mui/material/Grid';
@@ -179,7 +180,12 @@ export default function AuthLogin() {
                   <Link variant="h6" component={RouterLink} to="#" color="text.primary">
                     Forgot Password?
                   </Link>
+                  <Link component={RouterLink} to={'/register'}>
+                    <Typography variant="body1" sx={{ textDecoration: 'none' }} color="primary">
+                      Don&apos;t have an account?
+                    </Typography></Link>
                 </Stack>
+
               </Grid>
               <Grid size={12}>
                 <AnimateButton>

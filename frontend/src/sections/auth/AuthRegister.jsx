@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 // material-ui
+import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import FormHelperText from '@mui/material/FormHelperText';
 import Grid from '@mui/material/Grid';
@@ -121,6 +122,27 @@ export default function AuthRegister() {
                         <Grid container spacing={3}>
                             <Grid size={12}>
                                 <Stack sx={{ gap: 1 }}>
+                                    <InputLabel htmlFor="name">Name</InputLabel>
+                                    <OutlinedInput
+                                        id="name"
+                                        type='text'
+                                        value={values.name}
+                                        name="name"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        placeholder="Enter Full Name"
+                                        fullWidth
+                                        error={Boolean(touched.name && errors.name)}
+                                    />
+                                </Stack>
+                                {touched.name && errors.name && (
+                                    <FormHelperText error id="standard-weight-helper-text-email-login">
+                                        {errors.name}
+                                    </FormHelperText>
+                                )}
+                            </Grid>
+                            <Grid size={12}>
+                                <Stack sx={{ gap: 1 }}>
                                     <InputLabel htmlFor="email-login">Email Address</InputLabel>
                                     <OutlinedInput
                                         id="email-login"
@@ -179,12 +201,15 @@ export default function AuthRegister() {
                                     <Link variant="h6" component={RouterLink} to="#" color="text.primary">
                                         Forgot Password?
                                     </Link>
+                                    <Link component={RouterLink} to={'/login'}><Typography variant="body1" sx={{ textDecoration: 'none' }} color="primary">
+                                        Already have an account?
+                                    </Typography></Link>
                                 </Stack>
                             </Grid>
                             <Grid size={12}>
                                 <AnimateButton>
                                     <Button type="submit" sx={{ color: 'white' }} fullWidth size="large" variant="contained" color="primary">
-                                        Login
+                                        Register
                                     </Button>
                                 </AnimateButton>
                             </Grid>

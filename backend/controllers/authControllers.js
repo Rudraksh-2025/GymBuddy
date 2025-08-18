@@ -20,13 +20,17 @@ export const register = async (req, res) => {
         const user = new User({ name, email, passwordHash });
         await user.save();
 
-        // create email token and send verification
-        const emailToken = signEmailToken({ sub: user._id, email: user.email });
+        const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit
+
+        user.emailVerificationCode = otp;
+        user.emailVerificationExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 min
+        await user.save();
+
+        // send OTP email
         try {
-            await sendVerificationEmail(user.email, emailToken);
+            await sendVerificationEmail(user.email, otp);
         } catch (e) {
-            console.error('Email send failed', e);
-            // don't fail registration for email send issues — but inform client
+            console.error("Email send failed", e);
         }
 
         res.status(201).json({ message: 'User created. Verification email sent. Please check your inbox.' });
@@ -35,24 +39,33 @@ export const register = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
-export const verifyEmail = async (req, res) => {
+export const verifyOtp = async (req, res) => {
     try {
-        const { token } = req.query;
-        if (!token) return res.status(400).send('Missing token');
+        const { email, otp } = req.body;
+        if (!email || !otp) return res.status(400).json({ message: "Email and OTP required" });
 
-        const payload = verifyEmailToken(token);
-        const userId = payload.sub;
-        const user = await User.findById(userId);
-        if (!user) return res.status(400).send('Invalid token');
+        const user = await User.findOne({ email });
+        if (!user) return res.status(400).json({ message: "User not found" });
+
+        if (user.isVerified) return res.status(400).json({ message: "User already verified" });
+
+        if (user.emailVerificationCode !== otp) {
+            return res.status(400).json({ message: "Invalid OTP" });
+        }
+
+        if (user.emailVerificationExpires < new Date()) {
+            return res.status(400).json({ message: "OTP expired" });
+        }
 
         user.isVerified = true;
+        user.emailVerificationCode = undefined;
+        user.emailVerificationExpires = undefined;
         await user.save();
 
-        // redirect to frontend success page, or send json
-        return res.redirect(`${process.env.FRONTEND_URL}/verify-success`);
+        return res.json({ message: "Email verified successfully" });
     } catch (err) {
         console.error(err);
-        return res.status(400).send('Invalid or expired token');
+        return res.status(500).json({ message: "Server error" });
     }
 };
 

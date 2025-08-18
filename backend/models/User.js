@@ -13,7 +13,9 @@ const userSchema = new mongoose.Schema({
     passwordHash: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
-    refreshTokens: [refreshTokenSchema]
+    refreshTokens: [refreshTokenSchema],
+    emailVerificationCode: String,
+    emailVerificationExpires: Date
 });
 
 export default mongoose.model('User', userSchema);
