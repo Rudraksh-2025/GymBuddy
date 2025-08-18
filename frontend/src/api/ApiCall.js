@@ -143,11 +143,10 @@ export const useLogin = () => {
             return response.data;
         },
         onSuccess: (data) => {
-            saveToken(data.accessToken.token);
-            localStorage.setItem('user', JSON.stringify(data.user.user_id))
-            localStorage.setItem('userName', JSON.stringify(data.user.first_name))
+            saveToken(data.accessToken);
+            localStorage.setItem('user', JSON.stringify(data.user.id))
+            localStorage.setItem('userName', JSON.stringify(data.user.name))
             localStorage.setItem('userEmail', JSON.stringify(data.user.email))
-            localStorage.setItem('userProfilePic', JSON.stringify(data.user.profile_pic))
             navigate('/');
         },
         onError: (error) => {
@@ -184,9 +183,11 @@ export const useVerification = () => {
             return response.data;
         },
         onSuccess: (data) => {
-            saveToken(data.accessToken.token);
-            localStorage.setItem('user', JSON.stringify(data.user))
-            navigate('/dashboard/admin');
+               saveToken(data.accessToken);
+            localStorage.setItem('user', JSON.stringify(data.user.id))
+            localStorage.setItem('userName', JSON.stringify(data.user.name))
+            localStorage.setItem('userEmail', JSON.stringify(data.user.email))
+            navigate('/');
         },
         onError: (error) => {
             console.error('Registration failed:', error.response?.data?.message || error.message);

@@ -17,7 +17,7 @@ import Stack from '@mui/material/Stack';
 // third-party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { useLogin } from '../../api/ApiCall';
+import { useRegister } from '../../api/ApiCall';
 
 // project imports
 import IconButton from 'components/@extended/IconButton';
@@ -31,7 +31,7 @@ import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
 export default function AuthRegister() {
     const [showPassword, setShowPassword] = useState(false);
 
-    const { mutate: login, isLoading } = useLogin();
+    const { mutate: register, isLoading } = useRegister();
 
 
     const handleClickShowPassword = () => {
@@ -46,13 +46,13 @@ export default function AuthRegister() {
         <>
             <Formik
                 initialValues={{
+                    name:'',
                     email: '',
                     password: '',
-                    role: 'Admin',
-                    fcm_token: "fcm_token",
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
+                    name:Yup.string().required('Name is required'),
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
                     password: Yup.string()
                         .required('Password is required')
@@ -88,16 +88,15 @@ export default function AuthRegister() {
                         )
                 })}
                 onSubmit={(values, { setSubmitting }) => {
-                    login(
+                    register(
                         {
+                            name:values.name,
                             email: values.email,
                             password: values.password,
-                            role: 'Admin',
-                            fcm_token: "fcm_token",
                         },
                         {
                             onSuccess: () => {
-                                toast.success('Login successful');
+                                toast.success('Register successful');
                             },
                             onError: (error) => {
                                 const errorList = error?.response?.data?.error?.error;

@@ -4,7 +4,7 @@ import * as authController from '../controllers/authControllers.js';
 
 
 router.post('/register', authController.register);
-router.get('/verify-email', authController.verifyOtp);
+router.post('/verify-email', authController.verifyOtp);
 router.post('/login', authController.login);
 router.post('/refresh-token', authController.refreshToken);
 router.post('/logout', authController.logout);

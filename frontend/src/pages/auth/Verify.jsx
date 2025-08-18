@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 
 // project imports
 import AuthWrapper from 'sections/auth/AuthWrapper';
-import AuthLogin from 'sections/auth/AuthLogin';
+import AuthVerify from 'sections/auth/AuthVerify';
 
 // ================================|| JWT - LOGIN ||================================ //
 
@@ -15,14 +15,11 @@ export default function Verify() {
             <Grid container spacing={3}>
                 <Grid size={12}>
                     <Stack direction="row" sx={{ alignItems: 'baseline', justifyContent: 'space-between', mb: { xs: -0.5, sm: 0.5 } }}>
-                        <Typography variant="h3">Verify</Typography>
-                        <Typography to={'/register'} variant="body1" sx={{ textDecoration: 'none' }} color="primary">
-                            Don&apos;t have an account?
-                        </Typography>
+                        {/* <Typography variant="h3">Verify</Typography> */}
                     </Stack>
                 </Grid>
                 <Grid size={12}>
-                    <AuthLogin />
+                    <AuthVerify />
                 </Grid>
             </Grid>
         </AuthWrapper>

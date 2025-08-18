@@ -61,8 +61,15 @@ export const verifyOtp = async (req, res) => {
         user.emailVerificationCode = undefined;
         user.emailVerificationExpires = undefined;
         await user.save();
-
-        return res.json({ message: "Email verified successfully" });
+ return res.json({
+            message: "Email verified successfully",
+            user: {
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                isVerified: user.isVerified
+            }
+        });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Server error" });

@@ -4,7 +4,7 @@ import Loadable from 'components/Loadable';
 
 const LoginPage = Loadable(lazy(() => import('pages/auth/Login')));
 const RegisterPage = Loadable(lazy(() => import('pages/auth/Register')))
-const VerifyPage = Loadable(() => import('pages/auth/Verify'))
+const VerifyPage = Loadable(lazy(() => import('pages/auth/Verify')))
 
 const LoginRoutes = {
   path: '/',

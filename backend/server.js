@@ -13,7 +13,9 @@ import cors from 'cors'
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(cors({
+    origin: 'http://localhost:3000' // Allow requests from your frontend
+}));
 app.use('/api/auth', authRoutes);
 app.use("/api/weight", weightRoutes);
 app.use('/api/exercises',exerciseRoutes)

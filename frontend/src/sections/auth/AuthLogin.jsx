@@ -48,8 +48,6 @@ export default function AuthLogin() {
         initialValues={{
           email: '',
           password: '',
-          role: 'Admin',
-          fcm_token: "fcm_token",
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -92,8 +90,6 @@ export default function AuthLogin() {
             {
               email: values.email,
               password: values.password,
-              role: 'Admin',
-              fcm_token: "fcm_token",
             },
             {
               onSuccess: () => {
