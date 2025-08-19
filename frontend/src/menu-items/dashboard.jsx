@@ -10,8 +10,8 @@ import {
   BellOutlined,
   TransactionOutlined,
   ShoppingOutlined,
-  FileTextOutlined
-
+  FileTextOutlined,
+  FormOutlined
 } from '@ant-design/icons';
 // icons
 const icons = {
@@ -26,6 +26,7 @@ const icons = {
   SchoolOutlinedIcon,
   AppstoreOutlined,
   ShoppingOutlined,
+  FormOutlined
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -51,11 +52,11 @@ const dashboard = {
       icon: icons.UserOutlined
     },
     {
-      id: 'category',
-      title: 'Category',
+      id: 'exercise',
+      title: 'Exercise',
       type: 'item',
-      url: '/dashboard/category',
-      icon: icons.AppstoreOutlined,
+      url: '/dashboard/exercise',
+      icon: icons.FormOutlined,
     },
 
   ]

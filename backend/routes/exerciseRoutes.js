@@ -6,7 +6,7 @@ import {
   updateExerciseLog,
   deleteExerciseLog,
   getExerciseProgress
-} from "../controllers/worloutController.js";
+} from "../controllers/exerciseController.js";
 import { auth } from "../middleware/authMiddleware.js";
 
 const router = express.Router();

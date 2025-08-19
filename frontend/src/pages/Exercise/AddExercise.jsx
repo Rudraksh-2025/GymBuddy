@@ -18,7 +18,7 @@ import { useCreateCategory, useUpdateCategory } from '@/api/ApiCall';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const AddCategory = ({ open, onClose, onSubmit, defaultValues }) => {
+const AddExercise = ({ open, onClose, onSubmit, defaultValues }) => {
     const [step, setStep] = useState(1);
     const [category, setCategory] = useState('');
     const [subCategoryInput, setSubCategoryInput] = useState('');
@@ -254,4 +254,4 @@ const AddCategory = ({ open, onClose, onSubmit, defaultValues }) => {
     );
 };
 
-export default AddCategory;
+export default AddExercise;

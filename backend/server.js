@@ -18,7 +18,7 @@ app.use(cors({
 }));
 app.use('/api/auth', authRoutes);
 app.use("/api/weight", weightRoutes);
-app.use('/api/exercises',exerciseRoutes)
+app.use('/api/exercises', exerciseRoutes)
 
 app.get('/', (req, res) => res.send('Auth API running'));
 

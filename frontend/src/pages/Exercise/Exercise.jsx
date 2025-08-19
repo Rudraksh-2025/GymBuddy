@@ -6,7 +6,7 @@ import {
     TableRow, Tooltip
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import AddCategory from './AddCategory';
+import AddExercise from './AddExercise';
 import { useCategory, useDeleteCategory } from '@/api/ApiCall';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
@@ -14,7 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import DeleteConfirm from '@/common/DeleteConfirm';
-const Category = () => {
+const Exercise = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState('')
@@ -141,7 +141,7 @@ const Category = () => {
                 </Table>
             </TableContainer>
 
-            <AddCategory
+            <AddExercise
                 open={dialogOpen}
                 onClose={() => {
                     setDialogOpen(false);
@@ -174,4 +174,4 @@ const Category = () => {
     );
 };
 
-export default Category;
+export default Exercise;

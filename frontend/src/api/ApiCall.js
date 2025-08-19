@@ -57,21 +57,21 @@ export const useUpdateUser = (onSuccess, onError) => {
 
 
 
-// create Category
-export const useCreateCategory = (onSuccess, onError) => {
+// create Exercise
+export const useCreateExercise = (onSuccess, onError) => {
     return useMutation({
         mutationFn: async (data) => {
-            const response = await axiosInstance.post('/category/create', data)
+            const response = await axiosInstance.post('/exercises', data)
             return response.data
         },
         onSuccess,
         onError
     })
 }
-// get list of Category
-export const useCategory = (page = 1, limit = 2, searchKey = '') => {
+// get list of Exercises
+export const useExercise = (page = 1, limit = 2) => {
     return useQuery({
-        queryKey: ['categories', page, limit, searchKey],
+        queryKey: ['exercises', page, limit, searchKey],
         queryFn: async () => {
             const response = await axiosInstance.get('/category', {
                 params: { page, limit, searchKey }
@@ -183,7 +183,7 @@ export const useVerification = () => {
             return response.data;
         },
         onSuccess: (data) => {
-               saveToken(data.accessToken);
+            saveToken(data.accessToken);
             localStorage.setItem('user', JSON.stringify(data.user.id))
             localStorage.setItem('userName', JSON.stringify(data.user.name))
             localStorage.setItem('userEmail', JSON.stringify(data.user.email))

@@ -7,7 +7,7 @@ import { Navigate } from 'react-router-dom';
 const UserPage = Loadable(lazy(() => import('../pages/Users/UserPage')));
 const ListOfUsers = Loadable(lazy(() => import('../pages/Users/ListOfUsers')));
 const ViewProfile = Loadable(lazy(() => import('../pages/profile/ViewProfile')));
-const Category = Loadable(lazy(() => import('../pages/Category/Category')));
+const Exercise = Loadable(lazy(() => import('../pages/Exercise/Exercise')));
 // import 
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
 
@@ -39,8 +39,8 @@ const MainRoutes = {
               element: <UserPage />
             },
             {
-              path: 'category',
-              element: <Category />
+              path: 'exercise',
+              element: <Exercise />
             },
             {
               path: 'view-profile',
