@@ -15,12 +15,12 @@ import {
 } from '@mui/material';
 import { Switch } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useUsers, useDeleteUser } from '../../api/ApiCall';
+// import { useUsers, useDeleteUser } from '../../api/ApiCall';
 import * as XLSX from 'xlsx';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { useUpdateStatus } from '../../api/ApiCall';
+// import { useUpdateStatus } from '../../api/ApiCall';
 import jsPDF from 'jspdf';
 import { autoTable } from 'jspdf-autotable'
 import axiosInstance from '../../api/axiosInstance'

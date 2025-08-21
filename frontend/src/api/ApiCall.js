@@ -56,9 +56,50 @@ export const useUpdateUser = (onSuccess, onError) => {
 };
 
 
-
-// create Exercise
+// Get Exercise by muscle group
+export const useGetExerciseByMuscle = (muscle) => {
+    return useQuery({
+        queryKey: ['muscleGroup', muscle],
+        queryFn: async () => {
+            const response = await axiosInstance.get(`/exercises/group/${muscle}`)
+            return response.data
+        }
+    })
+}
+// Get Exercise List
+export const useGetExercise = (muscle) => {
+    return useQuery({
+        queryKey: ['exerciseList', muscle],
+        queryFn: async () => {
+            const response = await axiosInstance.get(`/exercises/exercise/${muscle}`)
+            return response.data
+        }
+    })
+}
+// create  exercise
 export const useCreateExercise = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (data) => {
+            const response = await axiosInstance.post('/exercises/exercise', data)
+            return response.data
+        },
+        onSuccess,
+        onError
+    })
+}
+// delete  exercise
+export const useDeleteExercise = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (exerciseId) => {
+            const response = await axiosInstance.delete(`/exercises/exercise/${exerciseId}`)
+            return response.data
+        },
+        onSuccess,
+        onError
+    })
+}
+// create  exercise log
+export const useCreateExerciselog = (onSuccess, onError) => {
     return useMutation({
         mutationFn: async (data) => {
             const response = await axiosInstance.post('/exercises', data)
@@ -68,53 +109,56 @@ export const useCreateExercise = (onSuccess, onError) => {
         onError
     })
 }
-// get list of Exercises
-export const useExercise = (page = 1, limit = 2) => {
+// Get exercise logs
+export const useGetExerciseLogs = () => {
     return useQuery({
-        queryKey: ['exercises', page, limit, searchKey],
+        queryKey: ['exercise'],
         queryFn: async () => {
-            const response = await axiosInstance.get('/category', {
-                params: { page, limit, searchKey }
-            });
-            return response.data
-        },
-        staleTime: 15 * 60 * 1000,
-        placeholderData: keepPreviousData
-    })
-}
-// get Category by Id
-export const useGetCategory = (categoryId) => {
-    return useQuery({
-        queryKey: ['category', categoryId],
-        queryFn: async () => {
-            const response = await axiosInstance.get(`/category/${categoryId}`)
+            const response = await axiosInstance.get(`/exercises`);
             return response.data
         },
         staleTime: Infinity,
-        enabled: !!categoryId,
     })
 }
-// delete Category
-export const useDeleteCategory = (onSuccess, onError) => {
+// Update exercise log
+export const useUpdateExerciseLog = (onSuccess, onError) => {
     return useMutation({
-        mutationFn: async (categoryId) => {
-            const { data } = await axiosInstance.delete(`/category/delete/${categoryId}`);
+        mutationFn: async ({ exerciseID, data }) => {
+            const response = await axiosInstance.put(`/exercises/${exerciseID}`, data);
+            return response.data;
+        },
+        onSuccess,
+        onError
+    });
+};
+// Delete exercise log
+export const useDeleteExerciseLog = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (exerciseID) => {
+            const { data } = await axiosInstance.delete(`/exercises/${exerciseID}`);
             return data;
         },
         onSuccess,
         onError,
     });
 }
-// update Category
-export const useUpdateCategory = (handlers) => {
-    return useMutation({
-        mutationFn: async ({ categoryId, data }) => {
-            const response = await axiosInstance.put(`/category/update/${categoryId}`, data);
-            return response.data;
-        },
-        ...handlers
-    });
-};
+// get exercise progress 
+export const useGetExerciseProgress = (exerciseName, start, end) => {
+    return useQuery({
+        queryKey: ['muscleGroup', exerciseName, start, end],
+        queryFn: async () => {
+            const response = await axiosInstance.get(`/exercises/progress/`, {
+                params: { exerciseName, start, end }
+            })
+            return response.data
+        }
+    })
+}
+
+
+
+
+
 
 
 

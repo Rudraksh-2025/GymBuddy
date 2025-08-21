@@ -3,16 +3,66 @@ import ExerciseLog from "../models/Workout.js";
 import Exercise from "../models/Exercise.js";
 
 
-// Get exercises by muscle group
+// Get exercises by muscle group with last log + max weight
 export const getExercisesByGroup = async (req, res) => {
   try {
     const { muscleGroup } = req.params;
+
+    // Find exercises for this user + group
     const exercises = await Exercise.find({
       userId: req.user.id,
       muscleGroup
     }).sort({ createdAt: -1 });
 
-    res.json(exercises);
+    // For each exercise, fetch last log and max weight
+    const enriched = await Promise.all(
+      exercises.map(async (ex) => {
+        // Get last log
+        const lastLog = await ExerciseLog.findOne({
+          userId: req.user.id,
+          exerciseId: ex._id
+        }).sort({ date: -1 });
+
+        // Get max weight across all logs
+        const maxWeightAgg = await ExerciseLog.aggregate([
+          { $match: { userId: req.user._id, exerciseId: ex._id } },
+          { $unwind: "$sets" },
+          { $group: { _id: null, maxWeight: { $max: "$sets.weight" } } }
+        ]);
+
+        return {
+          _id: ex._id,
+          exerciseName: ex.exerciseName,
+          muscleGroup: ex.muscleGroup,
+          lastLog: lastLog || null,
+          maxWeight: maxWeightAgg.length > 0 ? maxWeightAgg[0].maxWeight : null,
+        };
+      })
+    );
+
+    res.json(enriched);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+// Get exercises by muscle group (id + value only)
+export const getExercises = async (req, res) => {
+  try {
+    const { muscleGroup } = req.params;
+
+    const exercises = await Exercise.find({
+      userId: req.user.id,
+      muscleGroup
+    })
+      .sort({ createdAt: -1 })
+      .select("_id exerciseName"); // Only fetch id + name
+
+    const formatted = exercises.map(ex => ({
+      id: ex._id,
+      value: ex.exerciseName,
+    }));
+
+    res.json(formatted);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -21,6 +71,14 @@ export const getExercisesByGroup = async (req, res) => {
 export const addExercise = async (req, res) => {
   try {
     const { muscleGroup, exerciseName } = req.body;
+    const existing = await Exercise.findOne({
+      userId: req.user.id,
+      muscleGroup,
+      exerciseName: { $regex: new RegExp(`^${exerciseName}$`, "i") } // case-insensitive
+    });
+    if (existing) {
+      return res.status(400).json({ message: "Exercise with this name already exists in this muscle group" });
+    }
     const exercise = new Exercise({
       userId: req.user.id,
       muscleGroup,
@@ -62,6 +120,7 @@ export const addExerciseLog = async (req, res) => {
     await log.save();
 
     res.status(201).json({ message: "Exercise log added", data: log });
+    return;
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

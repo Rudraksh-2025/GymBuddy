@@ -5,12 +5,20 @@ import {
   getExerciseLogs,
   updateExerciseLog,
   deleteExerciseLog,
-  getExerciseProgress
+  getExerciseProgress,
+  getExercisesByGroup,
+  addExercise,
+  deleteExercise,
+  getExercises
 } from "../controllers/exerciseController.js";
 import { auth } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
+router.get('/group/:muscleGroup', auth, getExercisesByGroup);
+router.get('/exercise/:muscleGroup', auth, getExercises)
+router.post('/exercise/', auth, addExercise)
+router.delete('/exercise/:id', auth, deleteExercise)
 router.post("/", auth, addExerciseLog);
 router.get("/", auth, getExerciseLogs);
 router.put("/:id", auth, updateExerciseLog);

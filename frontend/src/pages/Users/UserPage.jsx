@@ -13,7 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import { useUserById, useUpdateUser, useUserTransaction } from '../../api/ApiCall';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { useUpdateStatus, useMarketPlace, useSublease, useDeleteMarketPlace, useDeleteSublease } from '../../api/ApiCall';
+// import { useUpdateStatus, useMarketPlace, useSublease, useDeleteMarketPlace, useDeleteSublease } from '../../api/ApiCall';
 import { Link } from 'react-router-dom';
 import { userValidationSchema } from '../../common/FormValidations'
 export default function UserPage() {

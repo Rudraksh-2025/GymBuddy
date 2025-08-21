@@ -3,175 +3,138 @@ import {
     Box, Typography, Button, Paper, Chip,
     Pagination,
     Table, TableBody, TableCell, TableContainer, TableHead,
-    TableRow, Tooltip
+    TableRow, Tooltip, Select, MenuItem
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
+import AddExerciseLog from './AddExerciseLog';
 import AddExercise from './AddExercise';
-import { useCategory, useDeleteCategory } from '@/api/ApiCall';
+import { useGetExerciseByMuscle, useDeleteExercise } from '@/api/ApiCall';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import DeleteConfirm from '@/common/DeleteConfirm';
+
 const Exercise = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
-    const [page, setPage] = useState(1)
-    const [search, setSearch] = useState('')
-    const [confirmOpen, setConfirmOpen] = useState(false);
-    const [selectedCat, setSelectedCat] = useState(null);
-    const [editCategoryData, setEditCategoryData] = useState(null);
-    const queryClient = useQueryClient();
-    const { data, isLoading, isError } = useCategory(page, 6, search);
+    const [dialogOpen2, setDialogOpen2] = useState(false);
 
-    const { mutate: deleteCategory } = useDeleteCategory(
-        () => {
-            queryClient.invalidateQueries({ queryKey: ["categories"], exact: false });
-            toast.success("Category deleted successfully");
-        },
-        (error) => {
-            toast.error(error?.response?.data?.message || "Something went wrong");
-        }
-    );
-    const confirmDelete = () => {
-        if (selectedCat) {
-            handleDeleteCategory(selectedCat);
-            setConfirmOpen(false);
-            setSelectedCat(null);
-        }
-    };
-    const categoryList = (data?.productCategory?.data || [])
-        .map(cat => ({
-            ...cat,
-            subCategories: cat.subCatName || {}
-        }));
-    const totalPages = data?.productCategory?.pagination.totalPages || 1;
-    const handleAddCategory = (newCategory) => {
-        setEditCategoryData(null);
-    };
-
-
-    const handleDeleteCategory = (catObj) => {
-        deleteCategory(catObj.productCategory_id);
-    };
-    const handleEditClick = (categoryData) => {
-        setEditCategoryData(categoryData);
-        setDialogOpen(true);
-    };
-    if (isLoading) return <div>Loading Categories...</div>;
-    if (isError) return <div>Error loading Categories.</div>
+    const [muscle, setMuscle] = useState('back')
+    const { data: exercises, isLoading, isError } = useGetExerciseByMuscle(muscle);
     return (
         <Box p={1}>
             <Box display="flex" justifyContent={'space-between'} mb={2}>
-                <Typography variant="h3">Category</Typography>
-                <Button variant="contained" startIcon={<Add />} onClick={() => setDialogOpen(true)}>
-                    Add Category
-                </Button>
+                <Typography variant="h3">Exercise</Typography>
+                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexDirection: 'row' }}>
+                    <Select
+                        value={muscle}
+                        onChange={(e) => setMuscle(e.target.value)}
+                        sx={{ minWidth: 150, mr: 2 }}
+                    >
+                        <MenuItem value="back">Back</MenuItem>
+                        <MenuItem value="bicep">Bicep</MenuItem>
+                        <MenuItem value="chest">Chest</MenuItem>
+                        <MenuItem value="tricep">Tricep</MenuItem>
+                        <MenuItem value="legs">Legs</MenuItem>
+                        <MenuItem value="shoulder">Shoulder</MenuItem>
+                    </Select>
+                    <Button variant="contained" sx={{ color: 'white' }} startIcon={<Add />} onClick={() => setDialogOpen(true)}>
+                        Add Exercise
+                    </Button>
+                    <Button variant="contained" sx={{ color: 'white' }} startIcon={<Add />} onClick={() => setDialogOpen2(true)}>
+                        Add Exercise Log
+                    </Button>
+                </Box>
+                <AddExercise
+                    open={dialogOpen}
+                    onClose={() => {
+                        setDialogOpen(false);
+                        // setEditCategoryData(null);
+                    }}
+                    muscle={muscle}
+                // onSubmit={handleAddCategory}
+                // defaultValues={editCategoryData}
+                />
+                <AddExerciseLog
+                    muscle={muscle}
+                    open={dialogOpen2}
+                    onClose={() => setDialogOpen2(false)}
+                />
             </Box>
-            <TableContainer component={Paper} sx={{
-                maxHeight: { xs: 600, sm: 550 },
-                overflowY: 'auto'
-            }}>
+            <TableContainer component={Paper} sx={{ maxHeight: 550, overflowY: "auto" }}>
                 <Table stickyHeader>
                     <TableHead>
                         <TableRow>
-                            <TableCell><strong>Category</strong></TableCell>
-                            <TableCell><strong>Type</strong></TableCell>
-                            <TableCell><strong>Subcategories</strong></TableCell>
-                            <TableCell align="right"><strong>Actions</strong></TableCell>
+                            <TableCell><strong>Exercise</strong></TableCell>
+                            <TableCell><strong>Muscle Group</strong></TableCell>
+                            <TableCell><strong>Last Log (Sets)</strong></TableCell>
+                            <TableCell><strong>Max Weight</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {categoryList.length > 0 ? (
-                            categoryList.map((catObj) => (
-                                <TableRow key={catObj.productCategory_id}>
-                                    <TableCell sx={{ fontSize: '1rem' }}>{catObj.name}</TableCell>
-                                    <TableCell sx={{ fontSize: '1rem' }}> {catObj.type}</TableCell>
-                                    <TableCell>
-                                        {/* Subcategories with sizes */}
-                                        {Object.entries(catObj.subCategories || {}).map(([subCat, sizes], idx) => (
-                                            Array.isArray(sizes) && sizes.length > 0 && (
-                                                <Box key={idx} mb={1}>
-                                                    <Typography variant="body1" fontWeight="bold">{subCat}:</Typography>
-                                                    <Box display="flex" flexWrap="wrap" gap={0.5} mt={0.5}>
-                                                        {sizes.map((sz, i) => (
-                                                            <Chip key={i} size="small" label={sz} />
-                                                        ))}
-                                                    </Box>
-                                                </Box>
-                                            )
-                                        ))}
-
-                                        {/* Subcategories without sizes in a single line */}
-                                        <Box display="flex" flexDirection="row" flexWrap="wrap" gap={0.5} mt={0.5}>
-                                            {Object.entries(catObj.subCategories || {}).map(([subCat, sizes], idx) => (
-                                                (!Array.isArray(sizes) || sizes.length === 0) && (
-                                                    <Chip variant='outlined' key={idx} label={subCat} size="small" />
-                                                )
-                                            ))}
-                                        </Box>
+                        {exercises?.length > 0 ? (
+                            exercises.map((ex) => (
+                                <TableRow key={ex._id}>
+                                    {/* Exercise Name */}
+                                    <TableCell sx={{ fontSize: "1rem" }}>
+                                        {ex.exerciseName}
                                     </TableCell>
 
+                                    {/* Muscle Group */}
+                                    <TableCell sx={{ fontSize: "1rem", textTransform: "capitalize" }}>
+                                        {ex.muscleGroup}
+                                    </TableCell>
 
-                                    <TableCell align="right">
-                                        <Tooltip title="Edit">
-                                            <IconButton color="secondary" onClick={() => handleEditClick(catObj)}>
-                                                <EditIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Delete">
-                                            <IconButton color="error" onClick={() => {
-                                                setSelectedCat(catObj);
-                                                setConfirmOpen(true);
-                                            }}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Tooltip>
+                                    {/* Last Log (sets) */}
+                                    <TableCell>
+                                        {ex.lastLog && ex.lastLog.sets?.length > 0 ? (
+                                            <Box display="flex" gap={0.5} flexWrap="wrap">
+                                                {ex.lastLog.sets.map((s, i) => (
+                                                    <Chip
+                                                        key={i}
+                                                        label={`${s.reps} reps x ${s.weight} kg`} sx={{
+                                                            backgroundColor: '#E5E7EB',
+                                                            color: '#9CA3AF',
+                                                            fontWeight: 500,
+                                                            '& .MuiChip-label': {
+                                                                textTransform: 'capitalize',
+                                                                color: '#6B7280'
+                                                            }
+                                                        }} size="small" />
+                                                ))}
+                                            </Box>
+                                        ) : (
+                                            <Typography variant="body2" color="textSecondary">
+                                                No logs yet
+                                            </Typography>
+                                        )}
+                                    </TableCell>
+
+                                    {/* Max Weight */}
+                                    <TableCell>
+                                        {ex.maxWeight ? (
+                                            <Typography variant="body1" fontWeight="bold">
+                                                {ex.maxWeight} kg
+                                            </Typography>
+                                        ) : (
+                                            "-"
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={12} align="center">
-                                    No Data found.
+                                <TableCell colSpan={4} align="center">
+                                    No Exercises Found
                                 </TableCell>
                             </TableRow>
                         )}
                     </TableBody>
                 </Table>
             </TableContainer>
-
-            <AddExercise
-                open={dialogOpen}
-                onClose={() => {
-                    setDialogOpen(false);
-                    setEditCategoryData(null);
-                }}
-                onSubmit={handleAddCategory}
-                defaultValues={editCategoryData}
-            />
-            <DeleteConfirm
-                open={confirmOpen}
-                title="Delete Category"
-                content="Are you sure you want to delete this category?"
-                onConfirm={confirmDelete}
-                onCancel={() => {
-                    setConfirmOpen(false);
-                    setSelectedCatId(null);
-                }}
-            />
-            {totalPages > 1 &&
-                <Box display="flex" justifyContent="center" mt={2}>
-                    <Pagination
-                        count={totalPages}
-                        page={page}
-                        onChange={(e, value) => setPage(value)}
-                        color="primary"
-                    />
-                </Box>
-            }
         </Box>
-    );
-};
+    )
+}
 
-export default Exercise;
+export default Exercise
