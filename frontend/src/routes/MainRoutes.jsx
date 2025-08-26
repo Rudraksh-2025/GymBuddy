@@ -3,6 +3,7 @@ import Loadable from 'components/Loadable';
 import DashboardLayout from 'layout/Dashboard';
 import AuthGuard from './AuthGaurd';
 import { Navigate } from 'react-router-dom';
+import ExerciseInformation from '@/pages/Exercise/ExerciseInformation';
 // import AuthLayout from '../layout/Auth/index'
 const UserPage = Loadable(lazy(() => import('../pages/Users/UserPage')));
 const ListOfUsers = Loadable(lazy(() => import('../pages/Users/ListOfUsers')));
@@ -41,6 +42,10 @@ const MainRoutes = {
             {
               path: 'exercise',
               element: <Exercise />
+            },
+            {
+              path: 'exercise-information/:exerciseId',
+              element: <ExerciseInformation />
             },
             {
               path: 'view-profile',

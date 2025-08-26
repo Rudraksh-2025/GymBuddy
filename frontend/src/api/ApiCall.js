@@ -110,11 +110,13 @@ export const useCreateExerciselog = (onSuccess, onError) => {
     })
 }
 // Get exercise logs
-export const useGetExerciseLogs = () => {
+export const useGetExerciseLogs = (exerciseId) => {
     return useQuery({
-        queryKey: ['exercise'],
+        queryKey: ['exercise', exerciseId],
         queryFn: async () => {
-            const response = await axiosInstance.get(`/exercises`);
+            const response = await axiosInstance.get(`/exercises/logs`,
+                { params: { exerciseId: exerciseId } }
+            );
             return response.data
         },
         staleTime: Infinity,
@@ -143,12 +145,12 @@ export const useDeleteExerciseLog = (onSuccess, onError) => {
     });
 }
 // get exercise progress 
-export const useGetExerciseProgress = (exerciseName, start, end) => {
+export const useGetExerciseProgress = (exerciseId, start, end) => {
     return useQuery({
-        queryKey: ['muscleGroup', exerciseName, start, end],
+        queryKey: ['muscleGroup', exerciseId, start, end],
         queryFn: async () => {
             const response = await axiosInstance.get(`/exercises/progress/`, {
-                params: { exerciseName, start, end }
+                params: { exerciseId, start, end }
             })
             return response.data
         }

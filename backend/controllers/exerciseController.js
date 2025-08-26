@@ -1,7 +1,7 @@
 // controllers/exerciseController.js
 import ExerciseLog from "../models/Workout.js";
 import Exercise from "../models/Exercise.js";
-
+import mongoose from "mongoose";
 
 // Get exercises by muscle group with last log + max weight
 export const getExercisesByGroup = async (req, res) => {
@@ -128,7 +128,7 @@ export const addExerciseLog = async (req, res) => {
 // Get all logs for an exercise
 export const getExerciseLogs = async (req, res) => {
   try {
-    const { exerciseId } = req.params;
+    const { exerciseId } = req.query;;
     const logs = await ExerciseLog.find({
       userId: req.user.id,
       exerciseId
@@ -172,14 +172,21 @@ export const deleteExerciseLog = async (req, res) => {
 export const getExerciseProgress = async (req, res) => {
   try {
     const { start, end, exerciseId } = req.query;
+    console.log(end)
     if (!exerciseId) {
       return res.status(400).json({ message: "ExerciseId is required" });
     }
 
-    let match = { userId: req.user.id, exerciseId };
+    const match = {
+      userId: new mongoose.Types.ObjectId(req.user.id),
+      exerciseId: new mongoose.Types.ObjectId(exerciseId)
+    };
 
     if (start && end) {
-      match.date = { $gte: new Date(start), $lte: new Date(end) };
+      match.date = {
+        $gte: new Date(start),
+        $lte: new Date(new Date(end).setHours(23, 59, 59, 999))
+      };
     }
 
     const progress = await ExerciseLog.aggregate([

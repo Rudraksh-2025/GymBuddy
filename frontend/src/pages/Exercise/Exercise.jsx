@@ -8,6 +8,7 @@ import {
 import { Add } from '@mui/icons-material';
 import AddExerciseLog from './AddExerciseLog';
 import AddExercise from './AddExercise';
+import { useNavigate } from 'react-router-dom';
 import { useGetExerciseByMuscle, useDeleteExercise } from '@/api/ApiCall';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,7 +20,7 @@ import DeleteConfirm from '@/common/DeleteConfirm';
 const Exercise = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogOpen2, setDialogOpen2] = useState(false);
-
+    const nav = useNavigate()
     const [muscle, setMuscle] = useState('back')
     const { data: exercises, isLoading, isError } = useGetExerciseByMuscle(muscle);
     return (
@@ -120,6 +121,12 @@ const Exercise = () => {
                                         ) : (
                                             "-"
                                         )}
+                                    </TableCell>
+
+                                    <TableCell>
+                                        <Button variant='contained' onClick={() => nav(`/dashboard/exercise-information/${ex._id}`)} sx={{ color: 'white' }}>
+                                            View
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))

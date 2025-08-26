@@ -46,6 +46,7 @@
     "jspdf-autotable": "^5.0.2",
     "lodash-es": "4.17.21",
     "react": "19.1.0",
+    "react-date-range": "^2.0.1",
     "react-device-detect": "2.2.3",
     "react-dom": "19.1.0",
     "react-number-format": "5.4.4",

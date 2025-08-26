@@ -20,7 +20,7 @@ router.get('/exercise/:muscleGroup', auth, getExercises)
 router.post('/exercise/', auth, addExercise)
 router.delete('/exercise/:id', auth, deleteExercise)
 router.post("/", auth, addExerciseLog);
-router.get("/", auth, getExerciseLogs);
+router.get("/logs", auth, getExerciseLogs);
 router.put("/:id", auth, updateExerciseLog);
 router.delete("/:id", auth, deleteExerciseLog);
 router.get('/progress', auth, getExerciseProgress)
