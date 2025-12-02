@@ -8,6 +8,7 @@ import ListOfExercise from './pages/exercise/ListOfExercise';
 import ExerciseInformation from './pages/Exercise/ExerciseInformation';
 import Login from './pages/auth/Login';
 import Profile from './pages/profile/Profile'
+import Register from "./pages/auth/Register";
 import Home from './pages/Home'
 import { LogGuard, AuthGuard } from './common/Gaurd'
 
@@ -27,6 +28,14 @@ function App() {
       element: (
         <LogGuard>
           <Verification />
+        </LogGuard>
+      ),
+    },
+    {
+      path: "/register",
+      element: (
+        <LogGuard>
+          <Register />
         </LogGuard>
       ),
     },

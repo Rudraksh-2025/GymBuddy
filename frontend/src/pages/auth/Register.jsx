@@ -6,13 +6,13 @@ import { toast } from "react-toastify";
 // import { useUserLogin } from "../../API Calls/API";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BootstrapInput } from '../../common/custom/BootsrapInput'
-import { useLogin } from "../../api/Api";
+import { useRegister } from "../../api/Api";
 
 import { Box, Card, Typography, Button, IconButton, FormControl, InputLabel, FormHelperText } from "@mui/material";
 
 import logo3 from "../../assets/images/logo.svg";
 
-const Login = () => {
+const Register = () => {
     const nav = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
@@ -20,6 +20,7 @@ const Login = () => {
         initialValues: {
             email: "",
             password: "",
+            fcm_token: "fcm_token",
         },
         validationSchema: loginValidation,
         onSubmit: (values) => mutate(values),
@@ -35,11 +36,12 @@ const Login = () => {
         localStorage.setItem("accessToken", res.data.accessToken);
         localStorage.setItem("userID", res.data.user.id);
         localStorage.setItem("userName", res.data.user.firstName);
+        localStorage.setItem("role", res.data.user.Role.name);
         localStorage.setItem("profileImg", res.data.user.profile_img)
         nav("/home");
     };
 
-    const { mutate } = useLogin(onSuccess, onError);
+    const { mutate } = useRegister(onSuccess, onError);
 
     return (
         <Box
@@ -69,9 +71,9 @@ const Login = () => {
                 </Box>
 
                 <Typography
-                    variant="h6"
+                    variant="body1"
                     align="center"
-                    sx={{ color: "#878787", fontWeight: 450, mb: 3 }}
+                    sx={{ color: "#878787", fontWeight: 400, mb: 3 }}
                 >
                     Welcome to Gym Buddy
                 </Typography>
@@ -131,7 +133,7 @@ const Login = () => {
                             href="#"
                             sx={{ fontSize: "0.9rem", color: "var(--Blue)", textDecoration: "none" }}
                         >
-                            Dont Have Account? <Link to='/register'>Register</Link>
+                            Already have an account? <Link to='/login'>Login</Link>
                         </Typography>
                     </Box>
 
@@ -159,4 +161,4 @@ const Login = () => {
     );
 };
 
-export default Login
+export default Register
