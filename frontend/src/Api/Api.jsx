@@ -2,7 +2,7 @@
 import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { saveToken, removeToken } from '../utils/auth';
 import { useNavigate } from "react-router-dom";
-import axiosInstance from './axiosInstance';
+import axiosInstance from './ApiClient';
 import { toast } from 'react-toastify';
 // --------------------------------------------------- CUSTOM HOOKS ---------------------------------------------------
 
@@ -48,6 +48,30 @@ export const useUpdateUser = (onSuccess, onError) => {
     return useMutation({
         mutationFn: async ({ userId, data }) => {
             const response = await axiosInstance.put(`/auth/updateUser/${userId}`, data);
+            return response.data;
+        },
+        onSuccess,
+        onError,
+    });
+};
+
+// get profile details
+export const useGetProfile = () => {
+    return useQuery({
+        queryKey: ['profile'],
+        queryFn: async () => {
+            const { data } = await apiClient.get(`/super-admin`);
+            return data;
+        },
+        staleTime: 15 * 60 * 1000,
+        placeholderData: keepPreviousData,
+    });
+};
+// update profile details
+export const useUpdateProfile = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async ({ profileId, data }) => {
+            const response = await apiClient.patch(`/super-admin/update-admin-profile/${profileId}`, data);
             return response.data;
         },
         onSuccess,
@@ -156,13 +180,6 @@ export const useGetExerciseProgress = (exerciseId, start, end) => {
         }
     })
 }
-
-
-
-
-
-
-
 
 
 // get User Metrices

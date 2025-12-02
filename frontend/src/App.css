@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --Blue: #3EC2CD;
+    --orange: #F97316;
+    --secondary-color: #6c757d;
+    --light-gray: #E5E7EB;
+    --icon-gray: rgb(175, 179, 189);
+    --font-gray: #4B5563;
+    --heading-font: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f7f9fb;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    /* color: black; */
+    font-family: "Montserrat", sans-serif;
+    font-style: normal;
+}
+
+/* custom day picker css */
+.input-icon {
+    position: absolute;
+    right: 10px;
+    top: 25%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.rdp-month_grid {
+    margin-top: 20px;
+}
+
+.rdp-caption_label {
+    font-weight: 500;
+}
+
+.rdp-chevron {
+    fill: black !important;
+}
+
+.rdp-selected .rdp-day_button {
+    border: none !important;
+    border-radius: 50% !important;
+    background-color: #3EC2CD;
+    color: white !important
+}
+
+.rdp-today:not(.rdp-outside) {
+    border: none;
+    color: black !important
+}
+
+
+/* Make TimePicker look cleaner */
+.react-time-picker {
+    font-family: "Montserrat", sans-serif;
+}
+
+.react-time-picker__wrapper {
+    border: 1px solid #E0E3E7;
+    border-radius: 8px;
+    padding: 6px 8px;
+}
+
+.react-time-picker__inputGroup__input {
+    border: none;
+    font-size: 16px;
+    text-align: center;
+}
+
+.react-time-picker__inputGroup__input:focus {
+    outline: none;
+}
+
+.react-time-picker__clock-button {
+    display: none !important;
+    /* hides small clock icon */
+}
+
+.react-time-picker__inputGroup__divider {
+    margin: 0 4px;
+    color: #555;
+    font-weight: 500;
+}
+
+
+.recharts-sector:focus {
+    outline: none !important;
+}
+
+.recharts-surface:focus {
+    outline: none !important;
+}
+
+.recharts-legend-item {
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.recharts-legend-item-text {
+    font-size: 14px;
+    color: black !important;
+}
+
+.recharts-tooltip-cursor {
+    fill: none
+}
+
+.ehailing-table {
+    height: 300px !important;
+}

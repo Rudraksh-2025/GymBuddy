@@ -1,6 +1,6 @@
 import React from "react";
 import { FormControl, InputLabel, FormHelperText } from "@mui/material";
-import { BootstrapInput } from "./BootstrapInput";
+import { BootstrapInput } from "../custom/BootsrapInput";
 
 const CustomInput = ({ label, placeholder, name, formik, readOnly = false, type = "text" }) => {
     return (

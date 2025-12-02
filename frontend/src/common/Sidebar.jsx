@@ -12,7 +12,7 @@ import {
     Collapse,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { superadmin_menulist } from "./MenuList";
+import { menuList } from "./MenuList";
 import logo4 from "../assets/images/logo.svg";
 import { useTheme } from "@mui/material/styles";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -61,7 +61,7 @@ const Sidebar = ({ isActive, setActive, sidebarRef }) => {
                 height: '88vh', overflowY: 'auto', scrollbarWidth: "none",
                 "&::-webkit-scrollbar": { display: "none" },
             }}>
-                {superadmin_menulist.map((menu) => {
+                {menuList.map((menu) => {
                     const isOpen = openMenus[menu.id] || false;
 
                     // --- If menu has children -> COLLAPSIBLE ---

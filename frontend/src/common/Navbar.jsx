@@ -9,11 +9,10 @@ import {
 import { IoArrowBack } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { superadmin_menulist } from "./MenuList";
+import { menuList } from "./MenuList";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MenuIcon from "@mui/icons-material/Menu";
-import exportpdf from '../assets/images/exportpdf.svg'
 import PersonIcon from '@mui/icons-material/Person';
 
 
@@ -33,7 +32,7 @@ const Navbar = ({ setActive, isActive }) => {
 
         // Detect parent ID
         const parentId = pathParts[1];
-        const parentMenu = superadmin_menulist.find(menu => menu.id === parentId);
+        const parentMenu = menuList.find(menu => menu.id === parentId);
 
         // Detect Submenu Page (from collapsible menus)
         const isSubmenuPage =
@@ -129,15 +128,6 @@ const Navbar = ({ setActive, isActive }) => {
                 </Typography>
 
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2, pr: 0 }}>
-                    {(location.pathname === "/home/reports" || location.pathname === '/home/reports/vafReports') && (
-                        <Button
-                            startIcon={<img src={exportpdf} alt="export icon" />}
-                            variant="outlined"
-                            size="small"
-                            sx={{ height: "40px", color: "#3EC2CD", border: "1px solid #3EC2CD", width: "150px", borderRadius: "8px", }}>
-                            Export as PDF
-                        </Button>
-                    )}
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2, pr: 0, cursor: 'pointer' }} onClick={() => nav('/home/profile')}>
                         <Avatar
                             alt="User"
