@@ -80,13 +80,9 @@ const Navbar = ({ setActive, isActive }) => {
         // ----------------------------
         setIsSubMenu(false); // No arrow
         if (parentMenu) {
-            setPageTitle(
-                parentMenu.name === "Dashboard"
-                    ? "Fuel Advance Admin"
-                    : parentMenu.name
-            );
+            setPageTitle(parentMenu.name);
         } else {
-            setPageTitle("Fuel Advance Admin");
+            setPageTitle("Dasboard");
         }
     }, [location]);
 
@@ -102,18 +98,18 @@ const Navbar = ({ setActive, isActive }) => {
                     width: `calc(100% - ${260}px)`,
                     ml: `${260}px`,
                 }),
-                bgcolor: "#f7f9fb",
-                color: "#000",
+                bgcolor: "#1F2022",
+                color: "white",
                 boxShadow: "none",
             }}>
             <Toolbar sx={{ justifyContent: "space-between" }}>
                 {isSubMenu ? (
-                    <IconButton onClick={() => nav(-1)} sx={{ mr: 2 }}>
+                    <IconButton onClick={() => nav(-1)} sx={{ mr: 2, color: 'white' }}>
                         <IoArrowBack size={24} />
                     </IconButton>
                 ) : (
                     !isMdUp && ( // Show hamburger only on xs/sm
-                        <IconButton sx={{ mr: 2 }} onClick={() => setActive(true)}>
+                        <IconButton sx={{ mr: 2, color: 'white' }} onClick={() => setActive(true)}>
                             <MenuIcon size={24} />
                         </IconButton>
                     )

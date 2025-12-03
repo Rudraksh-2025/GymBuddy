@@ -19,7 +19,7 @@ const ListOfExercise = () => {
     return (
         <Box p={1}>
             <Box display="flex" justifyContent={'space-between'} mb={2}>
-                <Typography variant="h3">Exercise</Typography>
+                <Typography variant="h3" sx={{ color: 'white' }}>Exercise</Typography>
                 <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexDirection: 'row' }}>
                     <Select
                         value={muscle}

@@ -5,18 +5,25 @@ import {
     LogoutOutlined
 } from '@ant-design/icons';
 
+const icons = {
+    DashboardOutlined,
+    UserOutlined,
+    FormOutlined,
+    LogoutOutlined
+};
+
 export const menuList = [
     {
         id: "home",
         name: "Dashboard",
         path: "/home",
-        icon: DashboardOutlined,
+        icon: icons.DashboardOutlined,
     },
     {
         id: "users",
         name: "List of Users",
         path: "/home/users",
-        icon: UserOutlined,
+        icon: icons.UserOutlined,
         info: "User Information",
         view: "Users",
         edit: "Edit User"
@@ -25,14 +32,14 @@ export const menuList = [
         id: "exercise",
         name: "Exercise",
         path: "/home/exercise",
-        icon: FormOutlined,
+        icon: icons.FormOutlined,
         info: "Exercise Information",
     },
     {
         id: "logout",
         name: "Logout",
         path: "/logout",
-        icon: LogoutOutlined,
+        icon: icons.LogoutOutlined,
     },
 ];
 

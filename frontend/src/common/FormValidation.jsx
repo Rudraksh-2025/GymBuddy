@@ -18,6 +18,11 @@ export const loginValidation = yup.object({
     email: Email,
     password: Password,
 })
+export const RegisterValidation = yup.object({
+    email: Email,
+    name: yup.string().required('Name is required'),
+    password: Password,
+})
 export const profileValidation = yup.object({
     firstName: Username,
     lastName: Username,

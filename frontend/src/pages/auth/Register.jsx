@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useFormik } from "formik";
-import { loginValidation } from "../../common/FormValidation";
+import { RegisterValidation } from "../../common/FormValidation";
 import { toast } from "react-toastify";
 // import { useUserLogin } from "../../API Calls/API";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -19,29 +19,14 @@ const Register = () => {
     const loginForm = useFormik({
         initialValues: {
             email: "",
+            name: "",
             password: "",
-            fcm_token: "fcm_token",
         },
-        validationSchema: loginValidation,
+        validationSchema: RegisterValidation,
         onSubmit: (values) => mutate(values),
     });
 
-    const onError = (error) => {
-        toast.error(error?.message || "Something went wrong");
-    };
-
-    const onSuccess = (res) => {
-        toast.success("Logged In successfully.");
-        localStorage.clear();
-        localStorage.setItem("accessToken", res.data.accessToken);
-        localStorage.setItem("userID", res.data.user.id);
-        localStorage.setItem("userName", res.data.user.firstName);
-        localStorage.setItem("role", res.data.user.Role.name);
-        localStorage.setItem("profileImg", res.data.user.profile_img)
-        nav("/home");
-    };
-
-    const { mutate } = useRegister(onSuccess, onError);
+    const { mutate } = useRegister();
 
     return (
         <Box
@@ -50,7 +35,7 @@ const Register = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                bgcolor: "var(--Blue)",
+                bgcolor: "var(--DarkBlue)",
                 backgroundPosition: "center",
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",
@@ -71,14 +56,28 @@ const Register = () => {
                 </Box>
 
                 <Typography
-                    variant="body1"
+                    variant="h6"
                     align="center"
-                    sx={{ color: "#878787", fontWeight: 400, mb: 3 }}
+                    sx={{ color: "#878787", fontWeight: 450, mb: 3 }}
                 >
                     Welcome to Gym Buddy
                 </Typography>
 
                 <form onSubmit={loginForm.handleSubmit}>
+                    {/* Name */}
+                    <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
+                        <InputLabel shrink htmlFor="name" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
+                            Name
+                        </InputLabel>
+                        <BootstrapInput
+                            id="name"
+                            name="name"
+                            placeholder="Enter your Name"
+                            value={loginForm.values.name}
+                            onChange={loginForm.handleChange}
+                        />
+                        {loginForm.touched.name && <FormHelperText error>{loginForm.errors.name}</FormHelperText>}
+                    </FormControl>
                     {/* Email */}
                     <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
                         <InputLabel shrink htmlFor="email" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
@@ -131,9 +130,9 @@ const Register = () => {
                         <Typography
                             component="a"
                             href="#"
-                            sx={{ fontSize: "0.9rem", color: "var(--Blue)", textDecoration: "none" }}
+                            sx={{ fontSize: "0.9rem", color: "black", textDecoration: "none" }}
                         >
-                            Already have an account? <Link to='/login'>Login</Link>
+                            Already have an account? <Link to='/' className='link'>Login</Link>
                         </Typography>
                     </Box>
 
@@ -144,16 +143,16 @@ const Register = () => {
                         type="submit"
                         // disabled={loginfn.isPending}
                         sx={{
-                            bgcolor: "var(--Blue)",
+                            bgcolor: "var(--DarkBlue)",
                             fontWeight: 700,
                             borderRadius: 2,
                             py: 1.5,
                             color: "white",
-                            "&:hover": { bgcolor: "var(--Blue)" },
+                            "&:hover": { bgcolor: "var(--DarkBlue)" },
                         }}
                     >
                         {/* {loginfn.isPending ? <Loader color="white" /> : "Log In"} */}
-                        Log In
+                        Register
                     </Button>
                 </form>
             </Card>

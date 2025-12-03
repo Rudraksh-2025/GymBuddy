@@ -12,6 +12,7 @@ import {
     Collapse,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import { removeToken } from '../utils/auth'
 import { menuList } from "./MenuList";
 import logo4 from "../assets/images/logo.svg";
 import { useTheme } from "@mui/material/styles";
@@ -38,6 +39,7 @@ const Sidebar = ({ isActive, setActive, sidebarRef }) => {
 
     const handleLogout = () => {
         localStorage.clear();
+        removeToken()
         nav("/");
     };
     const toggleMenu = (menuId) => {
@@ -51,15 +53,17 @@ const Sidebar = ({ isActive, setActive, sidebarRef }) => {
     const drawerContent = (
         <Box sx={{
             height: '100%',
+            backgroundColor: '#121212'
         }}>
             {/* --- Logo --- */}
             <Toolbar sx={{ display: "flex", justifyContent: "center", pt: 1 }}>
-                <Box component="img" src={logo4} alt="logo" sx={{ width: "70%" }} />
+                <Box component="img" src={logo4} alt="logo" sx={{ width: "30%" }} />
+                <Typography sx={{ fontWeight: '600', fontSize: '1.2rem', color: 'white' }}>Gym buddy</Typography>
             </Toolbar>
             {/* --- Menu List --- */}
             <List sx={{
                 height: '88vh', overflowY: 'auto', scrollbarWidth: "none",
-                "&::-webkit-scrollbar": { display: "none" },
+                "&::-webkit-scrollbar": { display: "none" }, pt: 4
             }}>
                 {menuList.map((menu) => {
                     const isOpen = openMenus[menu.id] || false;
@@ -87,7 +91,7 @@ const Sidebar = ({ isActive, setActive, sidebarRef }) => {
                                 >
                                     <ListItemIcon>
                                         <Box sx={{ boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", backgroundColor: 'white', borderRadius: '8px', p: 0.5, width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                            <Box component="img" src={menu.icon} sx={{ width: 22, height: 22 }} />
+                                            <menu.icon style={{ fontSize: 22, color: "#333" }} />
                                         </Box>
                                     </ListItemIcon>
 
@@ -139,11 +143,11 @@ const Sidebar = ({ isActive, setActive, sidebarRef }) => {
                         >
                             <ListItemIcon>
                                 <Box sx={{ boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", backgroundColor: 'white', borderRadius: '8px', p: 0.5, width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Box component="img" src={menu.icon} sx={{ width: 22, height: 22 }} />
+                                    <menu.icon style={{ fontSize: 22, color: "#333" }} />
                                 </Box>
                             </ListItemIcon>
 
-                            <ListItemText primary={<Typography sx={{ fontSize: '14px', fontWeight: 550 }}> {menu.name} </Typography>} />
+                            <ListItemText primary={<Typography sx={{ fontSize: '14px', fontWeight: 550, color: 'white' }}> {menu.name} </Typography>} />
                         </ListItemButton>
                     );
                 })}

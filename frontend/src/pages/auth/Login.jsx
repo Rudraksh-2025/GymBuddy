@@ -25,33 +25,12 @@ const Login = () => {
         onSubmit: (values) => mutate(values),
     });
 
-    const onError = (error) => {
-        toast.error(error?.message || "Something went wrong");
-    };
-
-    const onSuccess = (res) => {
-        toast.success("Logged In successfully.");
-        localStorage.clear();
-        localStorage.setItem("accessToken", res.data.accessToken);
-        localStorage.setItem("userID", res.data.user.id);
-        localStorage.setItem("userName", res.data.user.firstName);
-        localStorage.setItem("profileImg", res.data.user.profile_img)
-        nav("/home");
-    };
-
-    const { mutate } = useLogin(onSuccess, onError);
+    const { mutate } = useLogin();
 
     return (
         <Box
+            className='loginBox'
             sx={{
-                minHeight: "95vh",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "var(--Blue)",
-                backgroundPosition: "center",
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
                 p: 3
             }}
         >
@@ -77,15 +56,15 @@ const Login = () => {
                 </Typography>
 
                 <form onSubmit={loginForm.handleSubmit}>
-                    {/* Email */}
+
                     <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
                         <InputLabel shrink htmlFor="email" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
-                            Email or Username
+                            Email
                         </InputLabel>
                         <BootstrapInput
                             id="email"
                             name="email"
-                            placeholder="Enter your email or username"
+                            placeholder="Enter your email"
                             value={loginForm.values.email}
                             onChange={loginForm.handleChange}
                         />
@@ -129,9 +108,9 @@ const Login = () => {
                         <Typography
                             component="a"
                             href="#"
-                            sx={{ fontSize: "0.9rem", color: "var(--Blue)", textDecoration: "none" }}
+                            sx={{ fontSize: "0.9rem", color: "black", textDecoration: "none" }}
                         >
-                            Dont Have Account? <Link to='/register'>Register</Link>
+                            Dont Have Account? <Link to='/register' className='link'>Register</Link>
                         </Typography>
                     </Box>
 
@@ -142,12 +121,12 @@ const Login = () => {
                         type="submit"
                         // disabled={loginfn.isPending}
                         sx={{
-                            bgcolor: "var(--Blue)",
+                            bgcolor: "var(--DarkBlue)",
                             fontWeight: 700,
                             borderRadius: 2,
                             py: 1.5,
                             color: "white",
-                            "&:hover": { bgcolor: "var(--Blue)" },
+                            "&:hover": { bgcolor: "var(--DarkBlue)" },
                         }}
                     >
                         {/* {loginfn.isPending ? <Loader color="white" /> : "Log In"} */}

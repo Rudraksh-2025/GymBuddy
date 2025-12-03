@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Navigate } from "react-router-dom"
+import { getToken } from "../utils/auth"
 
 
 export const AuthGuard = ({ children }) => {
-    const auth = localStorage.getItem("accessToken")
+    const auth = getToken()
 
     if (auth) {
         return children
@@ -15,7 +16,7 @@ export const AuthGuard = ({ children }) => {
 }
 
 export const LogGuard = ({ children }) => {
-    const auth = localStorage.getItem("accessToken")
+    const auth = getToken()
 
     if (!auth) {
         return children

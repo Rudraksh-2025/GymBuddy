@@ -39,6 +39,7 @@ export const register = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
 export const verifyOtp = async (req, res) => {
     try {
         const { email, otp } = req.body;
@@ -61,7 +62,7 @@ export const verifyOtp = async (req, res) => {
         user.emailVerificationCode = undefined;
         user.emailVerificationExpires = undefined;
         await user.save();
- return res.json({
+        return res.json({
             message: "Email verified successfully",
             user: {
                 id: user._id,

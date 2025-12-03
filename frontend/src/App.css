@@ -2,6 +2,7 @@
 
 :root {
     --Blue: #3EC2CD;
+    --DarkBlue:#298EFB;
     --orange: #F97316;
     --secondary-color: #6c757d;
     --light-gray: #E5E7EB;
@@ -11,7 +12,7 @@
 }
 
 body {
-    background-color: #f7f9fb;
+    background-color: #1F2022;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -113,6 +114,18 @@ body {
     fill: none
 }
 
-.ehailing-table {
-    height: 300px !important;
+.loginBox{
+    background-position: center;
+    background-image: url('../src/assets/images/loginBackground.png');
+    min-height: 95vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: contain;
+    /* background-repeat: no-repeat; */
 }
+.link{
+    color: var(--DarkBlue);
+    text-decoration: none;
+}
+

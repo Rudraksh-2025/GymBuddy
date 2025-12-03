@@ -206,11 +206,12 @@ export const useLogin = () => {
             return response.data;
         },
         onSuccess: (data) => {
+            toast.success("User Logged In Successfully")
             saveToken(data.accessToken);
             localStorage.setItem('user', JSON.stringify(data.user.id))
             localStorage.setItem('userName', JSON.stringify(data.user.name))
             localStorage.setItem('userEmail', JSON.stringify(data.user.email))
-            navigate('/');
+            navigate('/home');
         },
         onError: (error) => {
             console.error('Login failed:', error.response?.data?.message || error.message);
@@ -228,6 +229,7 @@ export const useRegister = () => {
             return { ...response.data, email: userData.email };
         },
         onSuccess: (data) => {
+            toast.success("Code has been sent to your email")
             navigate('/verification', { state: { email: data.email } });
         },
         onError: (error) => {
@@ -247,6 +249,7 @@ export const useVerification = () => {
         },
         onSuccess: (data) => {
             saveToken(data.accessToken);
+            toast.success("User Verified Successfully")
             localStorage.setItem('user', JSON.stringify(data.user.id))
             localStorage.setItem('userName', JSON.stringify(data.user.name))
             localStorage.setItem('userEmail', JSON.stringify(data.user.email))
