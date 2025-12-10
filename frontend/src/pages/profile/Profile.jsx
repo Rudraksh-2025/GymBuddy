@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import { profileValidation } from "../../common/FormValidation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useGetProfile, useUpdateProfile } from "../../api/Api";
+import { useGetProfile, useUpdateProfile } from "../../Api/Api";
 import { toast } from "react-toastify";
 import GrayPlus from '../../assets/images/GrayPlus.svg'
 import CustomInput from "../../common/custom/CustomInput";

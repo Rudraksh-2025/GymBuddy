@@ -15,14 +15,17 @@ import {
     FormControl
 } from '@mui/material';
 import { Add, Delete } from '@mui/icons-material';
-import { useCreateExerciselog, useGetExercise } from '../../api/Api';
+import { useCreateExerciselog, useGetExercise } from '../../Api/Api';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
+import { useQueryClient } from '@tanstack/react-query';
 
 const AddExerciseLog = ({ open, onClose, muscle }) => {
     const [exerciseId, setExerciseId] = useState('');
     const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
     const [sets, setSets] = useState([{ reps: '', weight: '' }]);
+
+    const client = useQueryClient()
 
     const { data: exercises } = useGetExercise(muscle);
 
@@ -30,6 +33,7 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
         (data) => {
             console.log("✅ Success response:", data);
             toast.success("Exercise log added successfully!");
+            client.invalidateQueries(['muscleGroup'], { exact: false })
         },
         (error) => {
             console.log("❌ Error response:", error);
@@ -74,7 +78,7 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
 
     return (
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-            <DialogTitle>Add Exercise Log</DialogTitle>
+            <DialogTitle sx={{ fontSize: '1.5rem' }}>Add Exercise Log</DialogTitle>
             <DialogContent>
                 <Box mt={2}>
                     {/* Select Exercise */}
@@ -141,9 +145,10 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
             </DialogContent>
 
             <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
+                <Button sx={{ color: 'black' }} onClick={handleClose}>Cancel</Button>
                 <Button
-                    variant="contained"
+                    // variant="contained"
+                    sx={{ color: 'black', height: '45px', width: '90px', border: '1px solid black', borderRadius: '10px' }}
                     onClick={handleSubmit}
                     disabled={!exerciseId || sets.length === 0 || isPending}
                 >

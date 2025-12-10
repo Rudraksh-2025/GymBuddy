@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 // import { useUserLogin } from "../../API Calls/API";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BootstrapInput } from '../../common/custom/BootsrapInput'
-import { useRegister } from "../../api/Api";
+import { useRegister } from "../../Api/Api";
 
 import { Box, Card, Typography, Button, IconButton, FormControl, InputLabel, FormHelperText } from "@mui/material";
 

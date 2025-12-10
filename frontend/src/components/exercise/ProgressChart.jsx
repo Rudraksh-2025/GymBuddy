@@ -40,7 +40,6 @@ export default function ExerciseProgressChart({ progress }) {
         "Max Weight": true,
     });
 
-    // Extract x-axis (dates) + y-axis series
     const labels = progress?.map((p) => p._id.date) || [];
     const avgWeight = progress?.map((p) => p.avgWeight) || [];
     const avgReps = progress?.map((p) => p.avgReps) || [];
@@ -52,41 +51,107 @@ export default function ExerciseProgressChart({ progress }) {
     };
 
     const visibleSeries = [
-        { data: avgWeight, label: "Avg Weight", color: theme.palette.primary.main, id: "AvgWeight" },
-        { data: avgReps, label: "Avg Reps", color: theme.palette.secondary.main, id: "AvgReps" },
-        { data: totalVolume, label: "Total Volume", color: theme.palette.success.main, id: "TotalVolume" },
-        { data: maxWeight, label: "Max Weight", color: theme.palette.error.main, id: "MaxWeight" },
+        {
+            data: avgWeight,
+            label: "Avg Weight",
+            color: "#4FD1C5",
+            id: "AvgWeight",
+        },
+        {
+            data: avgReps,
+            label: "Avg Reps",
+            color: "#9F7AEA",
+            id: "AvgReps",
+        },
+        {
+            data: totalVolume,
+            label: "Total Volume",
+            color: "#48BB78",
+            id: "TotalVolume",
+        },
+        {
+            data: maxWeight,
+            label: "Max Weight",
+            color: "#F56565",
+            id: "MaxWeight",
+        },
     ].map((s) => ({ ...s, visible: visibility[s.label] }));
 
-    const axisFontStyle = { fontSize: 10, fill: theme.palette.text.secondary };
-
     return (
-        <>
+        <Box
+            sx={{
+                bgcolor: "white", // ✅ dark background
+                borderRadius: 3,
+                p: 2,
+            }}
+        >
             <LineChart
+                height={400}
                 hideLegend
                 grid={{ horizontal: true }}
                 xAxis={[
-                    { scaleType: "point", data: labels, disableLine: true, tickLabelStyle: axisFontStyle }
+                    {
+                        scaleType: "point",
+                        data: labels,
+                        disableLine: true,
+                        tickLabelStyle: {
+                            fill: "#9CA3AF",
+                            fontSize: 11,
+                        },
+                    },
                 ]}
                 yAxis={[
-                    { disableLine: true, disableTicks: true, tickLabelStyle: axisFontStyle }
+                    {
+                        disableLine: true,
+                        disableTicks: true,
+                        tickLabelStyle: {
+                            fill: "#9CA3AF",
+                            fontSize: 11,
+                        },
+                    },
                 ]}
-                height={400}
-                series={visibleSeries.filter((s) => s.visible).map((s) => ({
-                    type: "line",
-                    data: s.data,
-                    label: s.label,
-                    area: true,
-                    id: s.id,
-                    color: s.color,
-                    stroke: s.color,
-                    strokeWidth: 2
-                }))}
+                sx={{
+                    "& .MuiChartsGrid-line": {
+                        stroke: "rgba(255,255,255,0.08)", // subtle grid
+                    },
+                    "& .MuiChartsAxis-tickLabel": {
+                        fill: "#9CA3AF",
+                    },
+                    "& .MuiChartsTooltip-root": {
+                        backgroundColor: "#1F2937",
+                        color: "white",
+                        borderRadius: "8px",
+                    },
+                }}
+                series={visibleSeries
+                    .filter((s) => s.visible)
+                    .map((s) => ({
+                        type: "line",
+                        data: s.data,
+                        label: s.label,
+                        id: s.id,
+                        curve: "monotoneX",
+                        color: s.color,
+                        stroke: s.color,
+                        strokeWidth: 2,
+                        area: true,
+                        showMark: true,
+                        areaOpacity: 0.25, // ✅ soft glow
+                    }))}
             />
-            <Legend items={visibleSeries} onToggle={toggleVisibility} />
-        </>
+
+            {/* Legend */}
+            <Legend
+                items={visibleSeries.map((i) => ({
+                    ...i,
+                    visible: visibility[i.label],
+                }))}
+                onToggle={toggleVisibility}
+            />
+        </Box>
     );
 }
+
 
 ExerciseProgressChart.propTypes = {
     progress: PropTypes.array,

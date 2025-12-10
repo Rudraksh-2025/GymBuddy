@@ -6,12 +6,12 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import calender from '../../assets/images/calender.svg'
-import { useGetExerciseLogs, useGetExerciseProgress } from '../../api/Api';
+import { useGetExerciseLogs, useGetExerciseProgress } from '../../Api/Api';
 import ProgressChart from '../../components/exercise/ProgressChart';
 import { startOfYear } from "date-fns";
 import CustomDateRangePicker from '../../common/custom/CustomDateRangePicker';
 const ExerciseInformation = () => {
-    const { exerciseId } = useParams();
+    const { id: exerciseId } = useParams();
     const nav = useNavigate();
 
     const [range, setRange] = useState([
@@ -37,15 +37,17 @@ const ExerciseInformation = () => {
     return (
         <Box p={1}>
             {/* Date Range Filter */}
-            <CustomDateRangePicker
-                value={range}
-                onChange={setRange}
-                icon={calender}
-            />
+            <Box>
+                <CustomDateRangePicker
+                    value={range}
+                    onChange={setRange}
+                    icon={calender}
+                />
+            </Box>
 
             {/* Exercise Logs Table */}
-            <TableContainer component={Paper} sx={{ maxHeight: 550, overflowY: "auto" }}>
-                <Table stickyHeader>
+            <TableContainer component={Paper} sx={{ maxHeight: 550, overflowY: "auto", mt: 2 }}>
+                <Table stickyHeader sx={{ '& .MuiTableCell-root': { fontSize: '15px', } }}>
                     <TableHead>
                         <TableRow>
                             <TableCell><strong>Date</strong></TableCell>
@@ -109,7 +111,7 @@ const ExerciseInformation = () => {
             {/* Progress Chart */}
             {progress && progress.length > 0 && (
                 <Box mt={3}>
-                    <Typography variant="h6" mb={2}>
+                    <Typography variant="h6" sx={{ color: 'white' }} mb={2}>
                         Progress Over Time
                     </Typography>
                     <ProgressChart progress={progress} />

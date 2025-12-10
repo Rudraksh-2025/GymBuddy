@@ -7,13 +7,14 @@ import {
     Typography,
     Popper,
 } from '@mui/material';
-import calender from '../../assets/images/calender.svg'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DateRange } from 'react-date-range';
 import { format } from 'date-fns';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { startOfYear } from "date-fns";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+
 
 const CustomDateRangePicker = ({
     value,
@@ -55,10 +56,11 @@ const CustomDateRangePicker = ({
                             },
                             ...buttonSx,
                         }}
-                        endIcon={<ExpandMoreIcon sx={{ color: '#878787' }} />}
+                        endIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
                     >
-                        <img src={calender} alt="calendar" style={{ marginRight: 4 }} />
-                        <Typography variant="body2" sx={{ textTransform: 'none', color: '#878787', }}>
+                        <CalendarMonthIcon sx={{ color: 'white', mr: 1 }} />
+
+                        <Typography variant="body2" sx={{ textTransform: 'none', color: 'white', }}>
                             {`${format(value[0].startDate, 'dd MMM yy')} - ${format(value[0].endDate, 'dd MMM yy')}`}
                         </Typography>
                     </Button>
@@ -66,7 +68,7 @@ const CustomDateRangePicker = ({
                     <Popper
                         open={popperOpen}
                         anchorEl={anchorEl}
-                        placement="bottom-end"
+                        placement="bottom-start"
                         sx={{ zIndex: 2000, mt: 1 }}
                     >
                         <Box sx={{ boxShadow: 3, borderRadius: 2, gap: 3, display: 'flex', flexDirection: 'row', backgroundColor: 'white', p: 2 }}>

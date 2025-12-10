@@ -39,11 +39,13 @@ const Navbar = ({ setActive, isActive }) => {
             parentMenu?.children?.some(child => child.path === fullPath);
 
         // Detect Information / View / Edit pages
-        const lastPart = pathParts[pathParts.length - 1];
-        const isInfoPage =
-            lastPart.endsWith("-information") ||
-            lastPart.endsWith("-view") ||
-            lastPart.endsWith("-edit");
+        const infoSegment = pathParts.find(part =>
+            part.endsWith("-information") ||
+            part.endsWith("-view") ||
+            part.endsWith("-edit")
+        );
+
+        const isInfoPage = Boolean(infoSegment);
 
         // ----------------------------
         // CASE 1 → INFORMATION/EDIT PAGE (SHOW ARROW)
@@ -53,13 +55,14 @@ const Navbar = ({ setActive, isActive }) => {
 
             let subTitle = "";
 
-            if (lastPart.endsWith("-information"))
+            if (infoSegment?.endsWith("-information"))
                 subTitle = parentMenu?.info || "Information";
-            else if (lastPart.endsWith("-view"))
+            else if (infoSegment?.endsWith("-view"))
                 subTitle = parentMenu?.view || "View";
-            else if (lastPart.endsWith("-edit"))
+            else if (infoSegment?.endsWith("-edit"))
                 subTitle = parentMenu?.edit || "Edit";
 
+            setIsSubMenu(true);
             setPageTitle(subTitle);
             return;
         }

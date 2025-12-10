@@ -215,6 +215,7 @@ export const useLogin = () => {
         },
         onError: (error) => {
             console.error('Login failed:', error.response?.data?.message || error.message);
+            toast.error(error.response?.data?.message || error.message)
         },
     });
 };
@@ -234,6 +235,7 @@ export const useRegister = () => {
         },
         onError: (error) => {
             console.error('Registration failed:', error.response?.data?.message || error.message);
+            toast.error(error.response?.data?.message || error.message)
         },
     });
 };
@@ -257,6 +259,8 @@ export const useVerification = () => {
         },
         onError: (error) => {
             console.error('Registration failed:', error.response?.data?.message || error.message);
+            toast.error(error.response?.data?.message || error.message)
+
         },
     });
 };

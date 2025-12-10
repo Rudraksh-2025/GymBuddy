@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BootstrapInput } from '../../common/custom/BootsrapInput'
-import { useVerification } from "../../api/Api";
+import { useVerification } from "../../Api/Api";
 
 import { Box, Card, Typography, TextField, Button, IconButton, InputAdornment, FormControl, InputLabel, FormHelperText } from "@mui/material";
 

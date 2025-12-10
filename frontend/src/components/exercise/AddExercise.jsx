@@ -14,7 +14,7 @@ import {
     Select,
     MenuItem
 } from '@mui/material';
-import { useCreateExercise } from '../../api/Api';
+import { useCreateExercise } from '../../Api/Api';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { BootstrapInput } from '../../common/custom/BootsrapInput';
@@ -71,13 +71,13 @@ const AddExercise = ({ open, onClose, onSubmit, muscle, defaultValues }) => {
 
     return (
         <Dialog open={open} onClose={resetForm} maxWidth="xs" fullWidth>
-            <DialogTitle sx={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                Enter Exercise Name
+            <DialogTitle >
+                <Typography sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Enter Exercise Name</Typography>
             </DialogTitle>
 
             <DialogContent>
                 <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-                    <InputLabel shrink htmlFor="bootstrap-input-exerciseName">
+                    <InputLabel shrink htmlFor="bootstrap-input-exerciseName" sx={{ fontSize: '1.4rem' }}>
                         Exercise Name :
                     </InputLabel>
                     <BootstrapInput
@@ -91,13 +91,15 @@ const AddExercise = ({ open, onClose, onSubmit, muscle, defaultValues }) => {
 
             <DialogActions>
                 <Button
-                    variant="contained"
+                    sx={{ color: 'white', backgroundColor: 'var(--Blue)', height: '50px', width: '100px', borderRadius: '10px' }}
                     onClick={handleSubmit}
                     disabled={isPending}
                 >
                     {(isPending) ? 'Submitting...' : 'Submit'}
                 </Button>
-                <Button onClick={resetForm}>
+                <Button onClick={resetForm}
+                    sx={{ color: 'black', border: '1px solid black', height: '50px', width: '100px', borderRadius: '10px' }}
+                >
                     Cancel
                 </Button>
             </DialogActions>

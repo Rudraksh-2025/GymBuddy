@@ -8,7 +8,7 @@ import { Add } from '@mui/icons-material';
 import AddExerciseLog from '../../components/exercise/AddExerciseLog';
 import AddExercise from '../../components/exercise/AddExercise';
 import { useNavigate } from 'react-router-dom';
-import { useGetExerciseByMuscle } from '../../api/Api';
+import { useGetExerciseByMuscle } from '../../Api/Api';
 
 const ListOfExercise = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -18,13 +18,43 @@ const ListOfExercise = () => {
     const { data: exercises, isLoading, isError } = useGetExerciseByMuscle(muscle);
     return (
         <Box p={1}>
-            <Box display="flex" justifyContent={'space-between'} mb={2}>
-                <Typography variant="h3" sx={{ color: 'white' }}>Exercise</Typography>
-                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexDirection: 'row' }}>
+            <Box display="flex" sx={{ flexDirection: { xs: 'column', lg: 'row' } }} justifyContent={'space-between'} mb={2}>
+                <Typography variant="h4" sx={{ color: 'white' }}>Exercise Library</Typography>
+                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: { xs: 2, lg: 0 }, gap: 2, justifyContent: 'space-between' }}>
                     <Select
                         value={muscle}
                         onChange={(e) => setMuscle(e.target.value)}
-                        sx={{ minWidth: 150, mr: 2 }}
+                        variant="outlined"
+                        sx={{
+                            minWidth: 150,
+                            height: '50px',
+                            mr: 1,
+                            color: 'white',
+                            borderRadius: '10px',
+
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white',
+                            },
+
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white',
+                            },
+
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white',
+                            },
+
+                            '& .MuiSelect-icon': {
+                                color: 'white',
+                            },
+
+                            '& .MuiSelect-select': {
+                                height: '50px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                paddingLeft: '14px',
+                            },
+                        }}
                     >
                         <MenuItem value="back">Back</MenuItem>
                         <MenuItem value="bicep">Bicep</MenuItem>
@@ -33,12 +63,15 @@ const ListOfExercise = () => {
                         <MenuItem value="legs">Legs</MenuItem>
                         <MenuItem value="shoulder">Shoulder</MenuItem>
                     </Select>
-                    <Button variant="contained" sx={{ color: 'white' }} startIcon={<Add />} onClick={() => setDialogOpen(true)}>
-                        Add Exercise
-                    </Button>
-                    <Button variant="contained" sx={{ color: 'white' }} startIcon={<Add />} onClick={() => setDialogOpen2(true)}>
-                        Add Exercise Log
-                    </Button>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+                        <Button sx={{ color: 'white', height: '50px', border: '1px solid white', borderRadius: '10px' }} startIcon={<Add />} onClick={() => setDialogOpen(true)}>
+                            Add Exercise
+                        </Button>
+                        <Button sx={{ color: 'white', height: '50px', border: '1px solid white', borderRadius: '10px' }} startIcon={<Add />} onClick={() => setDialogOpen2(true)}>
+                            Add Exercise Log
+                        </Button>
+                    </Box>
                 </Box>
                 <AddExercise
                     open={dialogOpen}
@@ -64,6 +97,8 @@ const ListOfExercise = () => {
                             <TableCell><strong>Muscle Group</strong></TableCell>
                             <TableCell><strong>Last Log (Sets)</strong></TableCell>
                             <TableCell><strong>Max Weight</strong></TableCell>
+                            <TableCell><strong>Action</strong></TableCell>
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -117,7 +152,7 @@ const ListOfExercise = () => {
                                     </TableCell>
 
                                     <TableCell>
-                                        <Button variant='contained' onClick={() => nav(`/dashboard/exercise-information/${ex._id}`)} sx={{ color: 'white' }}>
+                                        <Button variant='contained' onClick={() => nav(`/home/exercise/exercise-information/${ex._id}`)} sx={{ color: 'white' }}>
                                             View
                                         </Button>
                                     </TableCell>

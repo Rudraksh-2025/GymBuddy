@@ -59,7 +59,7 @@ function App() {
           path: "exercise",
           children: [
             { path: "", element: <ListOfExercise /> },
-            { path: ":id", element: <ExerciseInformation /> },
+            { path: "exercise-information/:id", element: <ExerciseInformation /> },
           ],
         },
         {
