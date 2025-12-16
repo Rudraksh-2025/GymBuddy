@@ -47,14 +47,15 @@ const Profile = () => {
 
     });
 
+
     useEffect(() => {
         const admin = profileData?.data;
         const profile = admin?.AdminProfiles?.[0] || {};
 
         profileForm.setValues({
-            firstName: admin?.firstName || "",
-            lastName: admin?.lastName || "",
-            email: admin?.email || "",
+            firstName: admin?.firstName || "admin",
+            lastName: admin?.lastName || "user",
+            email: admin?.email || "adminUser@yopmail.com",
             profile_img: admin?.profile_img || "",
         });
     }, [profileData?.data, edit]);
@@ -62,15 +63,15 @@ const Profile = () => {
 
     const displayField = (label, value) => (
         <Box mb={3}>
-            <Typography sx={{ fontSize: '1.1rem', fontWeight: 400, mb: 1 }}>{label}</Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ ml: 0.5 }}>
+            <Typography sx={{ fontSize: '1.1rem', color: 'white', fontWeight: 400, mb: 1 }}>{label}</Typography>
+            <Typography variant="body1" color="white" sx={{ ml: 0.5 }}>
                 {value || "-"}
             </Typography>
         </Box>
     );
     return (
         <Box sx={{ p: { xs: 0, sm: 1 } }}>
-            <Box sx={{ backgroundColor: "rgb(253, 253, 253)", p: 3, borderRadius: '10px', boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", mb: 3 }}>
+            <Box sx={{ backgroundColor: "#404040", p: 3, borderRadius: '10px', boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", mb: 3 }}>
                 <form>
                     <Grid container spacing={edit ? 3 : 1}>
                         <Grid size={12} sx={{
@@ -79,7 +80,7 @@ const Profile = () => {
                             paddingBottom: "4px",
                             marginBottom: "10px"
                         }}>
-                            <Typography variant="h6" gutterBottom fontWeight={600}>
+                            <Typography variant="h6" sx={{ color: 'white' }} gutterBottom fontWeight={600}>
                                 Profile Information
                             </Typography>
                         </Grid>
@@ -113,14 +114,15 @@ const Profile = () => {
                                 />
                             ) : displayField("Email", profileForm.values.email)}
                         </Grid>
+
+
                         {/* images */}
                         <Grid size={12}>
                             <Grid container gap={4} sx={{ mt: 1 }}>
                                 <Grid size={{ xs: 12, sm: 4, md: 2.5 }}>
-                                    <label style={{ marginBottom: '10px', display: 'block', fontWeight: 500 }}>Selfie Image</label>
+                                    <label style={{ marginBottom: '10px', display: 'block', fontWeight: 500, color: 'white' }}>Profile Image</label>
                                     <Box
                                         sx={{
-                                            border: '2px dashed #E0E3E7',
                                             borderRadius: '12px',
                                             minHeight: 180,
                                             display: 'flex',
@@ -170,7 +172,7 @@ const Profile = () => {
                                     <>
                                         <Button
                                             variant="outlined"
-                                            sx={{ width: 130, height: 48, borderRadius: '8px', color: '#878787', fontSize: '16px', fontWeight: 400, border: '1px solid #D1D5DB' }}
+                                            sx={{ width: 130, height: 48, borderRadius: '8px', color: 'white', fontSize: '16px', fontWeight: 400, border: '1px solid #D1D5DB' }}
                                             onClick={() => {
                                                 setedit(false);
                                             }}

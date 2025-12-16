@@ -2,14 +2,16 @@ import {
     DashboardOutlined,
     UserOutlined,
     FormOutlined,
-    LogoutOutlined
+    LogoutOutlined,
+    BarChartOutlined
 } from '@ant-design/icons';
 
 const icons = {
     DashboardOutlined,
     UserOutlined,
     FormOutlined,
-    LogoutOutlined
+    LogoutOutlined,
+    BarChartOutlined
 };
 
 export const menuList = [
@@ -34,6 +36,13 @@ export const menuList = [
         path: "/home/exercise",
         icon: icons.FormOutlined,
         info: "Exercise Information",
+    },
+    {
+        id: "weight",
+        name: "Weight Tracking",
+        path: "/home/weight",
+        icon: icons.BarChartOutlined,
+        info: "Weight Tracking Information",
     },
     {
         id: "logout",

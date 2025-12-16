@@ -116,7 +116,7 @@ body {
 
 .loginBox{
     background-position: center;
-    background-image: url('../src/assets/images/loginBackground.png');
+    /* background-image: url('../src/assets/images/loginBackground.png'); */
     min-height: 95vh;
     display: flex;
     align-items: center;
