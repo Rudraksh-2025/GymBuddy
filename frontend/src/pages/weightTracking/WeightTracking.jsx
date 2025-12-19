@@ -12,44 +12,26 @@ import {
 } from "@mui/material";
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import { FormateDate } from '../../utils/FormateDate'
+import { useDeleteWeight, useGetWeightMetrices, useGetWeightLogs } from '../../Api/Api'
 import CustomPagination from '../../common/custom/CustomPagination'
 import DeleteIcon from "@mui/icons-material/Delete";
 import WeightChart from "../../components/weight/WeightChart";
 import AddIcon from "@mui/icons-material/Add";
 import AddWeightDialog from "../../components/weight/AddWeightDialog";
+import DeleteConfirm from "../../common/DeleteConfirm2";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
-const weightData = {
-    targetWeight: 66,
-    weightLeft: 1.8,
-    bodyFat: 19.79,
-    totalLost: 2.30,
-    waist: 32,
-    neck: 13,
-    data: [
-        { date: "11/12/2025", day: "Wednesday", weight: 70.10, change: 0 },
-        { date: "11/27/2025", day: "Thursday", weight: 69.30, change: -0.80 },
-        { date: "11/28/2025", day: "Friday", weight: 69.15, change: -0.15 },
-        { date: "11/29/2025", day: "Sataurday", weight: 68.95, change: -0.20 },
-        { date: "12/3/2025", day: "Wednesday", weight: 69.55, change: 0.60 },
-        { date: "12/4/2025", day: "Thursday", weight: 68.65, change: -0.90 },
-        { date: "12/6/2025", day: "Saturday", weight: 68.00, change: -0.65 },
-        { date: "12/8/2025", day: "Monday", weight: 68.45, change: 0.45 },
-        { date: "12/10/2025", day: "Wednesday", weight: 67.85, change: -0.60 },
-        { date: "12/11/2025", day: "Thursday", weight: 67.45, change: -0.40 },
-        { date: "12/12/2025", day: "Friday", weight: 67.80, change: 0.35 },
-    ],
-    pagination: {
-        "currentPage": 1,
-        "totalPages": 1,
-        "totalCount": 11
-    }
-}
 
 
 const WeightTracking = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [openAddDialog, setOpenAddDialog] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [selectedWeightId, setSelectedWeightId] = useState(null);
+
+    const client = useQueryClient()
 
     const PercentageChange = ({ flag, value }) => {
         const isUp = flag === 'up';
@@ -65,10 +47,8 @@ const WeightTracking = () => {
             </Box>
         );
     };
-    const isLoading = false
 
-    const totalUsers = WeightTracking?.pagination?.totalCount;
-    const totalPages = Math.ceil(totalUsers / rowsPerPage);
+
 
     const handleAddWeight = (newEntry) => {
         // append at top OR push into array
@@ -76,6 +56,43 @@ const WeightTracking = () => {
 
         // trigger re-render if data will later come from API
         setCurrentPage(1);
+    };
+    const { data: analytics } = useGetWeightMetrices()
+    const { data: weightData, isLoading } = useGetWeightLogs()
+    const { mutate: deleteWeight } = useDeleteWeight();
+
+
+    const totalUsers = WeightTracking?.pagination?.totalCount;
+    const totalPages = Math.ceil(totalUsers / rowsPerPage);
+
+    const handleDeleteConfirm = () => {
+        if (!selectedWeightId) return;
+
+        deleteWeight(selectedWeightId, {
+            onSuccess: () => {
+                setOpenDelete(false);
+                setSelectedWeightId(null);
+                toast.success("Weight Log deleted successfully")
+                client.invalidateQueries(['weight'], { exact: false })
+            },
+            onError: (err) => {
+                setOpenDelete(false);
+                toast.error(err?.response?.data?.message || "Something went wrong");
+
+            }
+        });
+    };
+    const handleDeleteCancel = () => {
+        setOpenDelete(false);
+        setSelectedWeightId(null);
+    };
+
+
+    const getDayFromDate = (date) => {
+        if (!date) return "-";
+        return new Date(date).toLocaleDateString("en-US", {
+            weekday: "long",
+        });
     };
 
 
@@ -89,11 +106,11 @@ const WeightTracking = () => {
                             <Box>
                                 <Typography variant="body1" sx={{ color: '#878787' }}>Target Weight</Typography>
                                 <Typography variant="h4" fontWeight={600}>
-                                    {weightData.targetWeight ?? 0} kg
+                                    {analytics?.data?.targetWeight?.value ?? 0} kg
                                 </Typography>
                                 <PercentageChange
-                                    flag={'up'}
-                                    value={23}
+                                    flag={analytics?.data?.targetWeight?.change?.flag}
+                                    value={analytics?.data?.targetWeight?.change?.percentage}
                                 />
                             </Box>
                         </Box>
@@ -105,12 +122,13 @@ const WeightTracking = () => {
                             <Box>
                                 <Typography variant="body1" sx={{ color: '#878787' }}>Weight Left</Typography>
                                 <Typography variant="h4" fontWeight={600}>
-                                    {weightData?.weightLeft ?? 0} kg
+                                    {analytics?.data?.weightLeft?.value ?? 0} kg
                                 </Typography>
                                 <PercentageChange
-                                    flag={'down'}
-                                    value={20}
+                                    flag={analytics?.data?.weightLeft?.change?.flag}
+                                    value={analytics?.data?.weightLeft?.change?.percentage}
                                 />
+
                             </Box>
                         </Box>
                     </Box>
@@ -121,13 +139,14 @@ const WeightTracking = () => {
                             <Box>
                                 <Typography variant="body1" sx={{ color: '#878787' }}>Total Weight Lost</Typography>
                                 <Typography variant="h4" fontWeight={600}>
-                                    {weightData?.totalLost ?? 0} kg
+                                    {analytics?.data?.totalLost?.value ?? 0} kg
                                 </Typography>
 
                                 <PercentageChange
-                                    flag={'up'}
-                                    value={5.4}
+                                    flag={analytics?.data?.totalLost?.change?.flag}
+                                    value={analytics?.data?.totalLost?.change?.percentage}
                                 />
+
                             </Box>
                         </Box>
                     </Box>
@@ -137,11 +156,12 @@ const WeightTracking = () => {
                         <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
                             <Box>
                                 <Typography variant="body1" sx={{ color: '#878787' }}>Body Fat %</Typography>
-                                <Typography variant="h4" fontWeight={600}>{weightData?.bodyFat || 0}%</Typography>
+                                <Typography variant="h4" fontWeight={600}>{analytics?.data?.bodyFat?.value || 0}%</Typography>
                                 <PercentageChange
-                                    flag={'down'}
-                                    value={2}
+                                    flag={analytics?.data?.bodyFat?.change?.flag}
+                                    value={analytics?.data?.bodyFat?.change?.percentage}
                                 />
+
                             </Box>
 
                         </Box>
@@ -207,7 +227,7 @@ const WeightTracking = () => {
                                             </TableCell>
                                             <TableCell sx={{ color: '#4B5563' }}>
                                                 <Chip
-                                                    label={user.day}
+                                                    label={getDayFromDate(user.date)}
                                                     sx={{
                                                         backgroundColor: 'white',
                                                         border: '1px solid black',
@@ -224,12 +244,19 @@ const WeightTracking = () => {
                                                 {user.weight || "-"}
                                             </TableCell>
                                             <TableCell sx={{ color: '#878787 ' }}>
-                                                {user.change || "-"}
+                                                {user.change || "0"} kg
                                             </TableCell>
                                             <TableCell>
-                                                <IconButton sx={{ color: 'red' }}>
+                                                <IconButton
+                                                    sx={{ color: 'red' }}
+                                                    onClick={() => {
+                                                        setSelectedWeightId(user._id);
+                                                        setOpenDelete(true);
+                                                    }}
+                                                >
                                                     <DeleteIcon />
                                                 </IconButton>
+
                                             </TableCell>
 
                                         </TableRow>
@@ -243,6 +270,14 @@ const WeightTracking = () => {
                             onSave={handleAddWeight}
                             lastWeight={weightData?.data?.[weightData.data.length - 1]?.weight}
                         />
+                        <DeleteConfirm
+                            open={openDelete}
+                            title="Delete Weight"
+                            content="Are you sure you want to delete this weight entry?"
+                            onConfirm={handleDeleteConfirm}
+                            onCancel={handleDeleteCancel}
+                        />
+
 
                         <CustomPagination totalPages={totalPages} setCurrentPage={setCurrentPage} setRowsPerPage={setRowsPerPage} rowsPerPage={rowsPerPage} currentPage={currentPage} />
                     </>

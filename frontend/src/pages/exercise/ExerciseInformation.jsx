@@ -25,7 +25,8 @@ const ExerciseInformation = () => {
     const endDate = range[0].endDate.toISOString();
 
     // fetch logs
-    const { data: exercises, isLoading, isError } = useGetExerciseLogs(exerciseId);
+    const { data: exercises, isLoading, isError } = useGetExerciseLogs(exerciseId, startDate,
+        endDate);
 
     // fetch progress with selected date range
     const { data: progress } = useGetExerciseProgress(

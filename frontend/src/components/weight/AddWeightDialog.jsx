@@ -9,20 +9,29 @@ import {
     Box,
 } from "@mui/material";
 import dayjs from "dayjs";
+import { useCreateWeight } from "../../Api/Api";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const AddWeightDialog = ({ open, onClose, onSave, lastWeight }) => {
     const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
     const [weight, setWeight] = useState("");
-
+    const client = useQueryClient()
+    const onSuccess = () => {
+        toast.success("Weight Lod added successfully");
+        client.invalidateQueries(['weight'], { exact: false })
+    }
+    const onError = (err) => {
+        console.log(err)
+        toast.error(err?.response?.data?.message || "Something went wrong");
+    }
+    const { mutate: addWeight } = useCreateWeight(onSuccess, onError)
     const handleSubmit = () => {
         const weightFloat = parseFloat(weight);
-        const change = lastWeight ? +(weightFloat - lastWeight).toFixed(2) : 0;
 
-        onSave({
+        addWeight({
             date,
             weight: weightFloat,
-            change,
-            day: dayjs(date).format("dddd"),
         });
 
         onClose();

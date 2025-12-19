@@ -134,12 +134,12 @@ export const useCreateExerciselog = (onSuccess, onError) => {
     })
 }
 // Get exercise logs
-export const useGetExerciseLogs = (exerciseId) => {
+export const useGetExerciseLogs = (exerciseId, start, end) => {
     return useQuery({
-        queryKey: ['exercise', exerciseId],
+        queryKey: ['exercise', exerciseId, start, end],
         queryFn: async () => {
             const response = await axiosInstance.get(`/exercises/logs`,
-                { params: { exerciseId: exerciseId } }
+                { params: { exerciseId: exerciseId, start, end } }
             );
             return response.data
         },
@@ -179,6 +179,54 @@ export const useGetExerciseProgress = (exerciseId, start, end) => {
             return response.data
         }
     })
+}
+
+// add weight
+export const useCreateWeight = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (data) => {
+            const response = await axiosInstance.post('/weight', data)
+            return response.data
+        },
+        onSuccess,
+        onError
+    })
+}
+// Get weight logs
+export const useGetWeightLogs = (id) => {
+    return useQuery({
+        queryKey: ['weight', id],
+        queryFn: async () => {
+            const response = await axiosInstance.get(`/weight`,
+                { params: { exerciseId: id } }
+            );
+            return response.data
+        },
+        staleTime: Infinity,
+    })
+}
+// get Weight Metrices
+export const useGetWeightMetrices = () => {
+    return useQuery({
+        queryKey: ['weightMetrices'],
+        queryFn: async () => {
+            const response = await axiosInstance.get('/weight/summary')
+            return response.data
+        },
+        staleTime: 15 * 60 * 1000,
+        placeholderData: keepPreviousData,
+    })
+}
+// delete weight
+export const useDeleteWeight = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (id) => {
+            const { data } = await axiosInstance.delete(`/weight/${id}`);
+            return data;
+        },
+        onSuccess,
+        onError,
+    });
 }
 
 
