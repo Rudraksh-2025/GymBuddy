@@ -24,6 +24,8 @@ const Profile = () => {
     const { mutate } = useUpdateProfile(onSuccess, onError);
     const { data: profileData } = useGetProfile();
 
+    console.log(profileData)
+
     const profileForm = useFormik({
         initialValues: super_admin,
         validationSchema: profileValidation,
@@ -42,23 +44,23 @@ const Profile = () => {
                 formData.append("profile_img", values.profile_img);
             }
 
-            mutate({ profileId: localStorage.getItem("userID"), data: formData });
+            mutate({data: formData });
         },
 
     });
 
 
-    useEffect(() => {
-        const admin = profileData?.data;
-        const profile = admin?.AdminProfiles?.[0] || {};
+// useEffect(() => {
+//   if (!profileData?.data) return;
 
-        profileForm.setValues({
-            firstName: admin?.firstName || "admin",
-            lastName: admin?.lastName || "user",
-            email: admin?.email || "adminUser@yopmail.com",
-            profile_img: admin?.profile_img || "",
-        });
-    }, [profileData?.data, edit]);
+//   profileForm.setValues({
+//     firstName: profileData.data.firstName || "",
+//     lastName: profileData.data.lastName || "",
+//     email: profileData.data.email || "",
+//     profile_img: profileData.data.profilePhoto || "",
+//   });
+// }, [profileData?.data]);
+
 
 
     const displayField = (label, value) => (

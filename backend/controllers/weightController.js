@@ -39,6 +39,7 @@ export const addWeight = async (req, res) => {
       data: newWeight,
     });
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       success: false,
       message: "Failed to add weight",

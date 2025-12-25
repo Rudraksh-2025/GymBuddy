@@ -13,7 +13,7 @@ import { useCreateWeight } from "../../Api/Api";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
-const AddWeightDialog = ({ open, onClose, onSave, lastWeight }) => {
+const AddWeightDialog = ({ open, onClose }) => {
     const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
     const [weight, setWeight] = useState("");
     const client = useQueryClient()
@@ -36,6 +36,7 @@ const AddWeightDialog = ({ open, onClose, onSave, lastWeight }) => {
 
         onClose();
     };
+  
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
@@ -64,7 +65,7 @@ const AddWeightDialog = ({ open, onClose, onSave, lastWeight }) => {
             </DialogContent>
 
             <DialogActions sx={{ px: 3, pb: 2 }}>
-                <Button onClick={onClose} sx={{ textTransform: "none" }}>
+                <Button onClick={onClose} sx={{ textTransform: "none",color:'black' }}>
                     Cancel
                 </Button>
                 <Button

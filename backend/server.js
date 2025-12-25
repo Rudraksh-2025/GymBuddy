@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.js';
 import weightRoutes from "./routes/weightRoutes.js"
 import exerciseRoutes from './routes/exerciseRoutes.js'
+import profileRoutes from './routes/profileRoutes.js'
 import cors from 'cors'
 
 const app = express();
@@ -19,6 +20,8 @@ app.use(cors({
 app.use('/api/auth', authRoutes);
 app.use("/api/weight", weightRoutes);
 app.use('/api/exercises', exerciseRoutes)
+app.use("/api/profile", profileRoutes);
+
 
 app.get('/', (req, res) => res.send('Auth API running'));
 

@@ -12,10 +12,10 @@ const weightSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    day: {
-      type: String,
-      required: true,
-    },
+    // day: {
+    //   type: String,
+    //   required: true,
+    // },
     weight: {
       type: Number,
       required: true,

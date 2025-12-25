@@ -62,7 +62,7 @@ const WeightTracking = () => {
     const { mutate: deleteWeight } = useDeleteWeight();
 
 
-    const totalUsers = WeightTracking?.pagination?.totalCount;
+    const totalUsers = weightData?.pagination?.totalCount;
     const totalPages = Math.ceil(totalUsers / rowsPerPage);
 
     const handleDeleteConfirm = () => {
@@ -192,7 +192,7 @@ const WeightTracking = () => {
                                 fontWeight: 600,
                                 color: "#000",
                                 width: 150,
-                                "&:hover": { background: "#00b8bf" }
+                                // "&:hover": { background: "#00b8bf" }
                             }}
                             onClick={() => setOpenAddDialog(true)}
                         >
@@ -264,19 +264,7 @@ const WeightTracking = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        <AddWeightDialog
-                            open={openAddDialog}
-                            onClose={() => setOpenAddDialog(false)}
-                            onSave={handleAddWeight}
-                            lastWeight={weightData?.data?.[weightData.data.length - 1]?.weight}
-                        />
-                        <DeleteConfirm
-                            open={openDelete}
-                            title="Delete Weight"
-                            content="Are you sure you want to delete this weight entry?"
-                            onConfirm={handleDeleteConfirm}
-                            onCancel={handleDeleteCancel}
-                        />
+                      
 
 
                         <CustomPagination totalPages={totalPages} setCurrentPage={setCurrentPage} setRowsPerPage={setRowsPerPage} rowsPerPage={rowsPerPage} currentPage={currentPage} />
@@ -286,6 +274,18 @@ const WeightTracking = () => {
                         No data found
                     </Typography>
                 )}
+                  <AddWeightDialog
+                            open={openAddDialog}
+                            onClose={() => setOpenAddDialog(false)}
+                           
+                        />
+                        <DeleteConfirm
+                            open={openDelete}
+                            title="Delete Weight"
+                            content="Are you sure you want to delete this weight entry?"
+                            onConfirm={handleDeleteConfirm}
+                            onCancel={handleDeleteCancel}
+                        />
             </Box>
         </Box>
     );
