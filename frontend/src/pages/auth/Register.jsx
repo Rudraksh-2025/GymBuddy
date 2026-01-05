@@ -10,6 +10,8 @@ import { useRegister } from "../../Api/Api";
 
 import { Box, Card, Typography, Button, IconButton, FormControl, InputLabel, FormHelperText } from "@mui/material";
 
+import CustomSelect from '../../common/custom/CustomSelect'
+
 import logo3 from "../../assets/images/logo.svg";
 
 const Register = () => {
@@ -21,6 +23,8 @@ const Register = () => {
             email: "",
             name: "",
             password: "",
+            height: "",
+            gender: ""
         },
         validationSchema: RegisterValidation,
         onSubmit: (values) => mutate(values),
@@ -124,9 +128,38 @@ const Register = () => {
                         {loginForm.touched.password && <FormHelperText error>{loginForm.errors.password}</FormHelperText>}
                     </FormControl>
 
+                    <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
+                        {/* Height */}
+                        <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
+                            <InputLabel shrink htmlFor="height" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
+                                Height
+                            </InputLabel>
+                            <BootstrapInput
+                                id="height"
+                                name="height"
+                                type="number"
+                                placeholder="Enter your Height(cm)"
+                                value={loginForm.values.height}
+                                onChange={loginForm.handleChange}
+                            />
+                            {loginForm.touched.height && <FormHelperText error>{loginForm.errors.height}</FormHelperText>}
+                        </FormControl>
+
+                        {/* Gender */}
+                        <CustomSelect
+                            label="Gender"
+                            name="gender"
+                            value={loginForm.values.gender}
+                            onChange={loginForm.handleChange}
+                            options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]}
+                            error={loginForm.touched.gender && Boolean(loginForm.errors.gender)}
+                            helperText={loginForm.touched.gender && loginForm.errors.gender}
+                        />
+
+                    </Box>
 
                     {/* Forgot Password */}
-                    <Box sx={{ textAlign: "right", mb: 3 }}>
+                    <Box sx={{ textAlign: "right", mb: 3, mt: 2 }}>
                         <Typography
                             component="a"
                             href="#"

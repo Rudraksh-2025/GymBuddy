@@ -22,10 +22,11 @@ export const RegisterValidation = yup.object({
     email: Email,
     name: yup.string().required('Name is required'),
     password: Password,
+    height: yup.number().required('Height is required'),
+    gender: yup.string().required("Gender is required")
 })
 export const profileValidation = yup.object({
-    firstName: Username,
-    lastName: Username,
+    name: Username,
     email: Email,
 
 });

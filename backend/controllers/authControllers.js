@@ -10,14 +10,14 @@ const REFRESH_EXPIRES_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 export const register = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, height, gender } = req.body;
         if (!email || !password) return res.status(400).json({ message: 'Email and password required' });
 
         const existing = await User.findOne({ email });
         if (existing) return res.status(400).json({ message: 'Email already in use' });
 
         const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-        const user = new User({ name, email, passwordHash });
+        const user = new User({ name, email, passwordHash, height, gender });
         await user.save();
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit

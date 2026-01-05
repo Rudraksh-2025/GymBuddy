@@ -1,5 +1,7 @@
 // controllers/weightController.js
 import Weight from "../models/Weight.js";
+import User from '../models/User.js'
+import { calculateBodyFat } from '../utils/bodyFat.js'
 
 // Add new weight entry
 export const addWeight = async (req, res) => {
@@ -124,7 +126,17 @@ export const deleteWeight = async (req, res) => {
 export const getWeightSummary = async (req, res) => {
   try {
     const userId = req.user.id;
-    const TARGET_WEIGHT = 66;
+    // 🔹 Auto Body Fat Calculation
+    const user = await User.findById(userId);
+
+    const bodyFat = calculateBodyFat({
+      gender: user.gender || "male",
+      waist: user.waistCircumference ?? 0,
+      neck: user.neckCircumference ?? 0,
+      height: user.height ?? 0,
+    });
+    const TARGET_WEIGHT = user.targetWeight ?? 0;
+
 
     const weights = await Weight.find({ userId }).sort({ date: 1 });
 
@@ -135,7 +147,7 @@ export const getWeightSummary = async (req, res) => {
           targetWeight: { value: TARGET_WEIGHT, change: { percentage: 0, flag: "up" } },
           weightLeft: { value: 0, change: { percentage: 0, flag: "down" } },
           totalLost: { value: 0, change: { percentage: 0, flag: "up" } },
-          bodyFat: { value: 0, change: { percentage: 0, flag: "down" } }
+          bodyFat: { value: bodyFat, change: { percentage: 0, flag: "down" } }
         }
       });
     }
@@ -177,7 +189,22 @@ export const getWeightSummary = async (req, res) => {
     /* ---------------- CHANGES ---------------- */
     const weightLeftChange = percentChange(weightLeft, lastWeekAvg - TARGET_WEIGHT);
     const totalLostChange = percentChange(totalLost, totalLostLastWeek);
-    const bodyFatChange = percentChange(19.79, 19.79 + 0.3); // placeholder logic
+    // ---------------- BODY FAT CHANGE ----------------
+    let lastWeekBodyFat = bodyFat;
+
+    // If we have enough weight data, estimate previous body fat
+    if (lastWeek.length > 0 && thisWeek.length > 0) {
+      const lastWeekWeight = lastWeek[lastWeek.length - 1].weight;
+      const thisWeekWeight = thisWeek[thisWeek.length - 1].weight;
+
+      if (thisWeekWeight > 0) {
+        const weightRatio = lastWeekWeight / thisWeekWeight;
+        lastWeekBodyFat = Number((bodyFat * weightRatio).toFixed(2));
+      }
+    }
+
+    const bodyFatChange = percentChange(bodyFat, lastWeekBodyFat);
+
 
     res.status(200).json({
       success: true,
@@ -201,12 +228,13 @@ export const getWeightSummary = async (req, res) => {
           }
         },
         bodyFat: {
-          value: 19.79,
+          value: bodyFat,
           change: {
             percentage: Math.abs(bodyFatChange),
             flag: bodyFatChange <= 0 ? "down" : "up"
           }
         }
+
       }
     });
   } catch (error) {

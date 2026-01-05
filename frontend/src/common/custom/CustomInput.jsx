@@ -13,8 +13,8 @@ const CustomInput = ({ label, placeholder, name, formik, readOnly = false, type 
                     sx={{
                         fontSize: "1.3rem",
                         fontWeight: 450,
-                        color: "rgba(0,0,0,0.8)",
-                        '&.Mui-focused': { color: 'black' }
+                        color: "white",
+                        '&.Mui-focused': { color: 'white' }
                     }}
                 >
                     {label}
@@ -30,6 +30,7 @@ const CustomInput = ({ label, placeholder, name, formik, readOnly = false, type 
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 readOnly={readOnly}
+                sx={{ color: 'white', '&:focus': { color: 'white' } }}
             />
 
             {formik.touched[name] && formik.errors[name] && (

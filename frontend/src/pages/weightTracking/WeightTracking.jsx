@@ -43,7 +43,7 @@ const WeightTracking = () => {
                     <ArrowDownward sx={{ color: 'red', fontSize: 18, mr: 0.3 }} />
                 )}
                 {value || 0}%
-                <Typography variant="body2" sx={{ color: '#878787' }}>&nbsp;vs last month</Typography>
+                <Typography variant="body2" sx={{ color: '#878787' }}>&nbsp;vs last week</Typography>
             </Box>
         );
     };
@@ -98,10 +98,10 @@ const WeightTracking = () => {
                                 <Typography variant="h4" fontWeight={600}>
                                     {analytics?.data?.targetWeight?.value ?? 0} kg
                                 </Typography>
-                                <PercentageChange
+                                {/* <PercentageChange
                                     flag={analytics?.data?.targetWeight?.change?.flag}
                                     value={analytics?.data?.targetWeight?.change?.percentage}
-                                />
+                                /> */}
                             </Box>
                         </Box>
                     </Box>
@@ -211,7 +211,7 @@ const WeightTracking = () => {
                                 </TableHead>
                                 <TableBody>
                                     {weightData?.data?.map((user) => (
-                                        <TableRow key={user.id}>
+                                        <TableRow key={user._id}>
                                             <TableCell sx={{ color: '#878787', paddingLeft: '30px' }}>
                                                 {FormateDate(user.date) || "-"}
                                             </TableCell>
@@ -254,7 +254,7 @@ const WeightTracking = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                      
+
 
 
                         <CustomPagination totalPages={totalPages} setCurrentPage={setCurrentPage} setRowsPerPage={setRowsPerPage} rowsPerPage={rowsPerPage} currentPage={currentPage} />
@@ -264,18 +264,18 @@ const WeightTracking = () => {
                         No data found
                     </Typography>
                 )}
-                  <AddWeightDialog
-                            open={openAddDialog}
-                            onClose={() => setOpenAddDialog(false)}
-                           
-                        />
-                        <DeleteConfirm
-                            open={openDelete}
-                            title="Delete Weight"
-                            content="Are you sure you want to delete this weight entry?"
-                            onConfirm={handleDeleteConfirm}
-                            onCancel={handleDeleteCancel}
-                        />
+                <AddWeightDialog
+                    open={openAddDialog}
+                    onClose={() => setOpenAddDialog(false)}
+
+                />
+                <DeleteConfirm
+                    open={openDelete}
+                    title="Delete Weight"
+                    content="Are you sure you want to delete this weight entry?"
+                    onConfirm={handleDeleteConfirm}
+                    onCancel={handleDeleteCancel}
+                />
             </Box>
         </Box>
     );

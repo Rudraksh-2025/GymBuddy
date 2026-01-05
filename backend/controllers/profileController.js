@@ -1,10 +1,10 @@
 // controllers/profileController.js
 import User from "../models/User.js";
+import cloudinary from "../config/cloudinary.js";
 
 export const getProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log(userId)
 
     const user = await User.findById(userId).select(
       "-passwordHash -refreshTokens -emailVerificationCode -emailVerificationExpires"
@@ -22,9 +22,10 @@ export const getProfile = async (req, res) => {
       data: {
         id: user._id,
         email: user.email,
-        firstName: user.firstName || "",
-        lastName: user.lastName || "",
+        name: user.name || "",
         profilePhoto: user.profilePhoto || "",
+        height: user.height || 0,
+        gender: user.gender || "",
         neckCircumference: user.neckCircumference || 0,
         waistCircumference: user.waistCircumference || 0,
         targetWeight: user.targetWeight || 0,
@@ -39,28 +40,22 @@ export const getProfile = async (req, res) => {
 };
 
 
-
-// controllers/profileController.js
-import User from "../models/User.js";
-import cloudinary from "../config/cloudinary.js";
-import { calculateBodyFat } from "../utils/bodyFat.js";
-
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
 
     const {
-      firstName,
-      lastName,
+      name,
       neckCircumference,
       waistCircumference,
       targetWeight,
+      height,
     } = req.body;
 
     const updateData = {};
 
-    if (firstName !== undefined) updateData.firstName = firstName;
-    if (lastName !== undefined) updateData.lastName = lastName;
+
+    if (name !== undefined) updateData.name = name;
 
     if (neckCircumference !== undefined)
       updateData.neckCircumference = Number(neckCircumference);
@@ -70,6 +65,10 @@ export const updateProfile = async (req, res) => {
 
     if (targetWeight !== undefined)
       updateData.targetWeight = Number(targetWeight);
+
+    if (height !== undefined)
+      updateData.height = Number(height);
+
 
     // 🔹 Upload profile photo to Cloudinary
     if (req.file) {
@@ -87,20 +86,7 @@ export const updateProfile = async (req, res) => {
       updateData.profilePhoto = uploadResult.secure_url;
     }
 
-    // 🔹 Auto Body Fat Calculation
-    const user = await User.findById(userId).select("height gender");
-
-    const bodyFat = calculateBodyFat({
-      gender: user.gender || "male",
-      waist: updateData.waistCircumference ?? user.waistCircumference,
-      neck: updateData.neckCircumference ?? user.neckCircumference,
-      height: user.height,
-    });
-
-    if (bodyFat !== null) {
-      updateData.bodyFatPercentage = bodyFat;
-    }
-
+    console.log(updateData)
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({ message: "No fields to update" });
     }
@@ -115,13 +101,12 @@ export const updateProfile = async (req, res) => {
       success: true,
       message: "Profile updated successfully",
       data: {
-        firstName: updatedUser.firstName,
-        lastName: updatedUser.lastName,
+        name: updatedUser.name,
         profilePhoto: updatedUser.profilePhoto,
         neckCircumference: updatedUser.neckCircumference,
         waistCircumference: updatedUser.waistCircumference,
         targetWeight: updatedUser.targetWeight,
-        bodyFatPercentage: updatedUser.bodyFatPercentage,
+        height: updatedUser.height
       },
     });
   } catch (error) {

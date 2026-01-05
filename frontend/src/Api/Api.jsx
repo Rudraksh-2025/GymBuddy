@@ -70,7 +70,7 @@ export const useGetProfile = () => {
 // update profile details
 export const useUpdateProfile = (onSuccess, onError) => {
     return useMutation({
-        mutationFn: async ({  data }) => {
+        mutationFn: async ({ data }) => {
             const response = await axiosInstance.put(`/profile`, data);
             return response.data;
         },
@@ -297,12 +297,8 @@ export const useVerification = () => {
             const response = await axiosInstance.post('/auth/verify-email', userData);
             return response.data;
         },
-        onSuccess: (data) => {
-            saveToken(data.accessToken);
+        onSuccess: () => {
             toast.success("User Verified Successfully")
-            localStorage.setItem('user', JSON.stringify(data.user.id))
-            localStorage.setItem('userName', JSON.stringify(data.user.name))
-            localStorage.setItem('userEmail', JSON.stringify(data.user.email))
             navigate('/');
         },
         onError: (error) => {

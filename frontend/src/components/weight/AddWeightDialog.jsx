@@ -36,7 +36,7 @@ const AddWeightDialog = ({ open, onClose }) => {
 
         onClose();
     };
-  
+
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
@@ -65,12 +65,12 @@ const AddWeightDialog = ({ open, onClose }) => {
             </DialogContent>
 
             <DialogActions sx={{ px: 3, pb: 2 }}>
-                <Button onClick={onClose} sx={{ textTransform: "none",color:'black' }}>
+                <Button onClick={onClose} sx={{ textTransform: "none", color: 'black' }}>
                     Cancel
                 </Button>
                 <Button
                     variant="contained"
-                    sx={{ background: "#00DCE2", color: "#000", textTransform: "none" }}
+                    sx={{ background: "#00DCE2", color: "white", textTransform: "none" }}
                     onClick={handleSubmit}
                     disabled={!weight}
                 >

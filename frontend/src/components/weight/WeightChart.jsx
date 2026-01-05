@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Typography, Card, Box } from "@mui/material";
 import {
     LineChart,
@@ -11,7 +11,10 @@ import {
 } from "recharts";
 import { FormateDate } from '../../utils/FormateDate';
 
-const WeightChart = ({ data }) => {
+const WeightChart = ({ data = [] }) => {
+    const chartData = useMemo(() => {
+        return [...data].reverse();
+    }, [data]);
     return (
         <Box
             sx={{
@@ -28,11 +31,11 @@ const WeightChart = ({ data }) => {
             <Box sx={{ height: 400 }}>
                 <ResponsiveContainer width="99%" height="100%">
                     <LineChart
-                        data={data}
+                        data={chartData}
                         margin={{ top: 40, right: 10, left: 0, bottom: 20 }}
                     >
                         <CartesianGrid vertical={false} />
-                        <XAxis dataKey="date"  tickFormatter={(value) => FormateDate(value)} interval="preserveStartEnd" tick={{ fontSize: 12 }} tickLine={false} />
+                        <XAxis dataKey="date" tickFormatter={(value) => FormateDate(value)} interval="preserveStartEnd" tick={{ fontSize: 12 }} tickLine={false} />
                         <YAxis axisLine={false} interval="preserveStartEnd" tickLine={false} domain={["dataMin - 1", "dataMax + 1"]}>
                             {/* <Label
                                 value="weight"

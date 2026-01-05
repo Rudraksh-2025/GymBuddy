@@ -42,25 +42,24 @@ const Profile = () => {
                 formData.append("profilePhoto", values.profilePhoto);
             }
 
-            mutate({data: formData });
+            mutate({ data: formData });
         },
 
     });
 
 
-useEffect(() => {
-  if (!profileData?.data) return;
+    useEffect(() => {
+        if (!profileData?.data) return;
 
-  profileForm.setValues({
-    firstName: profileData.data.firstName || "",
-    lastName: profileData.data.lastName || "",
-    email: profileData.data.email || "",
-    neckCircumference:profileData.data.neckCircumference || "0",
-    waistCircumference:profileData.data.waistCircumference || "0",
-    targetWeight:profileData.data.targetWeight || "0",
-    profilePhoto: profileData.data.profilePhoto || "",
-  });
-}, [profileData?.data]);
+        profileForm.setValues({
+            name: profileData.data.name || "",
+            email: profileData.data.email || "",
+            neckCircumference: profileData.data.neckCircumference || "0",
+            waistCircumference: profileData.data.waistCircumference || "0",
+            targetWeight: profileData.data.targetWeight || "0",
+            profilePhoto: profileData.data.profilePhoto || "",
+        });
+    }, [profileData?.data]);
 
 
 
@@ -90,22 +89,12 @@ useEffect(() => {
                         <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
                             {edit ? (
                                 <CustomInput
-                                    label="First Name"
-                                    placeholder="First Name"
-                                    name="firstName"
+                                    label="User Name"
+                                    placeholder="Enter your name"
+                                    name="name"
                                     formik={profileForm}
                                 />
-                            ) : displayField("First Name", profileForm.values.firstName)}
-                        </Grid>
-                        <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
-                            {edit ? (
-                                <CustomInput
-                                    label="Last Name"
-                                    placeholder="Last Name"
-                                    name="lastName"
-                                    formik={profileForm}
-                                />
-                            ) : displayField("Last Name", profileForm.values.lastName)}
+                            ) : displayField("User Name", profileForm.values.name)}
                         </Grid>
                         <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
                             {edit ? (
@@ -245,7 +234,10 @@ useEffect(() => {
 export default Profile;
 
 const super_admin = {
-    firstName: "",
-    lastName: "",
+    name: "",
+    neckCircumference: "",
+    waistCircumference: "",
+    targetWeight: "",
+    profilePhoto: "",
     email: "",
 };
