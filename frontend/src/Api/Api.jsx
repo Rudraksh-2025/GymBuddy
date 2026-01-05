@@ -60,7 +60,7 @@ export const useGetProfile = () => {
     return useQuery({
         queryKey: ['profile'],
         queryFn: async () => {
-            const response = await apiClient.get(`/profile`);
+            const response = await axiosInstance.get(`/profile`);
             return response.data;
         },
         staleTime: 15 * 60 * 1000,
@@ -71,7 +71,7 @@ export const useGetProfile = () => {
 export const useUpdateProfile = (onSuccess, onError) => {
     return useMutation({
         mutationFn: async ({  data }) => {
-            const response = await apiClient.put(`/profile`, data);
+            const response = await axiosInstance.put(`/profile`, data);
             return response.data;
         },
         onSuccess,

@@ -9,6 +9,7 @@ import {
     Tooltip,
     ResponsiveContainer, Label
 } from "recharts";
+import { FormateDate } from '../../utils/FormateDate';
 
 const WeightChart = ({ data }) => {
     return (
@@ -31,7 +32,7 @@ const WeightChart = ({ data }) => {
                         margin={{ top: 40, right: 10, left: 0, bottom: 20 }}
                     >
                         <CartesianGrid vertical={false} />
-                        <XAxis dataKey="date" interval="preserveStartEnd" tick={{ fontSize: 12 }} tickLine={false} />
+                        <XAxis dataKey="date"  tickFormatter={(value) => FormateDate(value)} interval="preserveStartEnd" tick={{ fontSize: 12 }} tickLine={false} />
                         <YAxis axisLine={false} interval="preserveStartEnd" tickLine={false} domain={["dataMin - 1", "dataMax + 1"]}>
                             {/* <Label
                                 value="weight"

@@ -125,20 +125,38 @@ export const addExerciseLog = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-// Get all logs for an exercise
+
+// Get all logs for an exercise (with optional date range)
 export const getExerciseLogs = async (req, res) => {
   try {
-    const { exerciseId } = req.query;;
-    const logs = await ExerciseLog.find({
+    const { start, end, exerciseId } = req.query;
+
+    if (!exerciseId) {
+      return res.status(400).json({ message: "ExerciseId is required" });
+    }
+
+    const query = {
       userId: req.user.id,
-      exerciseId
-    }).sort({ date: -1 });
+      exerciseId,
+    };
+
+    // Apply date filter if provided
+    if (start && end) {
+      query.date = {
+        $gte: new Date(start),
+        $lte: new Date(new Date(end).setHours(23, 59, 59, 999)),
+      };
+    }
+
+    const logs = await ExerciseLog.find(query)
+      .sort({ date: -1 });
 
     res.json(logs);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+
 // Update log
 export const updateExerciseLog = async (req, res) => {
   try {
@@ -172,7 +190,6 @@ export const deleteExerciseLog = async (req, res) => {
 export const getExerciseProgress = async (req, res) => {
   try {
     const { start, end, exerciseId } = req.query;
-    console.log(end)
     if (!exerciseId) {
       return res.status(400).json({ message: "ExerciseId is required" });
     }

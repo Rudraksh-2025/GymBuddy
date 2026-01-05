@@ -24,8 +24,6 @@ const Profile = () => {
     const { mutate } = useUpdateProfile(onSuccess, onError);
     const { data: profileData } = useGetProfile();
 
-    console.log(profileData)
-
     const profileForm = useFormik({
         initialValues: super_admin,
         validationSchema: profileValidation,
@@ -35,13 +33,13 @@ const Profile = () => {
 
 
             Object.keys(values).forEach((key) => {
-                if (key !== "profile_img") {
+                if (key !== "profilePhoto") {
                     formData.append(key, values[key]);
                 }
             });
 
-            if (values.profile_img && values.profile_img instanceof File) {
-                formData.append("profile_img", values.profile_img);
+            if (values.profilePhoto && values.profilePhoto instanceof File) {
+                formData.append("profilePhoto", values.profilePhoto);
             }
 
             mutate({data: formData });
@@ -50,16 +48,19 @@ const Profile = () => {
     });
 
 
-// useEffect(() => {
-//   if (!profileData?.data) return;
+useEffect(() => {
+  if (!profileData?.data) return;
 
-//   profileForm.setValues({
-//     firstName: profileData.data.firstName || "",
-//     lastName: profileData.data.lastName || "",
-//     email: profileData.data.email || "",
-//     profile_img: profileData.data.profilePhoto || "",
-//   });
-// }, [profileData?.data]);
+  profileForm.setValues({
+    firstName: profileData.data.firstName || "",
+    lastName: profileData.data.lastName || "",
+    email: profileData.data.email || "",
+    neckCircumference:profileData.data.neckCircumference || "0",
+    waistCircumference:profileData.data.waistCircumference || "0",
+    targetWeight:profileData.data.targetWeight || "0",
+    profilePhoto: profileData.data.profilePhoto || "",
+  });
+}, [profileData?.data]);
 
 
 
@@ -116,6 +117,36 @@ const Profile = () => {
                                 />
                             ) : displayField("Email", profileForm.values.email)}
                         </Grid>
+                        <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
+                            {edit ? (
+                                <CustomInput
+                                    label="Neck Circumference"
+                                    placeholder="Enter Neck Circumference(inches)"
+                                    name="neckCircumference"
+                                    formik={profileForm}
+                                />
+                            ) : displayField("Neck Circumference", `${profileForm.values.neckCircumference} inches`)}
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
+                            {edit ? (
+                                <CustomInput
+                                    label="Waist Circumference"
+                                    placeholder="Enter Waist Circumference(inches)"
+                                    name="waistCircumference"
+                                    formik={profileForm}
+                                />
+                            ) : displayField("Waist Circumference", `${profileForm.values.waistCircumference} inches`)}
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
+                            {edit ? (
+                                <CustomInput
+                                    label="Target Weight"
+                                    placeholder="Enter Your Target Weight"
+                                    name="targetWeight"
+                                    formik={profileForm}
+                                />
+                            ) : displayField("Target Weight", `${profileForm.values.targetWeight} kg`)}
+                        </Grid>
 
 
                         {/* images */}
@@ -141,19 +172,19 @@ const Profile = () => {
                                             type="file"
                                             accept="image/*"
                                             hidden
-                                            name="profile_img"
+                                            name="profilePhoto"
                                             disabled={!edit}
-                                            onChange={e => profileForm.setFieldValue('profile_img', e.currentTarget.files[0])}
+                                            onChange={e => profileForm.setFieldValue('profilePhoto', e.currentTarget.files[0])}
                                         />
-                                        {profileForm.values.profile_img instanceof File ? (
+                                        {profileForm.values.profilePhoto instanceof File ? (
                                             <img
-                                                src={URL.createObjectURL(profileForm.values.profile_img)}
+                                                src={URL.createObjectURL(profileForm.values.profilePhoto)}
                                                 alt="Selfie Preview"
                                                 style={{ height: 200, width: '100%', objectFit: 'contain', marginBottom: 8 }}
                                             />
-                                        ) : profileForm.values.profile_img ? (
+                                        ) : profileForm.values.profilePhoto ? (
                                             <img
-                                                src={profileForm.values.profile_img}
+                                                src={profileForm.values.profilePhoto}
                                                 alt="Selfie"
                                                 style={{ height: 200, width: '100%', objectFit: 'contain', marginBottom: 8 }}
                                             />
@@ -161,8 +192,8 @@ const Profile = () => {
                                             <Typography sx={{ color: '#B0B0B0', fontWeight: 550, mt: 1 }}>Upload</Typography></>
                                         )}
                                     </Box>
-                                    {profileForm.touched.profile_img && profileForm.errors.profile_img && (
-                                        <FormHelperText error>{profileForm.errors.profile_img}</FormHelperText>
+                                    {profileForm.touched.profilePhoto && profileForm.errors.profilePhoto && (
+                                        <FormHelperText error>{profileForm.errors.profilePhoto}</FormHelperText>
                                     )}
                                 </Grid>
                             </Grid>

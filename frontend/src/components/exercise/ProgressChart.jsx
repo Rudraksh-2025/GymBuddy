@@ -36,14 +36,14 @@ export default function ExerciseProgressChart({ progress }) {
     const [visibility, setVisibility] = useState({
         "Avg Weight": true,
         "Avg Reps": true,
-        "Total Volume": true,
+        // "Total Volume": true,
         "Max Weight": true,
     });
 
     const labels = progress?.map((p) => p._id.date) || [];
     const avgWeight = progress?.map((p) => p.avgWeight) || [];
     const avgReps = progress?.map((p) => p.avgReps) || [];
-    const totalVolume = progress?.map((p) => p.totalVolume) || [];
+    // const totalVolume = progress?.map((p) => p.totalVolume) || [];
     const maxWeight = progress?.map((p) => p.maxWeight) || [];
 
     const toggleVisibility = (label) => {
@@ -63,12 +63,12 @@ export default function ExerciseProgressChart({ progress }) {
             color: "#9F7AEA",
             id: "AvgReps",
         },
-        {
-            data: totalVolume,
-            label: "Total Volume",
-            color: "#48BB78",
-            id: "TotalVolume",
-        },
+        // {
+        //     data: totalVolume,
+        //     label: "Total Volume",
+        //     color: "#48BB78",
+        //     id: "TotalVolume",
+        // },
         {
             data: maxWeight,
             label: "Max Weight",

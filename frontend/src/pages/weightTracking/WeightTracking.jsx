@@ -36,26 +36,16 @@ const WeightTracking = () => {
     const PercentageChange = ({ flag, value }) => {
         const isUp = flag === 'up';
         return (
-            <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', color: isUp ? '#16A34A' : 'red', fontWeight: 500 }}>
+            <Box component="span" sx={{ display: 'flex', alignItems: 'center', color: isUp ? '#16A34A' : 'red', fontWeight: 500 }}>
                 {isUp ? (
                     <ArrowUpward sx={{ color: '#16A34A', fontSize: 18, mr: 0.3 }} />
                 ) : (
                     <ArrowDownward sx={{ color: 'red', fontSize: 18, mr: 0.3 }} />
                 )}
                 {value || 0}%
-                <Typography sx={{ color: '#878787' }}>&nbsp;vs last month</Typography>
+                <Typography variant="body2" sx={{ color: '#878787' }}>&nbsp;vs last month</Typography>
             </Box>
         );
-    };
-
-
-
-    const handleAddWeight = (newEntry) => {
-        // append at top OR push into array
-        weightData.data.push(newEntry);
-
-        // trigger re-render if data will later come from API
-        setCurrentPage(1);
     };
     const { data: analytics } = useGetWeightMetrices()
     const { data: weightData, isLoading } = useGetWeightLogs()

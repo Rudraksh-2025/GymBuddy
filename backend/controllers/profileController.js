@@ -40,6 +40,11 @@ export const getProfile = async (req, res) => {
 
 
 
+// controllers/profileController.js
+import User from "../models/User.js";
+import cloudinary from "../config/cloudinary.js";
+import { calculateBodyFat } from "../utils/bodyFat.js";
+
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -47,7 +52,6 @@ export const updateProfile = async (req, res) => {
     const {
       firstName,
       lastName,
-      profilePhoto,
       neckCircumference,
       waistCircumference,
       targetWeight,
@@ -57,7 +61,6 @@ export const updateProfile = async (req, res) => {
 
     if (firstName !== undefined) updateData.firstName = firstName;
     if (lastName !== undefined) updateData.lastName = lastName;
-    if (profilePhoto !== undefined) updateData.profilePhoto = profilePhoto;
 
     if (neckCircumference !== undefined)
       updateData.neckCircumference = Number(neckCircumference);
@@ -67,6 +70,40 @@ export const updateProfile = async (req, res) => {
 
     if (targetWeight !== undefined)
       updateData.targetWeight = Number(targetWeight);
+
+    // 🔹 Upload profile photo to Cloudinary
+    if (req.file) {
+      const uploadResult = await cloudinary.uploader.upload(
+        `data:${req.file.mimetype};base64,${req.file.buffer.toString(
+          "base64"
+        )}`,
+        {
+          folder: "profiles",
+          public_id: `user_${userId}`,
+          overwrite: true,
+        }
+      );
+
+      updateData.profilePhoto = uploadResult.secure_url;
+    }
+
+    // 🔹 Auto Body Fat Calculation
+    const user = await User.findById(userId).select("height gender");
+
+    const bodyFat = calculateBodyFat({
+      gender: user.gender || "male",
+      waist: updateData.waistCircumference ?? user.waistCircumference,
+      neck: updateData.neckCircumference ?? user.neckCircumference,
+      height: user.height,
+    });
+
+    if (bodyFat !== null) {
+      updateData.bodyFatPercentage = bodyFat;
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ message: "No fields to update" });
+    }
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -84,6 +121,7 @@ export const updateProfile = async (req, res) => {
         neckCircumference: updatedUser.neckCircumference,
         waistCircumference: updatedUser.waistCircumference,
         targetWeight: updatedUser.targetWeight,
+        bodyFatPercentage: updatedUser.bodyFatPercentage,
       },
     });
   } catch (error) {
@@ -93,3 +131,4 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
+

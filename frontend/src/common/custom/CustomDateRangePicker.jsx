@@ -45,7 +45,7 @@ const CustomDateRangePicker = ({
                         variant="outlined"
                         sx={{
                             height: '40px',
-                            width: '230px',
+                            width: '250px',
                             borderRadius: '8px',
                             borderWidth: '1px',
                             justifyContent: 'space-between',
