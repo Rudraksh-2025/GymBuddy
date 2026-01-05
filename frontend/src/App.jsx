@@ -12,6 +12,7 @@ import Register from "./pages/auth/Register";
 import Home from './pages/Home'
 import { LogGuard, AuthGuard } from './common/Gaurd'
 import WeightTracking from "./pages/weightTracking/WeightTracking";
+import FoodTracking from "./pages/food/FoodTracking";
 
 function App() {
 
@@ -61,6 +62,12 @@ function App() {
           children: [
             { path: "", element: <ListOfExercise /> },
             { path: "exercise-information/:id", element: <ExerciseInformation /> },
+          ],
+        },
+        {
+          path: "calorie",
+          children: [
+            { path: "", element: <FoodTracking /> },
           ],
         },
         {

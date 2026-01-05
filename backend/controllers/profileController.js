@@ -29,6 +29,7 @@ export const getProfile = async (req, res) => {
         neckCircumference: user.neckCircumference || 0,
         waistCircumference: user.waistCircumference || 0,
         targetWeight: user.targetWeight || 0,
+        streak: user.streak || 0,
       },
     });
   } catch (error) {

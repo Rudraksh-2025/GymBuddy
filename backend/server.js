@@ -10,7 +10,8 @@ import weightRoutes from "./routes/weightRoutes.js"
 import exerciseRoutes from './routes/exerciseRoutes.js'
 import profileRoutes from './routes/profileRoutes.js'
 import cors from 'cors'
-
+import { auth } from './middleware/authMiddleware.js';
+import { updateStreak } from './middleware/streakMiddleware.js'
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -18,6 +19,11 @@ app.use(cors({
     origin: 'http://localhost:3001' // Allow requests from your frontend
 }));
 app.use('/api/auth', authRoutes);
+// 🔐 Auth middleware
+app.use(auth);
+
+// 🔥 Streak middleware (AFTER auth)
+app.use(updateStreak);
 app.use("/api/weight", weightRoutes);
 app.use('/api/exercises', exerciseRoutes)
 app.use("/api/profile", profileRoutes);

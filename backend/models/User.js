@@ -32,7 +32,15 @@ const userSchema = new mongoose.Schema({
     type: Number,
     min: 0,
   },
+  streak: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
 
+  lastActiveAt: {
+    type: Date,
+  },
   targetWeight: {
     type: Number,
     min: 0,

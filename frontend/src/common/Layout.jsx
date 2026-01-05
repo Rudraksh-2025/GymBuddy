@@ -4,6 +4,8 @@ import Sidebar from "./Sidebar";
 import { useState, useRef, useEffect } from "react";
 import { Toolbar, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { useGetProfile } from "../Api/Api";
+
 
 const drawerWidth = 240;
 
@@ -12,6 +14,14 @@ function Layout() {
     const sidebarRef = useRef();
     const theme = useTheme();
     const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
+    const { refetch, data: profile } = useGetProfile({
+        enabled: false, // prevent auto fetch
+    });
+
+    useEffect(() => {
+        refetch(); // runs once on mount
+    }, [refetch]);
 
     // Close sidebar when clicking outside (on small screens)
     useEffect(() => {
@@ -29,6 +39,7 @@ function Layout() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isActive]);
 
+
     return (
         <div style={{ display: "flex" }}>
             {/* Sidebar */}
@@ -45,7 +56,7 @@ function Layout() {
                     width: isMdUp ? `calc(100% - ${drawerWidth}px)` : "100%",
                 }}
             >
-                <Navbar setActive={setActive} isActive={isActive} />
+                <Navbar streak={profile?.data?.streak} setActive={setActive} isActive={isActive} />
                 <Toolbar /> {/* Push content below AppBar height */}
                 <div style={{ padding: "20px", overflowX: 'hidden', overflowY: 'auto' }}>
                     <Outlet />

@@ -4,7 +4,8 @@ import {
     Typography,
     IconButton,
     AppBar,
-    Toolbar, Button
+    Toolbar,
+    Tooltip
 } from "@mui/material";
 import { IoArrowBack } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,9 +15,12 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from '@mui/icons-material/Person';
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+import FireStreak from "../components/FireStreak";
 
 
-const Navbar = ({ setActive, isActive }) => {
+
+const Navbar = ({ setActive, isActive, streak }) => {
     const [pageTitle, setPageTitle] = useState("Dashboard");
     const [isSubMenu, setIsSubMenu] = useState(false);
     const [profileImg] = useState(localStorage.getItem('profileImg'))
@@ -127,6 +131,8 @@ const Navbar = ({ setActive, isActive }) => {
                 </Typography>
 
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2, pr: 0 }}>
+                    <FireStreak streak={streak} />
+
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2, pr: 0, cursor: 'pointer' }} onClick={() => nav('/home/profile')}>
                         <Avatar
                             alt="User"

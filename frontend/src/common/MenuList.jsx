@@ -3,7 +3,8 @@ import {
     UserOutlined,
     FormOutlined,
     LogoutOutlined,
-    BarChartOutlined
+    BarChartOutlined,
+    CoffeeOutlined,
 } from '@ant-design/icons';
 
 const icons = {
@@ -11,7 +12,8 @@ const icons = {
     UserOutlined,
     FormOutlined,
     LogoutOutlined,
-    BarChartOutlined
+    BarChartOutlined,
+    CoffeeOutlined
 };
 
 export const menuList = [
@@ -21,15 +23,15 @@ export const menuList = [
         path: "/home",
         icon: icons.DashboardOutlined,
     },
-    {
-        id: "users",
-        name: "List of Users",
-        path: "/home/users",
-        icon: icons.UserOutlined,
-        info: "User Information",
-        view: "Users",
-        edit: "Edit User"
-    },
+    // {
+    //     id: "users",
+    //     name: "List of Users",
+    //     path: "/home/users",
+    //     icon: icons.UserOutlined,
+    //     info: "User Information",
+    //     view: "Users",
+    //     edit: "Edit User"
+    // },
     {
         id: "exercise",
         name: "Exercise",
@@ -43,6 +45,13 @@ export const menuList = [
         path: "/home/weight",
         icon: icons.BarChartOutlined,
         info: "Weight Tracking Information",
+    },
+    {
+        id: "calorie",
+        name: "Calorie Tracking",
+        path: "/home/calorie",
+        icon: icons.CoffeeOutlined,
+        info: "Calorie Tracking Information",
     },
     {
         id: "logout",
