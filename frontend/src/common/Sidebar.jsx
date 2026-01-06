@@ -80,10 +80,10 @@ const Sidebar = ({ isActive, setActive, sidebarRef }) => {
                                         mx: 1,
                                         mb: 1,
                                         "&.Mui-selected": {
-                                            bgcolor: "#3EC2CD",
+                                            bgcolor: "var(--Blue)",
                                             boxShadow: "0px 8px 10px #3EC2CD4D",
                                             '&:hover': {
-                                                bgcolor: "#3EC2CD"
+                                                bgcolor: "var(--Blue)"
                                             },
                                             "& .MuiTypography-root": { fontWeight: 600, color: "white" }
                                         }
@@ -132,10 +132,10 @@ const Sidebar = ({ isActive, setActive, sidebarRef }) => {
                                 mx: 1,
                                 mb: 1,
                                 "&.Mui-selected": {
-                                    bgcolor: "#3EC2CD",
+                                    bgcolor: "var(--Blue)",
                                     boxShadow: "0px 8px 10px #3EC2CD4D",
                                     '&:hover': {
-                                        bgcolor: "#3EC2CD"
+                                        bgcolor: "var(--Blue)"
                                     },
                                     "& .MuiTypography-root": { fontWeight: 600, color: "white" }
                                 }

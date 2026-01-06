@@ -28,5 +28,11 @@ export const RegisterValidation = yup.object({
 export const profileValidation = yup.object({
     name: Username,
     email: Email,
-
 });
+
+export const foodValidation = yup.object({
+    calories: yup.number().required("Calories are required"),
+    fats: yup.number().required('Fats is required'),
+    carbs: yup.number().required('Carbs are required'),
+    protein: yup.number().required('Protein is required')
+})

@@ -229,6 +229,62 @@ export const useDeleteWeight = (onSuccess, onError) => {
     });
 }
 
+// get food summary
+export const useGetCalorieSummary = () => {
+    return useQuery({
+        queryKey: ['foodSummary'],
+        queryFn: async () => {
+            const response = await axiosInstance.get('/food/summary')
+            return response.data
+        },
+        staleTime: 15 * 60 * 1000,
+        placeholderData: keepPreviousData,
+    })
+}
+// Get Food List
+export const useGetFoods = () => {
+    return useQuery({
+        queryKey: ['foodList'],
+        queryFn: async () => {
+            const response = await axiosInstance.get(`/food`)
+            return response.data
+        }
+    })
+}
+// Update food
+export const useUpdateFood = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async ({ foodId, data }) => {
+            const response = await axiosInstance.put(`/food/${foodId}`, data);
+            return response.data;
+        },
+        onSuccess,
+        onError
+    });
+};
+// add food
+export const useCreateFood = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (data) => {
+            const response = await axiosInstance.post('/food', data)
+            return response.data
+        },
+        onSuccess,
+        onError
+    })
+}
+// delete food
+export const useDeleteFood = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (id) => {
+            const { data } = await axiosInstance.delete(`/food/${id}`);
+            return data;
+        },
+        onSuccess,
+        onError,
+    });
+}
+
 
 // get User Metrices
 export const useGetUserMetrices = () => {

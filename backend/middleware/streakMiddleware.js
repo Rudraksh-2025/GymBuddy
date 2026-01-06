@@ -49,6 +49,6 @@ export const updateStreak = async (req, res, next) => {
         next();
     } catch (err) {
         console.error("Streak middleware error:", err);
-        next(); // do NOT block API
+        next();
     }
 };

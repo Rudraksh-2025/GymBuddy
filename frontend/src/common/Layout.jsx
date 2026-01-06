@@ -56,7 +56,7 @@ function Layout() {
                     width: isMdUp ? `calc(100% - ${drawerWidth}px)` : "100%",
                 }}
             >
-                <Navbar streak={profile?.data?.streak} setActive={setActive} isActive={isActive} />
+                <Navbar streak={profile?.data?.streak} setActive={setActive} isActive={isActive} profilePhoto={profile?.data?.profilePhoto} />
                 <Toolbar /> {/* Push content below AppBar height */}
                 <div style={{ padding: "20px", overflowX: 'hidden', overflowY: 'auto' }}>
                     <Outlet />

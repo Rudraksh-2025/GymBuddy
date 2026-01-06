@@ -1,154 +1,67 @@
 import React, { useState } from "react";
 import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Chip, IconButton } from "@mui/material";
-import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
-import { FormateDate } from '../../utils/FormateDate'
-import { useDeleteWeight, useGetWeightMetrices, useGetWeightLogs } from '../../Api/Api'
-import CustomPagination from '../../common/custom/CustomPagination'
-import DeleteIcon from "@mui/icons-material/Delete";
-import WeightChart from "../../components/weight/WeightChart";
-import AddIcon from "@mui/icons-material/Add";
-import AddWeightDialog from "../../components/weight/AddWeightDialog";
-import DeleteConfirm from "../../common/DeleteConfirm2";
+import { useGetCalorieSummary } from '../../Api/Api'
+
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import MacroRing from "../../components/food/MacroRing";
 
-const WeightTracking = () => {
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [openAddDialog, setOpenAddDialog] = useState(false);
-    const [openDelete, setOpenDelete] = useState(false);
-    const [selectedWeightId, setSelectedWeightId] = useState(null);
-
+const CalorieTracking = () => {
     const client = useQueryClient()
 
-    const PercentageChange = ({ flag, value }) => {
-        const isUp = flag === 'up';
-        return (
-            <Box component="span" sx={{ display: 'flex', alignItems: 'center', color: isUp ? '#16A34A' : 'red', fontWeight: 500 }}>
-                {isUp ? (
-                    <ArrowUpward sx={{ color: '#16A34A', fontSize: 18, mr: 0.3 }} />
-                ) : (
-                    <ArrowDownward sx={{ color: 'red', fontSize: 18, mr: 0.3 }} />
-                )}
-                {value || 0}%
-                <Typography variant="body2" sx={{ color: '#878787' }}>&nbsp;vs last week</Typography>
-            </Box>
-        );
-    };
-    const { data: analytics } = useGetWeightMetrices()
-    const { data: weightData, isLoading } = useGetWeightLogs()
-    const { mutate: deleteWeight } = useDeleteWeight();
-
-
-    const totalUsers = weightData?.pagination?.totalCount;
-    const totalPages = Math.ceil(totalUsers / rowsPerPage);
-
-    const handleDeleteConfirm = () => {
-        if (!selectedWeightId) return;
-
-        deleteWeight(selectedWeightId, {
-            onSuccess: () => {
-                setOpenDelete(false);
-                setSelectedWeightId(null);
-                toast.success("Weight Log deleted successfully")
-                client.invalidateQueries(['weight'], { exact: false })
-            },
-            onError: (err) => {
-                setOpenDelete(false);
-                toast.error(err?.response?.data?.message || "Something went wrong");
-
-            }
-        });
-    };
-    const handleDeleteCancel = () => {
-        setOpenDelete(false);
-        setSelectedWeightId(null);
-    };
-
-
-    const getDayFromDate = (date) => {
-        if (!date) return "-";
-        return new Date(date).toLocaleDateString("en-US", {
-            weekday: "long",
-        });
-    };
+    const { data: analytics } = useGetCalorieSummary()
 
 
     return (
         <Box sx={{ p: { xs: 0, sm: 2 } }}>
             {/* ---------------- ANALYTICS BOX ---------------- */}
             <Grid container spacing={3} mb={5}>
-                <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#ECFDF5', borderRadius: '16px' }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Target Weight</Typography>
-                                <Typography variant="h4" fontWeight={600}>
-                                    {analytics?.data?.targetWeight?.value ?? 0} kg
-                                </Typography>
-                            </Box>
-                        </Box>
-                    </Box>
+                <Grid size={{ xs: 12, sm: 4, md: 4, lg: 3 }}>
+                    <MacroRing
+                        title="Calories"
+                        goal={analytics?.data?.today?.goal?.calories}
+                        consumed={analytics?.data?.today?.consumed?.calories}
+                        unit="kcal"
+                        color="#6366F1"
+                    />
+
                 </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#FFF7ED', borderRadius: '16px' }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Weight Left</Typography>
-                                <Typography variant="h4" fontWeight={600}>
-                                    {analytics?.data?.weightLeft?.value ?? 0} kg
-                                </Typography>
-                                <PercentageChange
-                                    flag={analytics?.data?.weightLeft?.change?.flag}
-                                    value={analytics?.data?.weightLeft?.change?.percentage}
-                                />
-                            </Box>
-                        </Box>
-                    </Box>
+                <Grid size={{ xs: 12, sm: 4, md: 4, lg: 3 }}>
+                    <MacroRing
+                        title="Protein"
+                        goal={analytics?.data?.today?.goal?.protein}
+                        consumed={analytics?.data?.today?.consumed?.protein}
+                        unit="g"
+                        color="#22C55E"
+                    />
                 </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#FEF2F2', borderRadius: '16px' }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Total Weight Lost</Typography>
-                                <Typography variant="h4" fontWeight={600}>
-                                    {analytics?.data?.totalLost?.value ?? 0} kg
-                                </Typography>
-
-                                <PercentageChange
-                                    flag={analytics?.data?.totalLost?.change?.flag}
-                                    value={analytics?.data?.totalLost?.change?.percentage}
-                                />
-
-                            </Box>
-                        </Box>
-                    </Box>
+                <Grid size={{ xs: 12, sm: 4, md: 4, lg: 3 }}>
+                    <MacroRing
+                        title="Carbs"
+                        goal={analytics?.data?.today?.goal?.carbs}
+                        consumed={analytics?.data?.today?.consumed?.carbs}
+                        unit="g"
+                        color="#F59E0B"
+                    />
                 </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#F5F3FF', borderRadius: '16px' }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Body Fat %</Typography>
-                                <Typography variant="h4" fontWeight={600}>{analytics?.data?.bodyFat?.value || 0}%</Typography>
-                                <PercentageChange
-                                    flag={analytics?.data?.bodyFat?.change?.flag}
-                                    value={analytics?.data?.bodyFat?.change?.percentage}
-                                />
-
-                            </Box>
-
-                        </Box>
-                    </Box>
+                <Grid size={{ xs: 12, sm: 4, md: 4, lg: 3 }}>
+                    <MacroRing
+                        title="Fats"
+                        goal={analytics?.data?.today?.goal?.fats}
+                        consumed={analytics?.data?.today?.consumed?.fats}
+                        unit="g"
+                        color="#EF4444"
+                    />
                 </Grid>
             </Grid>
 
             {/* ---------------- CHART ---------------- */}
-            <Grid size={{ xs: 12, md: 8 }}>
+            {/* <Grid size={{ xs: 12, md: 8 }}>
                 <WeightChart data={weightData?.data} />
-            </Grid>
+            </Grid> */}
 
             {/* ---------------- WEIGHT TABLE ---------------- */}
-            <Box sx={{ backgroundColor: "rgb(253, 253, 253)", boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", mt: 5, padding: 0, borderRadius: '10px' }}>
+            {/* <Box sx={{ backgroundColor: "rgb(253, 253, 253)", boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", mt: 5, padding: 0, borderRadius: '10px' }}>
                 <Grid container justifyContent="space-between" alignItems="center" sx={{ p: { xs: 2, md: 3 } }}>
                     <Grid size={{ xs: 12, sm: 6 }} sx={{ display: 'flex', flexDirection: 'row', gap: 2, mb: { xs: 1, md: 0 } }}>
                         <Typography variant="h6" fontWeight={590} >
@@ -257,9 +170,9 @@ const WeightTracking = () => {
                     onConfirm={handleDeleteConfirm}
                     onCancel={handleDeleteCancel}
                 />
-            </Box>
+            </Box> */}
         </Box>
     );
 };
 
-export default WeightTracking;
+export default CalorieTracking;

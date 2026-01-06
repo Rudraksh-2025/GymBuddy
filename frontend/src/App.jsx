@@ -13,6 +13,7 @@ import Home from './pages/Home'
 import { LogGuard, AuthGuard } from './common/Gaurd'
 import WeightTracking from "./pages/weightTracking/WeightTracking";
 import FoodTracking from "./pages/food/FoodTracking";
+import CalorieTracking from "./pages/calorie/CalorieTracking";
 
 function App() {
 
@@ -66,6 +67,12 @@ function App() {
         },
         {
           path: "calorie",
+          children: [
+            { path: "", element: <CalorieTracking /> },
+          ],
+        },
+        {
+          path: "food",
           children: [
             { path: "", element: <FoodTracking /> },
           ],

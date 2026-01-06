@@ -2,7 +2,7 @@ import React from "react";
 import { FormControl, InputLabel, FormHelperText } from "@mui/material";
 import { BootstrapInput } from "../custom/BootsrapInput";
 
-const CustomInput = ({ label, placeholder, name, formik, readOnly = false, type = "text" }) => {
+const CustomInput = ({ label, placeholder, name, formik, readOnly = false, type = "text", theme = 'dark' }) => {
     return (
 
         <FormControl variant="standard" fullWidth>
@@ -13,8 +13,8 @@ const CustomInput = ({ label, placeholder, name, formik, readOnly = false, type 
                     sx={{
                         fontSize: "1.3rem",
                         fontWeight: 450,
-                        color: "white",
-                        '&.Mui-focused': { color: 'white' }
+                        color: theme == 'dark' ? 'white' : 'black',
+                        '&.Mui-focused': { color: theme == 'dark' ? 'white' : 'black' }
                     }}
                 >
                     {label}
@@ -30,7 +30,7 @@ const CustomInput = ({ label, placeholder, name, formik, readOnly = false, type 
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 readOnly={readOnly}
-                sx={{ color: 'white', '&:focus': { color: 'white' } }}
+                sx={{ color: theme == 'dark' ? 'white' : 'black', '&:focus': { color: theme == 'dark' ? 'white' : 'black' } }}
             />
 
             {formik.touched[name] && formik.errors[name] && (

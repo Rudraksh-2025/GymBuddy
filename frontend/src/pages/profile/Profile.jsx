@@ -1,5 +1,5 @@
 import {
-    Box, Typography, Button, Grid, FormHelperText
+    Box, Typography, Button, Grid, FormHelperText, IconButton
 } from "@mui/material";
 import { useFormik } from "formik";
 import { profileValidation } from "../../common/FormValidation";
@@ -9,6 +9,8 @@ import { useGetProfile, useUpdateProfile } from "../../Api/Api";
 import { toast } from "react-toastify";
 import GrayPlus from '../../assets/images/GrayPlus.svg'
 import CustomInput from "../../common/custom/CustomInput";
+import CloseIcon from "@mui/icons-material/Close";
+
 const Profile = () => {
     const [edit, setedit] = useState(false);
     const client = useQueryClient();
@@ -142,51 +144,112 @@ const Profile = () => {
                         <Grid size={12}>
                             <Grid container gap={4} sx={{ mt: 1 }}>
                                 <Grid size={{ xs: 12, sm: 4, md: 2.5 }}>
-                                    <label style={{ marginBottom: '10px', display: 'block', fontWeight: 500, color: 'white' }}>Profile Image</label>
+                                    <label
+                                        style={{
+                                            marginBottom: "10px",
+                                            display: "block",
+                                            fontWeight: 500,
+                                            color: "white",
+                                        }}
+                                    >
+                                        Profile Image
+                                    </label>
+
                                     <Box
                                         sx={{
-                                            borderRadius: '12px',
+                                            borderRadius: "12px",
                                             minHeight: 180,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            cursor: edit ? 'pointer' : 'not-allowed',
-                                            position: 'relative',
-                                            background: '#fafbfc'
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            cursor: edit ? "pointer" : "not-allowed",
+                                            position: "relative",
+                                            background: "#404040",
+                                            border: '2px dotted white'
                                         }}
                                         component="label"
                                     >
+                                        {/* Remove Button */}
+                                        {(profileForm.values.profilePhoto) && edit && (
+                                            <IconButton
+                                                size="small"
+                                                onClick={(e) => {
+                                                    e.stopPropagation(); // prevent file picker
+                                                    profileForm.setFieldValue("profilePhoto", "");
+                                                }}
+                                                sx={{
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    right: 0,
+                                                    backgroundColor: "rgba(0,0,0,0.6)",
+                                                    color: "white",
+                                                    "&:hover": {
+                                                        backgroundColor: "rgba(0,0,0,0.8)",
+                                                    },
+                                                }}
+                                            >
+                                                <CloseIcon fontSize="small" />
+                                            </IconButton>
+                                        )}
+
                                         <input
                                             type="file"
                                             accept="image/*"
                                             hidden
                                             name="profilePhoto"
                                             disabled={!edit}
-                                            onChange={e => profileForm.setFieldValue('profilePhoto', e.currentTarget.files[0])}
+                                            onChange={(e) =>
+                                                profileForm.setFieldValue(
+                                                    "profilePhoto",
+                                                    e.currentTarget.files[0]
+                                                )
+                                            }
                                         />
+
+                                        {/* Preview */}
                                         {profileForm.values.profilePhoto instanceof File ? (
                                             <img
                                                 src={URL.createObjectURL(profileForm.values.profilePhoto)}
-                                                alt="Selfie Preview"
-                                                style={{ height: 200, width: '100%', objectFit: 'contain', marginBottom: 8 }}
+                                                alt="Profile Preview"
+                                                style={{
+                                                    height: 200,
+                                                    width: "97%",
+                                                    borderRadius: '12px',
+                                                    objectFit: "contain",
+                                                }}
                                             />
                                         ) : profileForm.values.profilePhoto ? (
                                             <img
                                                 src={profileForm.values.profilePhoto}
-                                                alt="Selfie"
-                                                style={{ height: 200, width: '100%', objectFit: 'contain', marginBottom: 8 }}
+                                                alt="Profile"
+                                                style={{
+                                                    height: 200,
+                                                    width: "97%",
+                                                    borderRadius: '12px',
+                                                    objectFit: "contain",
+                                                }}
                                             />
-                                        ) : (<><img src={GrayPlus} alt="gray plus" />
-                                            <Typography sx={{ color: '#B0B0B0', fontWeight: 550, mt: 1 }}>Upload</Typography></>
+                                        ) : (
+                                            <>
+                                                <img src={GrayPlus} alt="upload" />
+                                                <Typography sx={{ color: "#B0B0B0", fontWeight: 550, mt: 1 }}>
+                                                    Upload
+                                                </Typography>
+                                            </>
                                         )}
                                     </Box>
-                                    {profileForm.touched.profilePhoto && profileForm.errors.profilePhoto && (
-                                        <FormHelperText error>{profileForm.errors.profilePhoto}</FormHelperText>
-                                    )}
+
+                                    {profileForm.touched.profilePhoto &&
+                                        profileForm.errors.profilePhoto && (
+                                            <FormHelperText error>
+                                                {profileForm.errors.profilePhoto}
+                                            </FormHelperText>
+                                        )}
                                 </Grid>
                             </Grid>
                         </Grid>
+
                         {/* save /edit button */}
                         <Grid size={12}>
                             <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>

@@ -25,7 +25,7 @@ export const addWeight = async (req, res) => {
     }).sort({ date: -1 });
 
     const change = previousEntry
-      ? Number((weight - previousEntry.weight).toFixed(2))
+      ? Number((weight - previousEntry.weight).toFixed(1))
       : 0;
 
     const newWeight = await Weight.create({
@@ -174,11 +174,11 @@ export const getWeightSummary = async (req, res) => {
       arr.length ? arr.reduce((s, w) => s + w.weight, 0) / arr.length : 0;
 
     const percentChange = (current, previous) =>
-      previous ? Number((((current - previous) / previous) * 100).toFixed(2)) : 0;
+      previous ? Number((((current - previous) / previous) * 100).toFixed(1)) : 0;
 
     /* ---------------- METRICS ---------------- */
-    const totalLost = Number((startWeight - currentWeight).toFixed(2));
-    const weightLeft = Number((currentWeight - TARGET_WEIGHT).toFixed(2));
+    const totalLost = Number((startWeight - currentWeight).toFixed(1));
+    const weightLeft = Number((currentWeight - TARGET_WEIGHT).toFixed(1));
 
     const thisWeekAvg = avg(thisWeek);
     const lastWeekAvg = avg(lastWeek);
@@ -199,7 +199,7 @@ export const getWeightSummary = async (req, res) => {
 
       if (thisWeekWeight > 0) {
         const weightRatio = lastWeekWeight / thisWeekWeight;
-        lastWeekBodyFat = Number((bodyFat * weightRatio).toFixed(2));
+        lastWeekBodyFat = Number((bodyFat * weightRatio).toFixed(1));
       }
     }
 

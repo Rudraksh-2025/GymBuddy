@@ -48,9 +48,9 @@ const WeightChart = ({ data = [] }) => {
                         <Line
                             type="monotone"
                             dataKey="weight"
-                            stroke="#00DCE2"
+                            stroke="var(--Blue)"
                             strokeWidth={3}
-                            dot={{ r: 4, fill: "#00DCE2" }}
+                            dot={{ r: 4, fill: "var(--Blue)" }}
                         />
                     </LineChart>
                 </ResponsiveContainer>

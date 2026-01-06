@@ -3,7 +3,7 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#3EC2CD',
+            main: '#2A8EFB',
         },
     },
     typography: {
@@ -73,7 +73,7 @@ const theme = createTheme({
                     fontSize: '16px',
                     color: '#878787',
                     '&.Mui-selected': {
-                        color: '#3EC2CD',
+                        color: '#2A8EFB',
                     },
                 },
             },

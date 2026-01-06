@@ -47,6 +47,13 @@ export const menuList = [
         info: "Weight Tracking Information",
     },
     {
+        id: "food",
+        name: "Food Tracking",
+        path: "/home/food",
+        icon: icons.CoffeeOutlined,
+        info: "Food Tracking Information",
+    },
+    {
         id: "calorie",
         name: "Calorie Tracking",
         path: "/home/calorie",
