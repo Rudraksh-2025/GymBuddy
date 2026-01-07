@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Chip, IconButton } from "@mui/material";
 import { useGetCalorieSummary } from '../../Api/Api'
+import AddIcon from "@mui/icons-material/Add";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -15,7 +16,7 @@ const CalorieTracking = () => {
     return (
         <Box sx={{ p: { xs: 0, sm: 2 } }}>
             {/* ---------------- ANALYTICS BOX ---------------- */}
-            <Grid container spacing={3} mb={5}>
+            <Grid container spacing={3} mb={5} mt={2}>
                 <Grid size={{ xs: 12, sm: 4, md: 4, lg: 3 }}>
                     <MacroRing
                         title="Calories"

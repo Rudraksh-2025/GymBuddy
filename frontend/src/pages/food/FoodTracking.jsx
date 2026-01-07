@@ -44,7 +44,7 @@ const FoodTracking = () => {
     return (
         <Box sx={{ p: { xs: 0, sm: 2 } }}>
             <Box sx={{ backgroundColor: "rgb(253, 253, 253)", boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", mt: 5, padding: 0, borderRadius: '10px' }}>
-                <Grid container justifyContent="space-between" alignItems="center" sx={{ p: { xs: 2, md: 3 } }}>
+                <Grid container justifyContent="space-between" alignItems="center" sx={{ p: { xs: 2 } }}>
                     <Grid size={{ xs: 12, sm: 6 }} sx={{ display: 'flex', flexDirection: 'row', gap: 2, mb: { xs: 1, md: 0 } }}>
                         <Typography variant="h6" fontWeight={590} >
                             Food Tracking
@@ -52,14 +52,7 @@ const FoodTracking = () => {
                     </Grid>
                     <Grid size={{ xs: 12, sm: 6 }} sx={{ display: 'flex', justifyContent: { xs: 'start', sm: 'end' }, gap: 2 }}>
                         <IconButton
-                            sx={{
-                                backgroundColor: 'var(--Blue)',
-                                color: 'white',
-                                borderRadius: '8px',
-                                fontSize: '1rem',
-                                fontWeight: 600,
-                                width: 150,
-                            }}
+                            className="blue-button"
                             onClick={() => setOpenAddFood(true)}
                         >
                             <AddIcon />
@@ -74,7 +67,14 @@ const FoodTracking = () => {
                 ) : Array.isArray(food?.data) && food?.data?.length > 0 ? (
                     <>
                         <TableContainer >
-                            <Table sx={{ '& .MuiTableCell-root': { fontSize: '15px', } }}>
+                            <Table sx={{
+                                '& .MuiTableCell-root': {
+                                    fontSize: '15px',
+                                },
+                                '& tbody tr:last-of-type td': {
+                                    borderBottom: 'none',
+                                },
+                            }}>
                                 <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
                                     <TableRow >
                                         <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787', borderTopLeftRadius: '10px', paddingLeft: '30px' }}>Name</TableCell>

@@ -5,6 +5,7 @@ import {
     LogoutOutlined,
     BarChartOutlined,
     CoffeeOutlined,
+    FireOutlined
 } from '@ant-design/icons';
 
 const icons = {
@@ -13,7 +14,8 @@ const icons = {
     FormOutlined,
     LogoutOutlined,
     BarChartOutlined,
-    CoffeeOutlined
+    CoffeeOutlined,
+    FireOutlined
 };
 
 export const menuList = [
@@ -57,7 +59,7 @@ export const menuList = [
         id: "calorie",
         name: "Calorie Tracking",
         path: "/home/calorie",
-        icon: icons.CoffeeOutlined,
+        icon: icons.FireOutlined,
         info: "Calorie Tracking Information",
     },
     {
