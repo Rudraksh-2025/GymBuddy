@@ -10,6 +10,7 @@ import weightRoutes from "./routes/weightRoutes.js"
 import exerciseRoutes from './routes/exerciseRoutes.js'
 import profileRoutes from './routes/profileRoutes.js'
 import foodRoutes from './routes/foodRoutes.js'
+import foodLogRoutes from './routes/foodLogRoutes.js'
 import cors from 'cors'
 import { auth } from './middleware/authMiddleware.js';
 import { updateStreak } from './middleware/streakMiddleware.js'
@@ -29,6 +30,7 @@ app.use('/api/food', foodRoutes)
 app.use("/api/weight", weightRoutes);
 app.use('/api/exercises', exerciseRoutes)
 app.use("/api/profile", profileRoutes);
+app.use('/api/foodLog', foodLogRoutes)
 
 
 app.get('/', (req, res) => res.send('Auth API running'));

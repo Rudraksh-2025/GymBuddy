@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Chip, IconButton } from "@mui/material";
-import { useGetCalorieSummary } from '../../Api/Api'
+import { useGetCalorieSummary, useGetFoods, useGetFoodLog } from '../../Api/Api'
 import AddIcon from "@mui/icons-material/Add";
-
+import AddFoodLog from "../../components/food/AddFoodLog";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import MacroRing from "../../components/food/MacroRing";
+import MealSection from "../../components/food/MealSection";
+import CustomDatePicker from "../../common/custom/CustomDatePicker";
 
 const CalorieTracking = () => {
+    const [openAddFood, setOpenAddFood] = useState()
+    const [selectedMeal, setSelectedMeal] = useState()
     const client = useQueryClient()
-
+    const { data: food, isLoading } = useGetFoods()
     const { data: analytics } = useGetCalorieSummary()
-
+    const [date, setDate] = useState(new Date());
+    const { data: foodLog } = useGetFoodLog()
 
     return (
         <Box sx={{ p: { xs: 0, sm: 2 } }}>
             {/* ---------------- ANALYTICS BOX ---------------- */}
+            <CustomDatePicker value={date} onChange={setDate} />
             <Grid container spacing={3} mb={5} mt={2}>
                 <Grid size={{ xs: 12, sm: 4, md: 4, lg: 3 }}>
                     <MacroRing
@@ -55,6 +61,58 @@ const CalorieTracking = () => {
                     />
                 </Grid>
             </Grid>
+
+            {/* ----------- MEAL SECTIONS ----------- */}
+            <Box sx={{ mt: 4 }}>
+
+                <MealSection
+                    title="Breakfast"
+                    onAddFood={() => {
+                        setSelectedMeal("breakfast");
+                        setOpenAddFood(true);
+                    }}
+                    data={foodLog?.data?.breakfast}
+
+                />
+
+                <MealSection
+                    title="Lunch"
+                    onAddFood={() => {
+                        setSelectedMeal("lunch");
+                        setOpenAddFood(true);
+                    }}
+                    data={foodLog?.data?.lunch}
+                />
+
+                <MealSection
+                    title="Dinner"
+                    onAddFood={() => {
+                        setSelectedMeal("dinner");
+                        setOpenAddFood(true);
+                    }}
+                    data={foodLog?.data?.dinner}
+                />
+
+                <MealSection
+                    title="Snacks"
+                    onAddFood={() => {
+                        setSelectedMeal("snacks");
+                        setOpenAddFood(true);
+                    }}
+                    data={foodLog?.data?.snacks}
+                />
+
+            </Box>
+
+            <AddFoodLog
+                open={openAddFood}
+                onClose={() => setOpenAddFood(false)}
+                foods={food?.data}
+                date={date}
+                defaultMeal={selectedMeal}
+                onSubmit={() => console.log('food created')}
+            />
+
 
             {/* ---------------- CHART ---------------- */}
             {/* <Grid size={{ xs: 12, md: 8 }}>

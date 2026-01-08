@@ -9,6 +9,7 @@ const CustomSelect = ({
     onChange,
     options,
     error,
+    theme = 'light',
     helperText,
     ...props
 }) => (
@@ -26,7 +27,10 @@ const CustomSelect = ({
                     height: 50,
                     display: 'flex',
                     alignItems: 'center',
-                    color: value ? 'inherit !important' : '#878787 !important',
+                    color: theme === 'dark' ? 'white' : value ? 'inherit !important' : '#878787 !important',
+                },
+                '& .MuiSelect-icon': {
+                    color: theme === 'dark' ? '#ffffff' : 'inherit',
                 },
                 '& .MuiOutlinedInput-notchedOutline': {
                     borderColor: '#E0E3E7 !important',

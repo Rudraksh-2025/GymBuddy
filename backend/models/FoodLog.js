@@ -27,7 +27,7 @@ const foodLogSchema = new mongoose.Schema(
 
         quantity: {
             type: Number,
-            default: 1, // servings
+            default: 1,
         },
 
         calories: { type: Number, required: true },

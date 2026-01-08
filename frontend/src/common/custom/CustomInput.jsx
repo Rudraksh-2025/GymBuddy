@@ -2,7 +2,7 @@ import React from "react";
 import { FormControl, InputLabel, FormHelperText } from "@mui/material";
 import { BootstrapInput } from "../custom/BootsrapInput";
 
-const CustomInput = ({ label, placeholder, name, formik, readOnly = false, type = "text", theme = 'dark' }) => {
+const CustomInput = ({ label, placeholder, name, formik, readOnly = false, value, type = "text", theme = 'dark' }) => {
     return (
 
         <FormControl variant="standard" fullWidth>

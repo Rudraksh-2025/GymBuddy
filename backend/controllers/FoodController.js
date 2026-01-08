@@ -119,7 +119,7 @@ export const getFoodSummary = async (req, res) => {
 export const createFood = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { name, calories, protein = 0, carbs = 0, fats = 0, isReusable = true } = req.body;
+        const { name, calories, protein = 0, carbs = 0, fats = 0, isReusable = true, servingSize } = req.body;
 
         if (!name || calories == null) {
             return res.status(400).json({ message: "Name and calories are required" });
@@ -132,6 +132,7 @@ export const createFood = async (req, res) => {
             protein,
             carbs,
             fats,
+            servingSize,
             isReusable,
         });
 

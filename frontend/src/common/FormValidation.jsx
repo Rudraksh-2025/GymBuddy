@@ -31,6 +31,8 @@ export const profileValidation = yup.object({
 });
 
 export const foodValidation = yup.object({
+    name: yup.string().required('Name is required'),
+    servingSize: yup.string().required('Serving Size is required'),
     calories: yup.number().required("Calories are required"),
     fats: yup.number().required('Fats is required'),
     carbs: yup.number().required('Carbs are required'),

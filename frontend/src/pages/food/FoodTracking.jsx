@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Chip, IconButton, Button } from "@mui/material";
-import { useGetFoods, useDeleteFood, useUpdateFood } from '../../Api/Api'
+import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, IconButton } from "@mui/material";
+import { useGetFoods, useDeleteFood } from '../../Api/Api'
 import AddIcon from "@mui/icons-material/Add";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import AddFoodDialog from "../../components/food/AddFoodDialog";
+import EditIcon from "@mui/icons-material/Edit";
+
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -15,9 +17,10 @@ const FoodTracking = () => {
     const [openDelete, setOpenDelete] = useState(false);
     const [name, setName] = useState('')
     const [selectedFoodId, setSelectedFoodId] = useState(null);
+    const [selectedFood, setSelectedFood] = useState()
     const { data: food, isLoading } = useGetFoods()
     const { mutate: deleteFood } = useDeleteFood()
-    const { mutate: updateFood } = useUpdateFood()
+
     const client = useQueryClient()
 
     const handleDeleteConfirm = () => {
@@ -39,7 +42,7 @@ const FoodTracking = () => {
     };
     const handleDeleteCancel = () => {
         setOpenDelete(false);
-        setSelectedWeightId(null);
+        setSelectedFoodId(null);
     };
     return (
         <Box sx={{ p: { xs: 0, sm: 2 } }}>
@@ -107,6 +110,15 @@ const FoodTracking = () => {
                                             </TableCell>
                                             <TableCell>
                                                 <IconButton
+                                                    sx={{ color: '#2563EB' }} // blue
+                                                    onClick={() => {
+                                                        setOpenAddFood(true);
+                                                        setSelectedFood(food);
+                                                    }}
+                                                >
+                                                    <EditIcon />
+                                                </IconButton>
+                                                <IconButton
                                                     sx={{ color: 'red' }}
                                                     onClick={() => {
                                                         setSelectedFoodId(food._id);
@@ -133,6 +145,8 @@ const FoodTracking = () => {
                 <AddFoodDialog
                     open={openAddFood}
                     onClose={() => setOpenAddFood(false)}
+                    selectedFood={selectedFood}
+                    setSelectedFood={setSelectedFood}
                 />
                 <DeleteConfirm
                     open={openDelete}

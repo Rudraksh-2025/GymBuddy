@@ -18,10 +18,15 @@ const foodSchema = new mongoose.Schema(
         protein: { type: Number, default: 0 },
         carbs: { type: Number, default: 0 },
         fats: { type: Number, default: 0 },
+        servingSize: {
+            type: String,
+            required: true,
+            trim: true,
+        },
 
         isReusable: {
             type: Boolean,
-            default: true, // saved food
+            default: true,
         },
     },
     { timestamps: true }

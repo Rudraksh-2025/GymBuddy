@@ -181,6 +181,7 @@ export const useGetExerciseProgress = (exerciseId, start, end) => {
     })
 }
 
+
 // add weight
 export const useCreateWeight = (onSuccess, onError) => {
     return useMutation({
@@ -228,6 +229,7 @@ export const useDeleteWeight = (onSuccess, onError) => {
         onError,
     });
 }
+
 
 // get food summary
 export const useGetCalorieSummary = () => {
@@ -286,6 +288,52 @@ export const useDeleteFood = (onSuccess, onError) => {
 }
 
 
+// get foodLog
+export const useGetFoodLog = () => {
+    return useQuery({
+        queryKey: ['foodLogs'],
+        queryFn: async () => {
+            const response = await axiosInstance.get('/foodLog')
+            return response.data
+        },
+        staleTime: 15 * 60 * 1000,
+        placeholderData: keepPreviousData,
+    })
+}
+// Get Food Log by id
+export const useGetFoodLogById = () => {
+    return useQuery({
+        queryKey: ['foodLog', id],
+        queryFn: async (id) => {
+            const response = await axiosInstance.get(`/foodLog/${id}`)
+            return response.data
+        }
+    })
+}
+// add foodLog
+export const useCreateFoodLog = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (data) => {
+            const response = await axiosInstance.post('/foodLog', data)
+            return response.data
+        },
+        onSuccess,
+        onError
+    })
+}
+// delete foodLog
+export const useDeleteFoodLog = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (id) => {
+            const { data } = await axiosInstance.delete(`/foodLog/${id}`);
+            return data;
+        },
+        onSuccess,
+        onError,
+    });
+}
+
+
 // get User Metrices
 export const useGetUserMetrices = () => {
     return useQuery({
@@ -323,7 +371,6 @@ export const useLogin = () => {
         },
     });
 };
-
 // register
 export const useRegister = () => {
     const navigate = useNavigate();
@@ -343,7 +390,6 @@ export const useRegister = () => {
         },
     });
 };
-
 // verification
 export const useVerification = () => {
     const navigate = useNavigate();
