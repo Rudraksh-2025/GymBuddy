@@ -7,6 +7,7 @@ import { BootstrapInput } from "../../common/custom/BootsrapInput";
 import { useCreateFoodLog } from '../../Api/Api'
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { useGetFoods } from '../../Api/Api'
 
 const MEALS = [
     { label: "Breakfast", value: "breakfast" },
@@ -18,17 +19,17 @@ const MEALS = [
 const AddFoodLog = ({
     open,
     onClose,
-    foods = [],
     date,
     defaultMeal = "breakfast",
     onSubmit,
 }) => {
     const queryClient = useQueryClient();
-    const { mutate, isPending } = useCreateFoodLog(
+    const { data: foods } = useGetFoods()
+    const { mutate } = useCreateFoodLog(
         () => {
             toast.success("Food Log added");
-            queryClient.invalidateQueries(["foodLogs"]);
-            queryClient.invalidateQueries(["foodSummary"]);
+            queryClient.invalidateQueries({ queryKey: ["foodLogs"] });
+            queryClient.invalidateQueries({ queryKey: ["foodSummary"] });
             onClose();
         },
         (err) => {
@@ -43,7 +44,7 @@ const AddFoodLog = ({
             mealType: defaultMeal,
         },
         onSubmit: (values) => {
-            const selectedFood = foods.find((f) => f._id === values.foodId);
+            const selectedFood = foods?.data?.find((f) => f._id === values.foodId);
             if (!selectedFood) {
                 toast.error("Please select food");
                 return;
@@ -70,8 +71,8 @@ const AddFoodLog = ({
 
     // ---------- DERIVED DATA ----------
     const selectedFood = useMemo(
-        () => foods.find((f) => f._id === foodForm.values.foodId),
-        [foods, foodForm.values.foodId]
+        () => foods?.data?.find((f) => f._id === foodForm.values.foodId),
+        [foods?.data, foodForm.values.foodId]
     );
 
     const qty = Number(foodForm.values.quantity || 0);
@@ -99,7 +100,7 @@ const AddFoodLog = ({
                     value={foodForm.values.foodId}
                     theme='dark'
                     onChange={foodForm.handleChange}
-                    options={foods.map((f) => ({
+                    options={foods?.data?.map((f) => ({
                         label: f.name,
                         value: f._id,
                     }))}

@@ -35,7 +35,7 @@ const Verification = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                bgcolor: "var(--DarkBlue)",
+                // bgcolor: "var(--DarkBlue)",
                 backgroundPosition: "center",
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",

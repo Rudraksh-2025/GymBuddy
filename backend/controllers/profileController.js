@@ -29,6 +29,10 @@ export const getProfile = async (req, res) => {
         neckCircumference: user.neckCircumference || 0,
         waistCircumference: user.waistCircumference || 0,
         targetWeight: user.targetWeight || 0,
+        age: user.age || 0,
+        activityLevel: user.activityLevel || "",
+        goalType: user.goalType || "",
+        weight: user.weight || 0,
         streak: user.streak || 0,
       },
     });
@@ -51,6 +55,11 @@ export const updateProfile = async (req, res) => {
       waistCircumference,
       targetWeight,
       height,
+      age,
+      gender,
+      activityLevel,
+      goalType,
+      weight,
     } = req.body;
 
     const updateData = {};
@@ -69,6 +78,17 @@ export const updateProfile = async (req, res) => {
 
     if (height !== undefined)
       updateData.height = Number(height);
+    if (age !== undefined)
+      updateData.age = Number(age);
+    if (gender !== undefined)
+      updateData.gender = gender;
+    if (activityLevel !== undefined)
+      updateData.activityLevel = activityLevel;
+    if (goalType !== undefined)
+      updateData.goalType = goalType;
+    if (weight !== undefined)
+      updateData.weight = Number(weight);
+
 
 
     // 🔹 Upload profile photo to Cloudinary
@@ -87,7 +107,6 @@ export const updateProfile = async (req, res) => {
       updateData.profilePhoto = uploadResult.secure_url;
     }
 
-    console.log(updateData)
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({ message: "No fields to update" });
     }
@@ -107,7 +126,12 @@ export const updateProfile = async (req, res) => {
         neckCircumference: updatedUser.neckCircumference,
         waistCircumference: updatedUser.waistCircumference,
         targetWeight: updatedUser.targetWeight,
-        height: updatedUser.height
+        height: updatedUser.height,
+        weight: updatedUser.weight,
+        age: updatedUser.age,
+        gender: updatedUser.gender,
+        activityLevel: updatedUser.activityLevel,
+        goalType: updatedUser.goalType,
       },
     });
   } catch (error) {
@@ -115,6 +139,39 @@ export const updateProfile = async (req, res) => {
       success: false,
       message: "Failed to update profile",
     });
+  }
+};
+
+
+export const recalcDailyGoal = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    const goals = calculateDailyGoals({
+      weight: user.weight,
+      height: user.height,
+      age: user.age,
+      gender: user.gender,
+      activityLevel: user.activityLevel,
+      goalType: user.goalType,
+    });
+
+    await DailyGoal.findOneAndUpdate(
+      { userId: user._id },
+      {
+        calories: goals.calories,
+        protein: goals.protein,
+        carbs: goals.carbs,
+        fats: goals.fats,
+        tdee: goals.tdee,
+        bmr: goals.bmr
+      },
+      { upsert: true, new: true }
+    );
+
+    res.json({ success: true, message: "Goals updated" });
+  } catch (e) {
+    res.status(500).json({ success: false, message: "Failed to update goals" });
   }
 };
 

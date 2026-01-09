@@ -23,6 +23,31 @@ const userSchema = new mongoose.Schema({
     max: 300,
     required: true,
   },
+  age: {
+    type: Number,
+    min: 10,
+    max: 100,
+    required: true,
+  },
+
+  weight: {
+    type: Number, // kg
+    min: 20,
+    max: 300,
+    required: true,
+  },
+
+  activityLevel: {
+    type: String,
+    enum: ["sedentary", "light", "moderate", "active", "very_active"],
+    required: true,
+  },
+
+  goalType: {
+    type: String,
+    enum: ["fat_loss", "maintain", "muscle_gain"],
+    required: true,
+  },
   gender: {
     type: String,
     enum: ["male", "female"],

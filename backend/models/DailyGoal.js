@@ -13,6 +13,8 @@ const dailyGoalSchema = new mongoose.Schema(
         protein: { type: Number, required: true },  // grams
         carbs: { type: Number, required: true },    // grams
         fats: { type: Number, required: true },     // grams
+        bmr: { type: Number, required: true },
+        tdee: { type: Number, required: true },
     },
     { timestamps: true }
 );

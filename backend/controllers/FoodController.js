@@ -104,6 +104,8 @@ export const getFoodSummary = async (req, res) => {
                     averageCalories: weeklyAverageCalories,
                     totalCalories: weeklyTotalCalories,
                 },
+                bmr: goal?.bmr ?? 0,
+                tdee: goal?.tdee ?? 0,
             },
         });
     } catch (error) {

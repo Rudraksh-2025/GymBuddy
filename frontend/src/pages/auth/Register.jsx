@@ -24,7 +24,11 @@ const Register = () => {
             name: "",
             password: "",
             height: "",
-            gender: ""
+            weight: "",
+            age: "",
+            gender: "",
+            activityLevel: "",
+            goalType: "",
         },
         validationSchema: RegisterValidation,
         onSubmit: (values) => mutate(values),
@@ -39,7 +43,7 @@ const Register = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                bgcolor: "var(--DarkBlue)",
+                // bgcolor: "var(--DarkBlue)",
                 backgroundPosition: "center",
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",
@@ -132,13 +136,13 @@ const Register = () => {
                         {/* Height */}
                         <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
                             <InputLabel shrink htmlFor="height" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
-                                Height
+                                Height (cm)
                             </InputLabel>
                             <BootstrapInput
                                 id="height"
                                 name="height"
                                 type="number"
-                                placeholder="Enter your Height(cm)"
+                                placeholder="Enter your Height"
                                 value={loginForm.values.height}
                                 onChange={loginForm.handleChange}
                             />
@@ -157,6 +161,57 @@ const Register = () => {
                         />
 
                     </Box>
+                    <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
+                        <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
+                            <InputLabel shrink htmlFor="weight" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>Weight (kg)</InputLabel>
+                            <BootstrapInput
+                                id="weight"
+                                name="weight"
+                                type="number"
+                                placeholder="Enter your Weight"
+                                value={loginForm.values.weight}
+                                onChange={loginForm.handleChange}
+                            />
+                        </FormControl>
+                        <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
+                            <InputLabel shrink htmlFor="age" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>Age</InputLabel>
+                            <BootstrapInput
+                                id="age"
+                                name="age"
+                                type="number"
+                                placeholder="Enter your Age"
+                                value={loginForm.values.age}
+                                onChange={loginForm.handleChange}
+                            />
+                        </FormControl>
+                    </Box>
+                    <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
+                        <CustomSelect
+                            label="Activity Level"
+                            name="activityLevel"
+                            value={loginForm.values.activityLevel}
+                            onChange={loginForm.handleChange}
+                            options={[
+                                { label: "Sedentary", value: "sedentary" },
+                                { label: "Light", value: "light" },
+                                { label: "Moderate", value: "moderate" },
+                                { label: "Active", value: "active" },
+                                { label: "Very Active", value: "very_active" },
+                            ]}
+                        />
+                        <CustomSelect
+                            label="Goal"
+                            name="goalType"
+                            value={loginForm.values.goalType}
+                            onChange={loginForm.handleChange}
+                            options={[
+                                { label: "Fat Loss", value: "fat_loss" },
+                                { label: "Maintain", value: "maintain" },
+                                { label: "Muscle Gain", value: "muscle_gain" },
+                            ]}
+                        />
+                    </Box>
+
 
                     {/* Forgot Password */}
                     <Box sx={{ textAlign: "right", mb: 3, mt: 2 }}>

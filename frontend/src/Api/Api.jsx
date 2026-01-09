@@ -289,11 +289,11 @@ export const useDeleteFood = (onSuccess, onError) => {
 
 
 // get foodLog
-export const useGetFoodLog = () => {
+export const useGetFoodLog = (date) => {
     return useQuery({
-        queryKey: ['foodLogs'],
+        queryKey: ['foodLogs', date],
         queryFn: async () => {
-            const response = await axiosInstance.get('/foodLog')
+            const response = await axiosInstance.get('/foodLog', { date })
             return response.data
         },
         staleTime: 15 * 60 * 1000,
@@ -301,7 +301,7 @@ export const useGetFoodLog = () => {
     })
 }
 // Get Food Log by id
-export const useGetFoodLogById = () => {
+export const useGetFoodLogById = (id) => {
     return useQuery({
         queryKey: ['foodLog', id],
         queryFn: async (id) => {
