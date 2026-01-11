@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import GrayPlus from '../../assets/images/GrayPlus.svg'
 import CustomInput from "../../common/custom/CustomInput";
 import CloseIcon from "@mui/icons-material/Close";
+import CustomSelect from "../../common/custom/CustomSelect";
 
 const Profile = () => {
     const [edit, setedit] = useState(false);
@@ -60,6 +61,11 @@ const Profile = () => {
             waistCircumference: profileData.data.waistCircumference || "0",
             targetWeight: profileData.data.targetWeight || "0",
             profilePhoto: profileData.data.profilePhoto || "",
+            age:profileData.data.age || 0,
+            height :profileData.data.height ||0,
+            weight:profileData.data.weight,
+            activityLevel:profileData.data.activityLevel||'',
+            goalType:profileData.data.goalType||''
         });
     }, [profileData?.data]);
 
@@ -73,6 +79,24 @@ const Profile = () => {
             </Typography>
         </Box>
     );
+    const activityLabels=[
+    { label: "Sedentary", value: "sedentary" },
+    { label: "Light", value: "light" },
+    { label: "Moderate", value: "moderate" },
+    { label: "Active", value: "active" },
+    { label: "Very Active", value: "very_active" },
+  ]
+const selectedActivity = activityLabels.find(
+  (item) => item.value === profileForm.values.activityLevel
+);
+  const goalTypeLabel=[
+    { label: "Fat Loss", value: "fat_loss" },
+    { label: "Maintain", value: "maintain" },
+    { label: "Muscle Gain", value: "muscle_gain" },
+  ]
+  const selectedGoalType = goalTypeLabel.find(
+  (item) => item.value === profileForm.values.goalType
+);
     return (
         <Box sx={{ p: { xs: 0, sm: 1 } }}>
             <Box sx={{ backgroundColor: "#404040", p: 3, borderRadius: '10px', boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", mb: 3 }}>
@@ -138,8 +162,62 @@ const Profile = () => {
                                 />
                             ) : displayField("Target Weight", `${profileForm.values.targetWeight} kg`)}
                         </Grid>
+   <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
+                            {edit ? (
+                                <CustomInput
+                                    label="Weight"
+                                    placeholder="Enter Weight (kg)"
+                                    name="weight"
+                                    formik={profileForm}
+                                />
+                            ) : displayField("Weight", `${profileForm.values.weight} kg`)}
+                        </Grid>
+   <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
+                            {edit ? (
+                                <CustomInput
+                                    label="Age"
+                                    placeholder="Enter Age"
+                                    name="age"
+                                    formik={profileForm}
+                                />
+                            ) : displayField("Age", `${profileForm.values.age}`)}
+                        </Grid>
+                         <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
+                            {edit ? (
+                                <CustomInput
+                                    label="Height"
+                                    placeholder="Enter Height (cm)"
+                                    name="height"
+                                    formik={profileForm}
+                                />
+                            ) : displayField("Height", `${profileForm.values.height} cm`)}
+                        </Grid>
+                          <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
+                            {edit ? (
+                            <CustomSelect
+  label="Activity Level"
+  name="activityLevel"
+  value={profileForm.values.activityLevel}
+  onChange={profileForm.handleChange}
+  options={activityLabels}
+/>
 
+                         ) : displayField("Activity Level", selectedActivity?.label)}
 
+                        </Grid>
+                            <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
+                            {edit ? (
+                           <CustomSelect
+  label="Goal"
+  name="goalType"
+  value={profileForm.values.goalType}
+  onChange={profileForm.handleChange}
+  options={goalTypeLabel}
+/>
+
+                           ) : displayField("Goal", selectedGoalType?.label)}
+
+                        </Grid>
                         {/* images */}
                         <Grid size={12}>
                             <Grid container gap={4} sx={{ mt: 1 }}>
@@ -303,4 +381,9 @@ const super_admin = {
     targetWeight: "",
     profilePhoto: "",
     email: "",
+    weight:"",
+    height:"",
+    age:"",
+    activityLevel:"",
+    goalType:""
 };

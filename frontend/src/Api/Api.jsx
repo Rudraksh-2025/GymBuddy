@@ -231,12 +231,25 @@ export const useDeleteWeight = (onSuccess, onError) => {
 }
 
 
+//  Update user goals
+export const useUpdateDailyGoal = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (data ) => {
+            const response = await axiosInstance.put(`/food/summary`, data);
+            return response.data;
+        },
+        onSuccess,
+        onError,
+    });
+};
 // get food summary
-export const useGetCalorieSummary = () => {
+export const useGetCalorieSummary = (date) => {
     return useQuery({
-        queryKey: ['foodSummary'],
+        queryKey: ['foodSummary',date],
         queryFn: async () => {
-            const response = await axiosInstance.get('/food/summary')
+            const response = await axiosInstance.get('/food/summary',{
+                params:{date}
+            })
             return response.data
         },
         staleTime: 15 * 60 * 1000,
@@ -293,7 +306,10 @@ export const useGetFoodLog = (date) => {
     return useQuery({
         queryKey: ['foodLogs', date],
         queryFn: async () => {
-            const response = await axiosInstance.get('/foodLog', { date })
+         const response = await axiosInstance.get('/foodLog', {
+  params: { date }
+});
+
             return response.data
         },
         staleTime: 15 * 60 * 1000,

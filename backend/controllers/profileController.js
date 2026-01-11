@@ -116,6 +116,7 @@ export const updateProfile = async (req, res) => {
       updateData,
       { new: true }
     ).select("-passwordHash -refreshTokens");
+    
 
     res.status(200).json({
       success: true,
@@ -142,36 +143,4 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-
-export const recalcDailyGoal = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-
-    const goals = calculateDailyGoals({
-      weight: user.weight,
-      height: user.height,
-      age: user.age,
-      gender: user.gender,
-      activityLevel: user.activityLevel,
-      goalType: user.goalType,
-    });
-
-    await DailyGoal.findOneAndUpdate(
-      { userId: user._id },
-      {
-        calories: goals.calories,
-        protein: goals.protein,
-        carbs: goals.carbs,
-        fats: goals.fats,
-        tdee: goals.tdee,
-        bmr: goals.bmr
-      },
-      { upsert: true, new: true }
-    );
-
-    res.json({ success: true, message: "Goals updated" });
-  } catch (e) {
-    res.status(500).json({ success: false, message: "Failed to update goals" });
-  }
-};
 

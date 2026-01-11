@@ -5,7 +5,6 @@ import User from '../models/User.js'
 import { signAccessToken, signRefreshToken, signEmailToken, verifyRefreshToken, verifyEmailToken } from '../utils/jwt.js';
 import { sendVerificationEmail } from '../utils/mailer.js';
 import DailyGoal from '../models/DailyGoal.js';
-import { calculateDailyGoals } from '../utils/calculateDailyGoals.js';
 
 const SALT_ROUNDS = 12;
 const REFRESH_EXPIRES_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
@@ -27,25 +26,7 @@ export const register = async (req, res) => {
 
         const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
         const user = new User({ name, email, passwordHash, height, gender, age, weight, activityLevel, goalType });
-        const goals = calculateDailyGoals({
-            weight,
-            height,
-            age,
-            gender,
-            activityLevel,
-            goalType,
-        });
         await user.save();
-
-        await DailyGoal.create({
-            userId: user._id,
-            calories: goals.calories,
-            protein: goals.protein,
-            carbs: goals.carbs,
-            fats: goals.fats,
-            bmr: goals.bmr,
-            tdee: goals.tdee
-        });
 
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit
