@@ -109,7 +109,8 @@ const FoodTracking = () => {
                                                 {food.fats || "0"} gm
                                             </TableCell>
                                             <TableCell>
-                                                <IconButton
+                                               {
+                                                !food.isGlobal&&( <IconButton
                                                     sx={{ color: '#2563EB' }} // blue
                                                     onClick={() => {
                                                         setOpenAddFood(true);
@@ -117,7 +118,8 @@ const FoodTracking = () => {
                                                     }}
                                                 >
                                                     <EditIcon />
-                                                </IconButton>
+                                                </IconButton>)
+                                               }
                                                 <IconButton
                                                     sx={{ color: 'red' }}
                                                     onClick={() => {

@@ -26,47 +26,42 @@ const MacroRing = ({
             </Typography> */}
 
             <Box
-                sx={{
-                    position: "relative",
-                    display: "center",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <CircularProgress
-                    variant="determinate"
-                    value={100}
-                    size={150}
-                    thickness={4}
-                    sx={{ color: "#E5E7EB" }}
-                />
+  sx={{
+    position: "relative",
+    width: 150,
+    height: 150,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    mx: "auto",
+  }}
+>
+  <CircularProgress
+    variant="determinate"
+    value={100}
+    size={150}
+    thickness={4}
+    sx={{ color: "#E5E7EB", position: "absolute" }}
+  />
 
-                <CircularProgress
-                    variant="determinate"
-                    value={progress}
-                    size={150}
-                    thickness={4}
-                    sx={{
-                        color,
-                        position: "absolute",
-                        left: 0,
-                    }}
-                />
+  <CircularProgress
+    variant="determinate"
+    value={progress}
+    size={150}
+    thickness={4}
+    sx={{ color, position: "absolute" }}
+  />
 
-                <Box
-                    sx={{
-                        position: "absolute",
-                        textAlign: "center",
-                    }}
-                >
-                    <Typography fontSize="24px" fontWeight={700}>
-                        {remaining}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Remaining {unit}
-                    </Typography>
-                </Box>
-            </Box>
+  <Box textAlign="center">
+    <Typography fontSize="24px" fontWeight={700}>
+      {remaining}
+    </Typography>
+    <Typography variant="body2" color="text.secondary">
+      Remaining {unit}
+    </Typography>
+  </Box>
+</Box>
+
         </Box>
     );
 };

@@ -3,119 +3,233 @@ import mongoose from "mongoose";
 import DailyGoal from "../models/DailyGoal.js";
 import FoodLog from "../models/FoodLog.js";
 import Food from "../models/Food.js";
+import { calcMacrosFromCalories } from "../utils/calcMacrosFromCalories.js";
+import { calcBMR, calcTDEE, applyGoalType, calcMacrosFromCaloriesPct } from "../utils/nutrition.js";
+import User from '../models/User.js'
 
 
 export const getFoodSummary = async (req, res) => {
-    try {
-        const userId = new mongoose.Types.ObjectId(req.user.id);
-
-        // ---------- DATE RANGES ----------
-        const startOfToday = new Date();
-        startOfToday.setHours(0, 0, 0, 0);
-
-        const endOfToday = new Date();
-        endOfToday.setHours(23, 59, 59, 999);
-
-        const startOfWeek = new Date(startOfToday);
-        startOfWeek.setDate(startOfWeek.getDate() - 6);
-
-        // ---------- FETCH DAILY GOAL ----------
-        const goal = await DailyGoal.findOne({ userId }).lean();
-
-        const goalData = {
-            calories: goal?.calories ?? 0,
-            protein: goal?.protein ?? 0,
-            carbs: goal?.carbs ?? 0,
-            fats: goal?.fats ?? 0,
-        };
-
-        // ---------- TODAY CONSUMED (CAL + MACROS) ----------
-        const todayAgg = await FoodLog.aggregate([
-            {
-                $match: {
-                    userId,
-                    date: { $gte: startOfToday, $lte: endOfToday },
-                },
-            },
-            {
-                $group: {
-                    _id: null,
-                    calories: { $sum: "$calories" },
-                    protein: { $sum: "$protein" },
-                    carbs: { $sum: "$carbs" },
-                    fats: { $sum: "$fats" },
-                },
-            },
-        ]);
-
-        const consumedData = {
-            calories: todayAgg[0]?.calories || 0,
-            protein: todayAgg[0]?.protein || 0,
-            carbs: todayAgg[0]?.carbs || 0,
-            fats: todayAgg[0]?.fats || 0,
-        };
-
-        // ---------- WEEKLY CALORIE TOTAL ----------
-        const weeklyAgg = await FoodLog.aggregate([
-            {
-                $match: {
-                    userId,
-                    date: { $gte: startOfWeek, $lte: endOfToday },
-                },
-            },
-            {
-                $group: {
-                    _id: {
-                        day: {
-                            $dateToString: { format: "%Y-%m-%d", date: "$date" },
-                        },
-                    },
-                    calories: { $sum: "$calories" },
-                },
-            },
-        ]);
-
-        const caloriesByDay = weeklyAgg.reduce((acc, d) => {
-            acc[d._id.day] = d.calories;
-            return acc;
-        }, {});
-
-        let weeklyTotalCalories = 0;
-        for (let i = 0; i < 7; i++) {
-            const d = new Date(startOfWeek);
-            d.setDate(d.getDate() + i);
-            const key = d.toISOString().split("T")[0];
-            weeklyTotalCalories += caloriesByDay[key] || 0;
-        }
-
-        const weeklyAverageCalories = Number(
-            (weeklyTotalCalories / 7).toFixed(2)
-        );
-
-        // ---------- FINAL RESPONSE ----------
-        return res.json({
-            success: true,
-            data: {
-                today: {
-                    goal: goalData,
-                    consumed: consumedData,
-                },
-                weekly: {
-                    averageCalories: weeklyAverageCalories,
-                    totalCalories: weeklyTotalCalories,
-                },
-                bmr: goal?.bmr ?? 0,
-                tdee: goal?.tdee ?? 0,
-            },
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: "Failed to fetch food summary",
-        });
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const user = await User.findById(userId).lean();
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
+    let goal = await DailyGoal.findOne({ userId }).lean();
+
+    let bmr, tdee, calories, protein, carbs, fats, macrosPct;
+
+    // ---------- AUTO CALCULATE IF NOT SET ----------
+    if (!goal) {
+      bmr = calcBMR(user);
+      tdee = calcTDEE(bmr, user.activityLevel);
+      calories = Math.round(applyGoalType(tdee, user.goalType));
+
+      macrosPct = { protein: 25, carbs: 50, fats: 25 };
+
+      const grams = calcMacrosFromCaloriesPct(calories, macrosPct);
+
+      protein = grams.protein;
+      carbs = grams.carbs;
+      fats = grams.fats;
+    } 
+    // ---------- USE SAVED GOALS ----------
+    else {
+      calories = goal.calories;
+      protein = goal.protein;
+      carbs = goal.carbs;
+      fats = goal.fats;
+      macrosPct = {
+        protein: goal.proteinPct,
+        carbs: goal.carbsPct,
+        fats: goal.fatsPct,
+      };
+      bmr = goal.bmr;
+      tdee = goal.tdee;
+    }
+
+    // ---------- BASE DATE (FILTER) ----------
+    const baseDate = req.query.date
+      ? new Date(req.query.date)
+      : new Date();
+
+    if (isNaN(baseDate.getTime())) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid date format",
+      });
+    }
+
+    // ---------- DATE RANGES ----------
+    const startOfDay = new Date(baseDate);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(baseDate);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const startOfWeek = new Date(startOfDay);
+    startOfWeek.setDate(startOfWeek.getDate() - 6);
+
+    // ---------- DAY CONSUMED (CAL + MACROS) ----------
+    const todayAgg = await FoodLog.aggregate([
+      {
+        $match: {
+          userId,
+          date: { $gte: startOfDay, $lte: endOfDay },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          calories: { $sum: "$calories" },
+          protein: { $sum: "$protein" },
+          carbs: { $sum: "$carbs" },
+          fats: { $sum: "$fats" },
+        },
+      },
+    ]);
+
+    const consumedData = {
+      calories: todayAgg[0]?.calories || 0,
+      protein: todayAgg[0]?.protein || 0,
+      carbs: todayAgg[0]?.carbs || 0,
+      fats: todayAgg[0]?.fats || 0,
+    };
+
+    // ---------- WEEKLY CALORIE TOTAL (ENDING ON BASE DATE) ----------
+    const weeklyAgg = await FoodLog.aggregate([
+      {
+        $match: {
+          userId,
+          date: { $gte: startOfWeek, $lte: endOfDay },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            day: {
+              $dateToString: { format: "%Y-%m-%d", date: "$date" },
+            },
+          },
+          calories: { $sum: "$calories" },
+        },
+      },
+    ]);
+
+    const caloriesByDay = weeklyAgg.reduce((acc, d) => {
+      acc[d._id.day] = d.calories;
+      return acc;
+    }, {});
+
+    let weeklyTotalCalories = 0;
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(startOfWeek);
+      d.setDate(d.getDate() + i);
+      const key = d.toISOString().split("T")[0];
+      weeklyTotalCalories += caloriesByDay[key] || 0;
+    }
+
+    const weeklyAverageCalories = Number(
+      (weeklyTotalCalories / 7).toFixed(2)
+    );
+
+    // ---------- FINAL RESPONSE ----------
+    return res.json({
+      success: true,
+      data: {
+        date: startOfDay, // reference date used
+        today: {
+          goal: { calories, protein, carbs, fats },
+          consumed: consumedData,
+        },
+        weekly: {
+          averageCalories: weeklyAverageCalories,
+          totalCalories: weeklyTotalCalories,
+        },
+        macrosPct,
+    bmr,
+    tdee,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch food summary",
+    });
+  }
 };
+
+export const updateDailyGoal = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    let { calories, proteinPct, carbsPct, fatsPct } = req.body;
+
+
+    if (calories == null) {
+      return res.status(400).json({
+        success: false,
+        message: "Calories goal is required",
+      });
+    }
+
+    calories = Number(calories);
+    proteinPct = Number(proteinPct);
+    carbsPct = Number(carbsPct);
+    fatsPct = Number(fatsPct);
+
+    if (
+      [calories, proteinPct, carbsPct, fatsPct].some((v) => Number.isNaN(v))
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid numeric values",
+      });
+    }
+
+    const totalPct = proteinPct + carbsPct + fatsPct;
+    if (totalPct !== 100) {
+      return res.status(400).json({
+        success: false,
+        message: "Macro percentages must total 100%",
+      });
+    }
+
+    // 🔥 AUTO CALCULATE MACROS IN GRAMS
+    const { protein, carbs, fats } = calcMacrosFromCalories(calories, {
+      proteinPct,
+      carbsPct,
+      fatsPct,
+    });
+
+    const goal = await DailyGoal.findOneAndUpdate(
+      { userId },
+      {
+        calories,
+        protein,
+        carbs,
+        fats,
+        proteinPct,
+        carbsPct,
+        fatsPct,
+      },
+      { new: true, upsert: true }
+    );
+
+    res.json({
+      success: true,
+      message: "Daily goals updated",
+      data: goal,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update daily goals",
+    });
+  }
+};
+
 
 // CREATE FOOD
 export const createFood = async (req, res) => {
@@ -136,6 +250,7 @@ export const createFood = async (req, res) => {
             fats,
             servingSize,
             isReusable,
+             isGlobal: false,
         });
 
         res.status(201).json({
@@ -152,20 +267,17 @@ export const createFood = async (req, res) => {
 
 // GET ALL FOODS (USER LIBRARY)
 export const getAllFoods = async (req, res) => {
-    try {
-        const foods = await Food.find({ userId: req.user.id })
-            .sort({ createdAt: -1 });
+  try {
+    const userId = req.user.id;
 
-        res.json({
-            success: true,
-            data: foods,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to fetch foods",
-        });
-    }
+    const foods = await Food.find({
+      $or: [{ isGlobal: true }, { userId }],
+    }).sort({ name: 1 });
+
+    res.json({ success: true, data: foods });
+  } catch (e) {
+    res.status(500).json({ success: false, message: "Failed to fetch foods" });
+  }
 };
 
 // UPDATE FOOD BY ID
