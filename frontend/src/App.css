@@ -140,6 +140,22 @@ body {
 .blue-button:hover{
     background-color: var(--Blue)!important;
 }
+.glass-btn{
+    padding-inline: 8px!important;
+    border-radius: 12px!important;
+    font-size: 0.9rem!important;
+    font-weight: 600!important;
+    color:white!important;
+    background: rgba(255,255,255,0.15)!important;
+    backdrop-filter: blur(8px)!important;
+    border: 1px solid rgba(255,255,255,0.25)!important;
+    box-shadow: inset 0 0 6px rgba(255,255,255,0.25),
+            0 4px 14px rgba(0,0,0,0.4)!important;
+          
+}
+.glass-btn:hover{
+     background: rgba(255,255,255,0.22)!important;
+}
 /* Chrome, Safari, Edge */
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
@@ -151,6 +167,97 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+/* ================= GLASS THEME — react-date-range ================= */
+
+.rdrCalendarWrapper {
+  background: transparent !important;
+  color: white;
+  font-family: inherit;
+}
+
+/* Month container */
+.rdrMonth {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 8px;
+}
+
+/* Month title (March 2026) */
+.rdrMonthName {
+  color: white;
+  font-weight: 600;
+}
+
+/* Week day labels */
+.rdrWeekDay {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+/* Day cells */
+.rdrDay {
+  color: white;
+}
+
+.rdrDayNumber span {
+  color: white;
+}
+
+/* Hover day */
+.rdrDayHovered .rdrDayNumber span {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+}
+
+/* Today */
+.rdrDayToday .rdrDayNumber span:after {
+  background: #8b5cf6;
+}
+
+/* Selected day */
+.rdrDaySelected .rdrDayNumber span {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.9);
+}
+
+/* In-range background (if using ranges) */
+.rdrDayInRange .rdrDayNumber span {
+  background: rgba(139, 92, 246, 0.35);
+}
+
+/* Range edges */
+.rdrDayStartPreview .rdrDayNumber span,
+.rdrDayEndPreview .rdrDayNumber span {
+  background: rgba(139, 92, 246, 0.55);
+}
+
+/* Disabled days */
+.rdrDayDisabled {
+  background: transparent;
+}
+
+.rdrDayDisabled span {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* Navigation buttons */
+.rdrNextPrevButton {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+  border-radius: 8px;
+}
+
+.rdrNextPrevButton i {
+  border-color: white;
+}
+
+/* Remove white borders */
+.rdrMonths {
+  background: transparent;
+}
+
 
 
 

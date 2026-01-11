@@ -70,40 +70,150 @@ const AddExercise = ({ open, onClose, onSubmit, muscle, defaultValues }) => {
 
 
     return (
-        <Dialog open={open} onClose={resetForm} maxWidth="xs" fullWidth>
-            <DialogTitle >
-                <Typography sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Enter Exercise Name</Typography>
-            </DialogTitle>
+        <Dialog
+  open={open}
+  onClose={resetForm}
+  maxWidth="xs"
+  fullWidth
+  BackdropProps={{
+    sx: {
+      backdropFilter: "blur(4px)",
+      backgroundColor: "rgba(0,0,0,0.55)",
+    },
+  }}
+  PaperProps={{
+    sx: {
+      borderRadius: "22px",
+      position: "relative",
+      overflow: "hidden",
 
-            <DialogContent>
-                <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-                    <InputLabel shrink htmlFor="bootstrap-input-exerciseName" sx={{ fontSize: '1.4rem' }}>
-                        Exercise Name :
-                    </InputLabel>
-                    <BootstrapInput
-                        name="exerciseName"
-                        id="bootstrap-input-exerciseName"
-                        value={exerciseName}
-                        onChange={(e) => setExerciseName(e.target.value)}
-                    />
-                </FormControl>
-            </DialogContent>
+      /* Glass paper */
+      background: "rgba(30,30,40,0.88)",
+      backdropFilter: "blur(20px)",
+      WebkitBackdropFilter: "blur(20px)",
+      border: "1px solid rgba(255,255,255,0.18)",
 
-            <DialogActions>
-                <Button
-                    sx={{ color: 'white', backgroundColor: 'var(--Blue)', height: '50px', width: '100px', borderRadius: '10px' }}
-                    onClick={handleSubmit}
-                    disabled={isPending}
-                >
-                    {(isPending) ? 'Submitting...' : 'Submit'}
-                </Button>
-                <Button onClick={resetForm}
-                    sx={{ color: 'black', border: '1px solid black', height: '50px', width: '100px', borderRadius: '10px' }}
-                >
-                    Cancel
-                </Button>
-            </DialogActions>
-        </Dialog>
+      boxShadow: `
+        inset 0 0 0.5px rgba(255,255,255,0.6),
+        0 20px 60px rgba(0,0,0,0.6)
+      `,
+      color: "white",
+    },
+  }}
+>
+  {/* glossy overlay */}
+  <Box
+    sx={{
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(120deg, rgba(255,255,255,0.15), transparent 60%)",
+      pointerEvents: "none",
+      zIndex: 0,
+    }}
+  />
+
+  {/* TITLE */}
+  <DialogTitle
+    sx={{
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      borderBottom: "1px solid rgba(255,255,255,0.15)",
+      textAlign: "center",
+    }}
+  >
+    <Typography sx={{ fontSize: "1.4rem", fontWeight: 700 }}>
+      Enter Exercise Name
+    </Typography>
+  </DialogTitle>
+
+  {/* CONTENT */}
+  <DialogContent
+    sx={{
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      color: "white",
+      mt:2
+    }}
+  >
+    <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
+      <InputLabel
+        shrink
+        htmlFor="bootstrap-input-exerciseName"
+        sx={{
+          fontSize: "1rem",
+          fontWeight: 500,
+          color: "rgba(255,255,255,0.8)",
+          "&.Mui-focused": { color: "white" },
+        }}
+      >
+        Exercise Name
+      </InputLabel>
+
+      <BootstrapInput
+        name="exerciseName"
+        id="bootstrap-input-exerciseName"
+        value={exerciseName}
+        onChange={(e) => setExerciseName(e.target.value)}
+        sx={{
+          mt: 1,
+          color: "white",
+          
+          backdropFilter: "blur(8px)",
+          borderRadius: "12px",
+          px: 1,
+        }}
+      />
+    </FormControl>
+  </DialogContent>
+
+  {/* ACTIONS */}
+  <DialogActions
+    sx={{
+      px: 3,
+      py: 2,
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      borderTop: "1px solid rgba(255,255,255,0.15)",
+      gap: 1.5,
+      justifyContent: "flex-end",
+    }}
+  >
+    <Button
+      onClick={resetForm}
+      sx={{
+        height: "44px",
+        px: 3,
+        borderRadius: "10px",
+        color: "white",
+        background: "rgba(255,255,255,0.08)",
+        "&:hover": { background: "rgba(255,255,255,0.15)" },
+      }}
+    >
+      Cancel
+    </Button>
+
+    <Button
+      onClick={handleSubmit}
+      disabled={isPending}
+      sx={{
+        height: "44px",
+        px: 3,
+        borderRadius: "12px",
+        color: "white",
+        background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
+        boxShadow: "0 0 14px rgba(139,92,246,0.8)",
+        "&:disabled": { opacity: 0.6 },
+      }}
+    >
+      {isPending ? "Submitting..." : "Submit"}
+    </Button>
+  </DialogActions>
+</Dialog>
+
     );
 };
 

@@ -11,6 +11,11 @@ import AddWeightDialog from "../../components/weight/AddWeightDialog";
 import DeleteConfirm from "../../common/DeleteConfirm2";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import FlagIcon from "@mui/icons-material/Flag";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import TrendingDownIcon from "@mui/icons-material/TrendingDown";
+import MonitorWeightIcon from "@mui/icons-material/MonitorWeight";
+import StatCard from "../../components/StatCard";
 
 const WeightTracking = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -77,70 +82,67 @@ const WeightTracking = () => {
     return (
         <Box sx={{ p: { xs: 0, sm: 2 } }}>
             {/* ---------------- ANALYTICS BOX ---------------- */}
-            <Grid container spacing={3} mb={5}>
-                <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#ECFDF5', borderRadius: '16px' }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Target Weight</Typography>
-                                <Typography variant="h4" fontWeight={600}>
-                                    {analytics?.data?.targetWeight?.value ?? 0} kg
-                                </Typography>
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#FFF7ED', borderRadius: '16px' }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Weight Left</Typography>
-                                <Typography variant="h4" fontWeight={600}>
-                                    {analytics?.data?.weightLeft?.value ?? 0} kg
-                                </Typography>
-                                <PercentageChange
-                                    flag={analytics?.data?.weightLeft?.change?.flag}
-                                    value={analytics?.data?.weightLeft?.change?.percentage}
-                                />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#FEF2F2', borderRadius: '16px' }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Total Weight Lost</Typography>
-                                <Typography variant="h4" fontWeight={600}>
-                                    {analytics?.data?.totalLost?.value ?? 0} kg
-                                </Typography>
+          <Grid container spacing={3} mb={5}>
+  {/* Target Weight */}
+  <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+    <StatCard
+      title="Target Weight"
+      value={`${analytics?.data?.targetWeight?.value ?? 0} kg`}
+      sub="Goal weight"
+      icon={<FlagIcon sx={{ color: "white" }} />}
+      color="#16A34A"
+    />
+  </Grid>
 
-                                <PercentageChange
-                                    flag={analytics?.data?.totalLost?.change?.flag}
-                                    value={analytics?.data?.totalLost?.change?.percentage}
-                                />
+  {/* Weight Left */}
+  <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+    <StatCard
+      title="Weight Left"
+      value={`${analytics?.data?.weightLeft?.value ?? 0} kg`}
+      sub={
+        <PercentageChange
+          flag={analytics?.data?.weightLeft?.change?.flag}
+          value={analytics?.data?.weightLeft?.change?.percentage}
+        />
+      }
+      icon={<MonitorWeightIcon sx={{ color: "white" }} />}
+      color="#F59E0B"
+    />
+  </Grid>
 
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#F5F3FF', borderRadius: '16px' }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Body Fat %</Typography>
-                                <Typography variant="h4" fontWeight={600}>{analytics?.data?.bodyFat?.value || 0}%</Typography>
-                                <PercentageChange
-                                    flag={analytics?.data?.bodyFat?.change?.flag}
-                                    value={analytics?.data?.bodyFat?.change?.percentage}
-                                />
+  {/* Total Weight Lost */}
+  <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+    <StatCard
+      title="Total Lost"
+      value={`${analytics?.data?.totalLost?.value ?? 0} kg`}
+      sub={
+        <PercentageChange
+          flag={analytics?.data?.totalLost?.change?.flag}
+          value={analytics?.data?.totalLost?.change?.percentage}
+        />
+      }
+      icon={<TrendingDownIcon sx={{ color: "white" }} />}
+      color="#EF4444"
+    />
+  </Grid>
 
-                            </Box>
+  {/* Body Fat % */}
+  <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+    <StatCard
+      title="Body Fat"
+      value={`${analytics?.data?.bodyFat?.value ?? 0}%`}
+      sub={
+        <PercentageChange
+          flag={analytics?.data?.bodyFat?.change?.flag}
+          value={analytics?.data?.bodyFat?.change?.percentage}
+        />
+      }
+      icon={<FitnessCenterIcon sx={{ color: "white" }} />}
+      color="#8B5CF6"
+    />
+  </Grid>
+</Grid>
 
-                        </Box>
-                    </Box>
-                </Grid>
-            </Grid>
 
             {/* ---------------- CHART ---------------- */}
             <Grid size={{ xs: 12, md: 8 }}>
@@ -148,116 +150,187 @@ const WeightTracking = () => {
             </Grid>
 
             {/* ---------------- WEIGHT TABLE ---------------- */}
-            <Box sx={{ backgroundColor: "rgb(253, 253, 253)", boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", mt: 5, padding: 0, borderRadius: '10px' }}>
-                <Grid container justifyContent="space-between" alignItems="center" sx={{ p: { xs: 2, md: 3 } }}>
-                    <Grid size={{ xs: 12, sm: 6 }} sx={{ display: 'flex', flexDirection: 'row', gap: 2, mb: { xs: 1, md: 0 } }}>
-                        <Typography variant="h6" fontWeight={590} >
-                            Weight Tracking
-                        </Typography>
-                    </Grid>
-                    <Grid size={{ xs: 12, sm: 6 }} sx={{ display: 'flex', justifyContent: { xs: 'start', sm: 'end' }, gap: 2 }}>
+            <Box
+  sx={{
+    mt: 5,
+    borderRadius: "20px",
+    position: "relative",
+    overflow: "hidden",
 
-                        <IconButton
-                            sx={{
-                                border: '1px solid black',
-                                borderRadius: '8px',
-                                fontSize: '1rem',
-                                fontWeight: 600,
-                                color: "#000",
-                                width: 150,
-                                // "&:hover": { background: "#00b8bf" }
-                            }}
-                            onClick={() => setOpenAddDialog(true)}
-                        >
-                            <AddIcon />
-                            Add Weight
-                        </IconButton>
-                    </Grid>
-                </Grid>
+    /* Glass surface */
+    background: "rgba(255,255,255,0.08)",
+    backdropFilter: "blur(18px)",
+    WebkitBackdropFilter: "blur(18px)",
+    border: "1px solid rgba(255,255,255,0.18)",
 
-                {isLoading ? (
-                    <Typography align="center" color="text.secondary" sx={{ mt: 1, pb: 2 }}>Loading....</Typography>
-                ) : Array.isArray(weightData?.data) && weightData?.data?.length > 0 ? (
-                    <>
-                        <TableContainer >
-                            <Table sx={{ '& .MuiTableCell-root': { fontSize: '15px', } }}>
-                                <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
-                                    <TableRow >
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787', borderTopLeftRadius: '10px', paddingLeft: '30px' }}>Date</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787' }}>Day</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787' }}>Weight</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787' }}>Weight Change</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787' }}></TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {weightData?.data?.map((user) => (
-                                        <TableRow key={user._id}>
-                                            <TableCell sx={{ color: '#878787', paddingLeft: '30px' }}>
-                                                {FormateDate(user.date) || "-"}
-                                            </TableCell>
-                                            <TableCell sx={{ color: '#4B5563' }}>
-                                                <Chip
-                                                    label={getDayFromDate(user.date)}
-                                                    sx={{
-                                                        backgroundColor: 'white',
-                                                        border: '1px solid black',
-                                                        '& .MuiChip-label': {
-                                                            textTransform: 'capitalize',
-                                                            fontWeight: 500,
-                                                        }
-                                                    }}
-                                                />
-                                            </TableCell>
+    boxShadow: `
+      inset 0 0 0.5px rgba(255,255,255,0.6),
+      0 12px 40px rgba(0,0,0,0.45)
+    `,
+    color: "white",
+  }}
+>
+  {/* glossy highlight */}
+  <Box
+    sx={{
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
+      pointerEvents: "none",
+    }}
+  />
 
+  {/* Header */}
+  <Grid
+    container
+    justifyContent="space-between"
+    alignItems="center"
+    sx={{ p: { xs: 2, md: 3 }, position: "relative", zIndex: 1 }}
+  >
+    <Grid
+      size={{ xs: 12, sm: 6 }}
+      sx={{ display: "flex", flexDirection: "row", gap: 2, mb: { xs: 1, md: 0 } }}
+    >
+      <Typography variant="h6" fontWeight={600}>
+        Weight Tracking
+      </Typography>
+    </Grid>
 
-                                            <TableCell sx={{ fontWeight: 500 }}>
-                                                {user.weight || "-"}
-                                            </TableCell>
-                                            <TableCell sx={{ color: '#878787 ' }}>
-                                                {user.change || "0"} kg
-                                            </TableCell>
-                                            <TableCell>
-                                                <IconButton
-                                                    sx={{ color: 'red' }}
-                                                    onClick={() => {
-                                                        setSelectedWeightId(user._id);
-                                                        setOpenDelete(true);
-                                                    }}
-                                                >
-                                                    <DeleteIcon />
-                                                </IconButton>
+    <Grid
+      size={{ xs: 12, sm: 6 }}
+      sx={{ display: "flex", justifyContent: { xs: "flex-start", sm: "flex-end" } }}
+    >
+      <IconButton
+        className="glass-btn"
+        onClick={() => setOpenAddDialog(true)}
+      >
+        <AddIcon sx={{ mr: 0.5 }} />
+        Add Weight
+      </IconButton>
+    </Grid>
+  </Grid>
 
-                                            </TableCell>
+  {/* CONTENT */}
+  <Box sx={{ position: "relative", zIndex: 1 }}>
+    {isLoading ? (
+      <Typography align="center" sx={{ mt: 1, pb: 2, opacity: 0.7 }}>
+        Loading...
+      </Typography>
+    ) : Array.isArray(weightData?.data) && weightData?.data?.length > 0 ? (
+      <>
+        <TableContainer>
+          <Table sx={{ "& .MuiTableCell-root": { fontSize: "14px", color: "white" } }}>
+            {/* Glass Header */}
+            <TableHead>
+              <TableRow
+                sx={{
+                  background: "rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                {["Date", "Day", "Weight", "Weight Change", ""].map((h, i) => (
+                  <TableCell
+                    key={i}
+                    sx={{
+                      color: "rgba(255,255,255,0.7)",
+                      borderBottom: "1px solid rgba(255,255,255,0.12)",
+                      paddingLeft: i === 0 ? "30px" : undefined,
+                    }}
+                  >
+                    {h}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
 
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+            <TableBody>
+              {weightData?.data?.map((user) => (
+                <TableRow
+                  key={user._id}
+                  sx={{
+                    "&:hover": {
+                      background: "rgba(255,255,255,0.05)",
+                    },
+                  }}
+                >
+                  <TableCell sx={{ paddingLeft: "30px", opacity: 0.8 }}>
+                    {FormateDate(user.date) || "-"}
+                  </TableCell>
 
+                  <TableCell>
+                    <Chip
+                      label={getDayFromDate(user.date)}
+                      sx={{
+                        background: "rgba(255,255,255,0.15)",
+                        border: "1px solid rgba(255,255,255,0.25)",
+                        color: "white",
+                        "& .MuiChip-label": {
+                          textTransform: "capitalize",
+                          fontWeight: 500,
+                        },
+                      }}
+                    />
+                  </TableCell>
 
+                  <TableCell sx={{ fontWeight: 500 }}>
+                    {user.weight || "-"}
+                  </TableCell>
 
-                        <CustomPagination totalPages={totalPages} setCurrentPage={setCurrentPage} setRowsPerPage={setRowsPerPage} rowsPerPage={rowsPerPage} currentPage={currentPage} />
-                    </>
-                ) : (
-                    <Typography align="center" color="text.secondary" sx={{ mt: 1, pb: 2 }}>
-                        No data found
-                    </Typography>
-                )}
-                <AddWeightDialog
-                    open={openAddDialog}
-                    onClose={() => setOpenAddDialog(false)}
+                  <TableCell sx={{ opacity: 0.8 }}>
+                    {user.change || "0"} kg
+                  </TableCell>
 
-                />
-                <DeleteConfirm
-                    open={openDelete}
-                    title="Delete Weight"
-                    content="Are you sure you want to delete this weight entry?"
-                    onConfirm={handleDeleteConfirm}
-                    onCancel={handleDeleteCancel}
-                />
-            </Box>
+                  <TableCell>
+                    <IconButton
+                      sx={{
+                        color: "#F87171",
+                        "&:hover": { background: "rgba(248,113,113,0.15)" },
+                      }}
+                      onClick={() => {
+                        setSelectedWeightId(user._id);
+                        setOpenDelete(true);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <CustomPagination
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+          setRowsPerPage={setRowsPerPage}
+          rowsPerPage={rowsPerPage}
+          currentPage={currentPage}
+        />
+      </>
+    ) : (
+      <Typography align="center" sx={{ mt: 1, pb: 2, opacity: 0.7 }}>
+        No data found
+      </Typography>
+    )}
+  </Box>
+
+  {/* Dialogs stay same */}
+  <AddWeightDialog
+    open={openAddDialog}
+    onClose={() => setOpenAddDialog(false)}
+  />
+
+  <DeleteConfirm
+    open={openDelete}
+    title="Delete Weight"
+    content="Are you sure you want to delete this weight entry?"
+    onConfirm={handleDeleteConfirm}
+    onCancel={handleDeleteCancel}
+  />
+</Box>
+
         </Box>
     );
 };

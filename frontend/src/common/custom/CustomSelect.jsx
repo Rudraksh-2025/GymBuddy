@@ -14,7 +14,7 @@ const CustomSelect = ({
     ...props
 }) => (
     <FormControl fullWidth error={!!error}>
-        {label && <label style={{ marginBottom: 8 }}>{label}</label>}
+        {label && <label style={{ marginBottom: 8 ,color:'white'}}>{label}</label>}
         <Select
             name={name}
             value={value}

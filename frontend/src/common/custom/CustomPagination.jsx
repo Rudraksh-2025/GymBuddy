@@ -16,11 +16,15 @@ const CustomPagination = ({ rowsPerPage, totalPages, currentPage, setRowsPerPage
                             size="small"
                             sx={{
                                 border: 'none',
+                                color:'white',
                                 boxShadow: 'none',
                                 outline: 'none',
                                 '& .MuiOutlinedInput-notchedOutline': {
                                     border: 'none',
                                 },
+                                 "& .MuiSelect-icon": {
+      color: "white",
+    },
                                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                                     border: 'none',
                                 },
@@ -39,7 +43,7 @@ const CustomPagination = ({ rowsPerPage, totalPages, currentPage, setRowsPerPage
                             }}
                         >
                             {[5, 10, 15, 20].map((num) => (
-                                <MenuItem key={num} value={num}>
+                                <MenuItem key={num} value={num} >
                                     {num}
                                 </MenuItem>
                             ))}
@@ -55,13 +59,13 @@ const CustomPagination = ({ rowsPerPage, totalPages, currentPage, setRowsPerPage
                             disabled={currentPage === 1}
                             onClick={() => setCurrentPage((prev) => prev - 1)}
                         >
-                            <NavigateBeforeIcon fontSize="small" />
+                            <NavigateBeforeIcon fontSize="small" sx={{color:'white'}}/>
                         </IconButton>
                         <IconButton
                             disabled={currentPage === totalPages}
                             onClick={() => setCurrentPage((prev) => prev + 1)}
                         >
-                            <NavigateNextIcon fontSize="small" />
+                            <NavigateNextIcon fontSize="small" sx={{color:'white'}} />
                         </IconButton>
                     </Box>
                 </Grid>

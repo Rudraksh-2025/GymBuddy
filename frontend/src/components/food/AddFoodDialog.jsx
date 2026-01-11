@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid ,Box} from "@mui/material";
 import { foodValidation } from "../../common/FormValidation";
 import CustomInput from "../../common/custom/CustomInput";
 import { useFormik } from "formik";
@@ -65,90 +65,167 @@ const AddFoodDialog = ({ open, onClose, selectedFood, setSelectedFood }) => {
 
 
     return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm"
-            PaperProps={{
-                sx: {
-                    borderRadius: 4,
-                },
-            }} >
-            <DialogTitle sx={{ textAlign: "center", bgcolor: " #262626", color: "white" }}>
-                {isEditMode ? "Edit Food" : "Add Food"}
-            </DialogTitle>
+        <Dialog
+  open={open}
+  onClose={onClose}
+  fullWidth
+  maxWidth="sm"
+  PaperProps={{
+    sx: {
+      borderRadius: "22px",
+      position: "relative",
+      overflow: "hidden",
 
-            <DialogContent sx={{ bgcolor: "#262626", color: "white" }}>
-                <Grid container spacing={2} mt={1}>
-                    <Grid size={12}>
-                        <CustomInput
-                            label="Food Name"
-                            placeholder="Food Name"
-                            name="name"
-                            formik={foodForm}
-                        />
-                    </Grid>
-                    <Grid size={12}>
-                        <CustomInput
-                            label="Serving Size"
-                            placeholder="ex. 1 cup"
-                            name="servingSize"
-                            formik={foodForm}
-                        />
-                    </Grid>
-                    <Grid size={{ xs: 12, sm: 6 }}>
-                        <CustomInput
-                            label="Calories (kcal)"
-                            placeholder="Calories"
-                            name="calories"
-                            type="number"
-                            formik={foodForm}
-                        />
-                    </Grid>
+      /* Glass paper */
+      background: "rgba(30,30,40,0.85)",
+      backdropFilter: "blur(20px)",
+      WebkitBackdropFilter: "blur(20px)",
+      border: "1px solid rgba(255,255,255,0.18)",
 
-                    <Grid size={{ xs: 12, sm: 6 }}>
+      boxShadow: `
+        inset 0 0 0.5px rgba(255,255,255,0.6),
+        0 20px 60px rgba(0,0,0,0.6)
+      `,
+      color: "white",
+    },
+  }}
+>
+  {/* glossy overlay */}
+  <Box
+    sx={{
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(120deg, rgba(255,255,255,0.15), transparent 60%)",
+      pointerEvents: "none",
+      zIndex: 0,
+    }}
+  />
 
-                        <CustomInput
-                            label="Protein (g)"
-                            placeholder="Protein"
-                            name="protein"
-                            type="number"
-                            formik={foodForm}
-                        />
-                    </Grid>
+  {/* TITLE */}
+  <DialogTitle
+    sx={{
+      textAlign: "center",
+      fontWeight: 600,
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      borderBottom: "1px solid rgba(255,255,255,0.15)",
+    }}
+  >
+    {isEditMode ? "Edit Food" : "Add Food"}
+  </DialogTitle>
 
-                    <Grid size={{ xs: 12, sm: 6 }}>
+  {/* CONTENT */}
+  <DialogContent
+    sx={{
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      color: "white",
+    }}
+  >
+    <Grid container spacing={2} mt={1}>
+      <Grid size={12}>
+        <CustomInput
+          label="Food Name"
+          placeholder="Food Name"
+          name="name"
+          formik={foodForm}
+        />
+      </Grid>
 
-                        <CustomInput
-                            label="Carbs (g)"
-                            placeholder="Carbs"
-                            name="carbs"
-                            type="number"
-                            formik={foodForm}
-                        />
-                    </Grid>
+      <Grid size={12}>
+        <CustomInput
+          label="Serving Size"
+          placeholder="ex. 1 cup"
+          name="servingSize"
+          formik={foodForm}
+        />
+      </Grid>
 
-                    <Grid size={{ xs: 12, sm: 6 }}>
+      <Grid size={{ xs: 12, sm: 6 }}>
+        <CustomInput
+          label="Calories (kcal)"
+          placeholder="Calories"
+          name="calories"
+          type="number"
+          formik={foodForm}
+        />
+      </Grid>
 
-                        <CustomInput
-                            label="Fats (g)"
-                            placeholder="Fats"
-                            name="fats"
-                            type="number"
-                            formik={foodForm}
-                        />
-                    </Grid>
-                </Grid>
-            </DialogContent>
+      <Grid size={{ xs: 12, sm: 6 }}>
+        <CustomInput
+          label="Protein (g)"
+          placeholder="Protein"
+          name="protein"
+          type="number"
+          formik={foodForm}
+        />
+      </Grid>
 
-            <DialogActions sx={{ px: 3, pb: 2, bgcolor: "#262626" }}>
-                <Button onClick={handleClose} sx={{ color: 'white' }}>Cancel</Button>
-                <Button
-                    variant="contained"
-                    onClick={() => foodForm.handleSubmit()}
-                    disabled={isLoading}
-                >
-                    {isEditMode ? "Update Food" : "Add Food"}
-                </Button>
-            </DialogActions>
-        </Dialog>
+      <Grid size={{ xs: 12, sm: 6 }}>
+        <CustomInput
+          label="Carbs (g)"
+          placeholder="Carbs"
+          name="carbs"
+          type="number"
+          formik={foodForm}
+        />
+      </Grid>
+
+      <Grid size={{ xs: 12, sm: 6 }}>
+        <CustomInput
+          label="Fats (g)"
+          placeholder="Fats"
+          name="fats"
+          type="number"
+          formik={foodForm}
+        />
+      </Grid>
+    </Grid>
+  </DialogContent>
+
+  {/* ACTIONS */}
+  <DialogActions
+    sx={{
+      px: 3,
+      pb: 2,
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      borderTop: "1px solid rgba(255,255,255,0.15)",
+    }}
+  >
+    <Button
+      onClick={handleClose}
+      sx={{
+        color: "white",
+        borderRadius: "10px",
+        px: 2.5,
+        background: "rgba(255,255,255,0.08)",
+        "&:hover": { background: "rgba(255,255,255,0.15)" },
+      }}
+    >
+      Cancel
+    </Button>
+
+    <Button
+      variant="contained"
+      disabled={isLoading}
+      onClick={() => foodForm.handleSubmit()}
+      sx={{
+        borderRadius: "12px",
+        px: 3,
+        background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
+        boxShadow: "0 0 14px rgba(139,92,246,0.8)",
+      }}
+    >
+      {isEditMode ? "Update Food" : "Add Food"}
+    </Button>
+  </DialogActions>
+</Dialog>
+
     );
 };
 

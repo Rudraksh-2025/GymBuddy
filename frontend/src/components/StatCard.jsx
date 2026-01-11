@@ -1,0 +1,79 @@
+import { Card, Stack, Box, Typography } from "@mui/material";
+
+const StatCard = ({ title, value, sub, icon, color }) => (
+  <Card
+    sx={{
+      p: 2,
+      borderRadius: "18px",
+      position: "relative",
+      overflow: "hidden",
+
+      /* Glass surface */
+      background: "rgba(255,255,255,0.08)",
+      backdropFilter: "blur(16px)",
+      WebkitBackdropFilter: "blur(16px)",
+      border: "1px solid rgba(255,255,255,0.18)",
+
+      boxShadow: `
+        inset 0 0 0.5px rgba(255,255,255,0.6),
+        0 8px 28px rgba(0,0,0,0.35)
+      `,
+      color: "white",
+    }}
+  >
+    {/* glossy highlight */}
+    <Box
+      sx={{
+        position: "absolute",
+        inset: 0,
+        background:
+          "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
+        pointerEvents: "none",
+      }}
+    />
+
+    <Stack direction="row" justifyContent="space-between" alignItems="center" zIndex={1}>
+      <Box>
+        <Typography fontSize={13} sx={{ opacity: 0.75 }}>
+          {title}
+        </Typography>
+
+        <Typography fontSize={22} fontWeight={700}>
+          {value}
+        </Typography>
+
+        {sub && (
+          <Typography fontSize={12} sx={{ opacity: 0.7 }}>
+            {sub}
+          </Typography>
+        )}
+      </Box>
+
+      {/* icon glass badge */}
+      <Box
+        sx={{
+          width: 42,
+          height: 42,
+          borderRadius: "12px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+
+          background: "rgba(255,255,255,0.15)",
+          backdropFilter: "blur(8px)",
+          border: "1px solid rgba(255,255,255,0.25)",
+
+          boxShadow: `
+            inset 0 0 6px rgba(255,255,255,0.25),
+            0 4px 12px rgba(0,0,0,0.4)
+          `,
+          color: color || "white",
+        }}
+      >
+        {icon}
+      </Box>
+    </Stack>
+  </Card>
+);
+
+export default StatCard;

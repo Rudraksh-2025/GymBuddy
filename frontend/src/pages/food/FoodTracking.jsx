@@ -46,118 +46,215 @@ const FoodTracking = () => {
     };
     return (
         <Box sx={{ p: { xs: 0, sm: 2 } }}>
-            <Box sx={{ backgroundColor: "rgb(253, 253, 253)", boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", mt: 5, padding: 0, borderRadius: '10px' }}>
-                <Grid container justifyContent="space-between" alignItems="center" sx={{ p: { xs: 2 } }}>
-                    <Grid size={{ xs: 12, sm: 6 }} sx={{ display: 'flex', flexDirection: 'row', gap: 2, mb: { xs: 1, md: 0 } }}>
-                        <Typography variant="h6" fontWeight={590} >
-                            Food Tracking
-                        </Typography>
-                    </Grid>
-                    <Grid size={{ xs: 12, sm: 6 }} sx={{ display: 'flex', justifyContent: { xs: 'start', sm: 'end' }, gap: 2 }}>
+           <Box
+  sx={{
+    mt: 5,
+    borderRadius: "20px",
+    position: "relative",
+    overflow: "hidden",
+
+    /* Glass surface */
+    background: "rgba(255,255,255,0.08)",
+    backdropFilter: "blur(18px)",
+    WebkitBackdropFilter: "blur(18px)",
+    border: "1px solid rgba(255,255,255,0.18)",
+
+    boxShadow: `
+      inset 0 0 0.5px rgba(255,255,255,0.6),
+      0 12px 40px rgba(0,0,0,0.45)
+    `,
+    color: "white",
+  }}
+>
+  {/* glossy highlight */}
+  <Box
+    sx={{
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
+      pointerEvents: "none",
+    }}
+  />
+
+  {/* Header */}
+  <Grid
+    container
+    justifyContent="space-between"
+    alignItems="center"
+    sx={{ p: { xs: 2 }, position: "relative", zIndex: 1 }}
+  >
+    <Grid
+      size={{ xs: 12, sm: 6 }}
+      sx={{ display: "flex", flexDirection: "row", gap: 2, mb: { xs: 1, md: 0 } }}
+    >
+      <Typography variant="h6" fontWeight={600}>
+        Food Tracking
+      </Typography>
+    </Grid>
+
+    <Grid
+      size={{ xs: 12, sm: 6 }}
+      sx={{ display: "flex", justifyContent: { xs: "flex-start", sm: "flex-end" } }}
+    >
+      <IconButton
+        onClick={() => setOpenAddFood(true)}
+        sx={{
+          px: 2,
+          borderRadius: "12px",
+          fontSize: "0.9rem",
+          fontWeight: 600,
+          color: "white",
+
+          background: "rgba(255,255,255,0.15)",
+          backdropFilter: "blur(8px)",
+          border: "1px solid rgba(255,255,255,0.25)",
+
+          boxShadow: `
+            inset 0 0 6px rgba(255,255,255,0.25),
+            0 4px 14px rgba(0,0,0,0.4)
+          `,
+          "&:hover": {
+            background: "rgba(255,255,255,0.22)",
+          },
+        }}
+      >
+        <AddIcon sx={{ mr: 0.5 }} />
+        Add Food
+      </IconButton>
+    </Grid>
+  </Grid>
+
+  {/* CONTENT */}
+  <Box sx={{ position: "relative", zIndex: 1 }}>
+    {isLoading ? (
+      <Typography align="center" sx={{ mt: 1, pb: 2, opacity: 0.7 }}>
+        Loading...
+      </Typography>
+    ) : Array.isArray(food?.data) && food?.data?.length > 0 ? (
+      <>
+        <TableContainer>
+          <Table
+            sx={{
+              "& .MuiTableCell-root": { fontSize: "14px", color: "white" },
+              "& tbody tr:last-of-type td": { borderBottom: "none" },
+            }}
+          >
+            {/* Glass Header */}
+            <TableHead>
+              <TableRow
+                sx={{
+                  background: "rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                {["Name", "Calories", "Protein", "Carbs", "Fats", "Action"].map(
+                  (h, i) => (
+                    <TableCell
+                      key={i}
+                      sx={{
+                        color: "rgba(255,255,255,0.7)",
+                        borderBottom: "1px solid rgba(255,255,255,0.12)",
+                        paddingLeft: i === 0 ? "30px" : undefined,
+                      }}
+                    >
+                      {h}
+                    </TableCell>
+                  )
+                )}
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {food?.data?.map((food) => (
+                <TableRow
+                  key={food._id}
+                  sx={{
+                    "&:hover": { background: "rgba(255,255,255,0.05)" },
+                  }}
+                >
+                  <TableCell sx={{ paddingLeft: "30px", fontWeight: 500 }}>
+                    {food.name}
+                  </TableCell>
+
+                  <TableCell sx={{ opacity: 0.8 }}>
+                    {food.calories || "0"} kcal
+                  </TableCell>
+
+                  <TableCell sx={{ fontWeight: 500 }}>
+                    {food.protein || "0"} gm
+                  </TableCell>
+
+                  <TableCell sx={{ opacity: 0.8 }}>
+                    {food.carbs || "0"} gm
+                  </TableCell>
+
+                  <TableCell sx={{ opacity: 0.8 }}>
+                    {food.fats || "0"} gm
+                  </TableCell>
+
+                  <TableCell>
+                    {!food.isGlobal && (
+                      <>
                         <IconButton
-                            className="blue-button"
-                            onClick={() => setOpenAddFood(true)}
+                          sx={{
+                            color: "#60A5FA",
+                            "&:hover": { background: "rgba(96,165,250,0.15)" },
+                          }}
+                          onClick={() => {
+                            setOpenAddFood(true);
+                            setSelectedFood(food);
+                          }}
                         >
-                            <AddIcon />
-                            Add Food
+                          <EditIcon />
                         </IconButton>
 
-                    </Grid>
-                </Grid>
+                        <IconButton
+                          sx={{
+                            color: "#F87171",
+                            "&:hover": { background: "rgba(248,113,113,0.15)" },
+                          }}
+                          onClick={() => {
+                            setSelectedFoodId(food._id);
+                            setName(food.name);
+                            setOpenDelete(true);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </>
+    ) : (
+      <Typography align="center" sx={{ mt: 1, pb: 2, opacity: 0.7 }}>
+        No data found
+      </Typography>
+    )}
+  </Box>
 
-                {isLoading ? (
-                    <Typography align="center" color="text.secondary" sx={{ mt: 1, pb: 2 }}>Loading....</Typography>
-                ) : Array.isArray(food?.data) && food?.data?.length > 0 ? (
-                    <>
-                        <TableContainer >
-                            <Table sx={{
-                                '& .MuiTableCell-root': {
-                                    fontSize: '15px',
-                                },
-                                '& tbody tr:last-of-type td': {
-                                    borderBottom: 'none',
-                                },
-                            }}>
-                                <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
-                                    <TableRow >
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787', borderTopLeftRadius: '10px', paddingLeft: '30px' }}>Name</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787' }}>Calories</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787' }}>Protein</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787' }}>Carbs</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787' }}>Fats</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#F9FAFB', color: '#878787' }}>Action</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {food?.data?.map((food) => (
-                                        <TableRow key={food._id}>
-                                            <TableCell sx={{ paddingLeft: '30px', fontWeight: 500 }}>
-                                                {food.name}
-                                            </TableCell>
-                                            <TableCell sx={{ color: '#878787', paddingLeft: '30px' }}>
-                                                {food.calories || '0'} kcal
-                                            </TableCell>
+  {/* Dialogs remain same */}
+  <AddFoodDialog
+    open={openAddFood}
+    onClose={() => setOpenAddFood(false)}
+    selectedFood={selectedFood}
+    setSelectedFood={setSelectedFood}
+  />
 
+  <DeleteConfirm
+    open={openDelete}
+    title="Delete Food"
+    content={`Are you sure you want to delete ${name}'s entry?`}
+    onConfirm={handleDeleteConfirm}
+    onCancel={handleDeleteCancel}
+  />
+</Box>
 
-                                            <TableCell sx={{ fontWeight: 500 }}>
-                                                {food.protein || "0"} gm
-                                            </TableCell>
-                                            <TableCell sx={{ color: '#878787 ' }}>
-                                                {food.carbs || "0"} gm
-                                            </TableCell>
-                                            <TableCell sx={{ color: '#878787 ' }}>
-                                                {food.fats || "0"} gm
-                                            </TableCell>
-                                            <TableCell>
-                                               {
-                                                !food.isGlobal&&( <IconButton
-                                                    sx={{ color: '#2563EB' }} // blue
-                                                    onClick={() => {
-                                                        setOpenAddFood(true);
-                                                        setSelectedFood(food);
-                                                    }}
-                                                >
-                                                    <EditIcon />
-                                                </IconButton>)
-                                               }
-                                                <IconButton
-                                                    sx={{ color: 'red' }}
-                                                    onClick={() => {
-                                                        setSelectedFoodId(food._id);
-                                                        setName(food.name)
-                                                        setOpenDelete(true);
-                                                    }}
-                                                >
-                                                    <DeleteIcon />
-                                                </IconButton>
-
-                                            </TableCell>
-
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </>
-                ) : (
-                    <Typography align="center" color="text.secondary" sx={{ mt: 1, pb: 2 }}>
-                        No data found
-                    </Typography>
-                )}
-                <AddFoodDialog
-                    open={openAddFood}
-                    onClose={() => setOpenAddFood(false)}
-                    selectedFood={selectedFood}
-                    setSelectedFood={setSelectedFood}
-                />
-                <DeleteConfirm
-                    open={openDelete}
-                    title="Delete Food"
-                    content={`Are you sure you want to delete ${name}'s entry?`}
-                    onConfirm={handleDeleteConfirm}
-                    onCancel={handleDeleteCancel}
-                />
-            </Box>
         </Box>
     );
 };

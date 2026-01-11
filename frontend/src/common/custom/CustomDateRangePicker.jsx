@@ -39,89 +39,152 @@ const CustomDateRangePicker = ({
         <Box position="relative">
             <ClickAwayListener onClickAway={handleClickAway}>
                 <Box>
-                    <Button
-                        ref={buttonRef}
-                        onClick={handleToggle}
-                        variant="outlined"
-                        sx={{
-                            height: '40px',
-                            width: '250px',
-                            borderRadius: '8px',
-                            borderWidth: '1px',
-                            justifyContent: 'space-between',
-                            borderColor: borderColor,
-                            borderStyle: 'solid',
-                            '&:hover': {
-                                borderColor: borderColor,
-                            },
-                            ...buttonSx,
-                        }}
-                        endIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
-                    >
-                        <CalendarMonthIcon sx={{ color: 'white', mr: 1 }} />
+                 <Button
+  ref={buttonRef}
+  onClick={handleToggle}
+  variant="outlined"
+  sx={{
+    height: "42px",
+    width: "260px",
+    borderRadius: "12px",
+    justifyContent: "space-between",
 
-                        <Typography variant="body2" sx={{ textTransform: 'none', color: 'white', }}>
-                            {`${format(value[0].startDate, 'dd MMM yy')} - ${format(value[0].endDate, 'dd MMM yy')}`}
-                        </Typography>
-                    </Button>
+    background: "rgba(255,255,255,0.12)",
+    backdropFilter: "blur(10px)",
+    border: "1px solid rgba(255,255,255,0.25)",
+    color: "white",
 
-                    <Popper
-                        open={popperOpen}
-                        anchorEl={anchorEl}
-                        placement="bottom-start"
-                        sx={{ zIndex: 2000, mt: 1 }}
-                    >
-                        <Box sx={{ boxShadow: 3, borderRadius: 2, gap: 3, display: 'flex', flexDirection: 'row', backgroundColor: 'white', p: 2 }}>
+    "&:hover": {
+      background: "rgba(255,255,255,0.18)",
+      borderColor: "rgba(255,255,255,0.35)",
+    },
+
+    ...buttonSx,
+  }}
+  endIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
+>
+  <CalendarMonthIcon sx={{ color: "white", mr: 1 }} />
+
+  <Typography variant="body2" sx={{ textTransform: "none", color: "white" }}>
+    {`${format(value[0].startDate, "dd MMM yy")} - ${format(
+      value[0].endDate,
+      "dd MMM yy"
+    )}`}
+  </Typography>
+</Button>
+
+
+                 <Popper
+  open={popperOpen}
+  anchorEl={anchorEl}
+  placement="bottom-start"
+  sx={{ zIndex: 2000, mt: 1 }}
+>
+  <Box
+    sx={{
+      display: "flex",
+      flexDirection: "row",
+      gap: 2,
+      p: 2,
+      borderRadius: "18px",
+
+      background: "rgba(30,30,40,0.9)",
+      backdropFilter: "blur(20px)",
+      WebkitBackdropFilter: "blur(20px)",
+      border: "1px solid rgba(255,255,255,0.18)",
+
+      boxShadow: `
+        inset 0 0 0.5px rgba(255,255,255,0.6),
+        0 20px 60px rgba(0,0,0,0.6)
+      `,
+    }}
+  >
+
                             {/* Quick Select Options */}
-                            <Box display="flex" flexDirection={'column'} justifyContent={'space-between'} flexWrap="wrap" gap={1} mb={2}>
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                                    {[
-                                        { label: "Last Week", days: 7 },
-                                        { label: "Last Month", days: 30 },
-                                        { label: "Last 3 Months", days: 90 },
-                                        { label: "Last 6 Months", days: 180 },
-                                        { label: "Last 12 Months", days: 365 },
-                                    ].map((option) => (
-                                        <Button
-                                            key={option.label}
-                                            // variant="outlined"
-                                            sx={{ color: 'black', justifyContent: 'flex-start' }}
-                                            size="small"
-                                            onClick={() => {
-                                                const end = new Date();
-                                                const start = new Date();
-                                                start.setDate(end.getDate() - option.days);
-                                                onChange([{ startDate: start, endDate: end, key: 'selection' }]);
-                                                setAnchorEl(null); // optional: auto-close
-                                            }}
-                                        >
-                                            {option.label}
-                                        </Button>
-                                    ))}
-                                </Box>
-                                <Button
-                                    variant="text"
-                                    size="small"
-                                    color="error"
-                                    onClick={() => {
-                                        const today = new Date();
-                                        const start = startOfYear(today);
-                                        onChange([{ startDate: start, endDate: today, key: 'selection' }]);
-                                        setAnchorEl(null);
-                                    }}
-                                >
-                                    Reset
-                                </Button>
-                            </Box>
+                          <Box
+  display="flex"
+  flexDirection="column"
+  justifyContent="space-between"
+  gap={1}
+  sx={{
+    minWidth: 160,
+    p: 1.5,
+    borderRadius: "14px",
+    background: "rgba(255,255,255,0.08)",
+    backdropFilter: "blur(10px)",
+    border: "1px solid rgba(255,255,255,0.18)",
+  }}
+>
+  <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+    {[
+      { label: "Last Week", days: 7 },
+      { label: "Last Month", days: 30 },
+      { label: "Last 3 Months", days: 90 },
+      { label: "Last 6 Months", days: 180 },
+      { label: "Last 12 Months", days: 365 },
+    ].map((option) => (
+      <Button
+        key={option.label}
+        size="small"
+        onClick={() => {
+          const end = new Date();
+          const start = new Date();
+          start.setDate(end.getDate() - option.days);
+          onChange([{ startDate: start, endDate: end, key: "selection" }]);
+          setAnchorEl(null);
+        }}
+        sx={{
+          justifyContent: "flex-start",
+          color: "white",
+          borderRadius: "10px",
+          textTransform: "none",
+          "&:hover": { background: "rgba(255,255,255,0.12)" },
+        }}
+      >
+        {option.label}
+      </Button>
+    ))}
+  </Box>
+
+  <Button
+    size="small"
+    onClick={() => {
+      const today = new Date();
+      const start = startOfYear(today);
+      onChange([{ startDate: start, endDate: today, key: "selection" }]);
+      setAnchorEl(null);
+    }}
+    sx={{
+      mt: 1,
+      color: "#F87171",
+      borderRadius: "10px",
+      "&:hover": { background: "rgba(248,113,113,0.15)" },
+    }}
+  >
+    Reset
+  </Button>
+</Box>
+
 
                             {/* Calendar Picker */}
-                            <DateRange
-                                editableDateInputs
-                                onChange={(item) => onChange([item.selection])}
-                                moveRangeOnFirstSelection={false}
-                                ranges={value}
-                                rangeColors={["#1976d2"]}
-                            />
+                           <Box
+  sx={{
+    borderRadius: "16px",
+    overflow: "hidden",
+    background: "rgba(255,255,255,0.08)",
+    backdropFilter: "blur(10px)",
+    border: "1px solid rgba(255,255,255,0.18)",
+  }}
+>
+  <DateRange
+    editableDateInputs
+    onChange={(item) => onChange([item.selection])}
+    moveRangeOnFirstSelection={false}
+    ranges={value}
+    rangeColors={["#8B5CF6"]} // purple accent to match theme
+  />
+</Box>
+
                         </Box>
                     </Popper>
 

@@ -77,85 +77,266 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
     };
 
     return (
-        <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-            <DialogTitle sx={{ fontSize: '1.5rem' }}>Add Exercise Log</DialogTitle>
-            <DialogContent>
-                <Box mt={2}>
-                    {/* Select Exercise */}
-                    <FormControl fullWidth margin="normal">
-                        <InputLabel id="exercise-select">Exercise</InputLabel>
-                        <Select
-                            labelId="exercise-select"
-                            value={exerciseId}
-                            onChange={(e) => setExerciseId(e.target.value)}
-                        >
-                            {exercises?.map((ex) => (
-                                <MenuItem key={ex.id} value={ex.id}>
-                                    {ex.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+       <Dialog
+  open={open}
+  onClose={handleClose}
+  maxWidth="sm"
+  fullWidth
+  BackdropProps={{
+    sx: {
+      backdropFilter: "blur(4px)",
+      backgroundColor: "rgba(0,0,0,0.55)",
+    },
+  }}
+  PaperProps={{
+    sx: {
+      borderRadius: "22px",
+      position: "relative",
+      overflow: "hidden",
 
-                    {/* Date */}
-                    <TextField
-                        type="date"
-                        label="Date"
-                        fullWidth
-                        margin="normal"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        InputLabelProps={{ shrink: true }}
-                    />
+      /* Glass paper */
+      background: "rgba(30,30,40,0.88)",
+      backdropFilter: "blur(20px)",
+      WebkitBackdropFilter: "blur(20px)",
+      border: "1px solid rgba(255,255,255,0.18)",
 
-                    {/* Sets */}
-                    <Typography variant="h6" mt={2}>
-                        Sets
-                    </Typography>
-                    {sets.map((set, idx) => (
-                        <Box key={idx} display="flex" gap={2} alignItems="center" mt={1}>
-                            <TextField
-                                label="Reps"
-                                type="number"
-                                value={set.reps}
-                                onChange={(e) => handleSetChange(idx, 'reps', e.target.value)}
-                            />
-                            <TextField
-                                label="Weight"
-                                type="number"
-                                value={set.weight}
-                                onChange={(e) => handleSetChange(idx, 'weight', e.target.value)}
-                            />
-                            {sets.length > 1 && (
-                                <IconButton color="error" onClick={() => handleRemoveSet(idx)}>
-                                    <Delete />
-                                </IconButton>
-                            )}
-                        </Box>
-                    ))}
+      boxShadow: `
+        inset 0 0 0.5px rgba(255,255,255,0.6),
+        0 20px 60px rgba(0,0,0,0.6)
+      `,
+      color: "white",
+    },
+  }}
+>
+  {/* glossy overlay */}
+  <Box
+    sx={{
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(120deg, rgba(255,255,255,0.15), transparent 60%)",
+      pointerEvents: "none",
+      zIndex: 0,
+    }}
+  />
 
-                    <Button
-                        startIcon={<Add />}
-                        onClick={handleAddSet}
-                        sx={{ mt: 2 }}
-                    >
-                        Add Set
-                    </Button>
-                </Box>
-            </DialogContent>
+  {/* TITLE */}
+  <DialogTitle
+    sx={{
+      fontSize: "1.4rem",
+      fontWeight: 700,
+      textAlign: "center",
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      borderBottom: "1px solid rgba(255,255,255,0.15)",
+    }}
+  >
+    Add Exercise Log
+  </DialogTitle>
 
-            <DialogActions>
-                <Button sx={{ color: 'black' }} onClick={handleClose}>Cancel</Button>
-                <Button
-                    // variant="contained"
-                    sx={{ color: 'black', height: '45px', width: '90px', border: '1px solid black', borderRadius: '10px' }}
-                    onClick={handleSubmit}
-                    disabled={!exerciseId || sets.length === 0 || isPending}
-                >
-                    {isPending ? 'Saving...' : 'Save'}
-                </Button>
-            </DialogActions>
-        </Dialog>
+  {/* CONTENT */}
+  <DialogContent
+    sx={{
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      color: "white",
+    }}
+  >
+    <Box mt={2}>
+      {/* Select Exercise */}
+      <FormControl fullWidth margin="normal">
+        <InputLabel
+          id="exercise-select"
+          sx={{
+            color: "rgba(255,255,255,0.8)",
+            "&.Mui-focused": { color: "white" },
+          }}
+        >
+          Exercise
+        </InputLabel>
+
+        <Select
+          labelId="exercise-select"
+          value={exerciseId}
+          onChange={(e) => setExerciseId(e.target.value)}
+          sx={{
+            background: "rgba(255,255,255,0.08)",
+            backdropFilter: "blur(8px)",
+            borderRadius: "12px",
+            color: "white",
+
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "rgba(255,255,255,0.25)",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: "rgba(255,255,255,0.45)",
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#8B5CF6",
+            },
+            "& .MuiSelect-icon": { color: "white" },
+          }}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                background: "rgba(20,20,30,0.95)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                color: "white",
+              },
+            },
+          }}
+        >
+          {exercises?.map((ex) => (
+            <MenuItem key={ex.id} value={ex.id}>
+              {ex.value}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Date */}
+      <TextField
+        type="date"
+        label="Date"
+        fullWidth
+        margin="normal"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        InputLabelProps={{ shrink: true }}
+        sx={{
+          "& .MuiInputBase-root": {
+            background: "rgba(255,255,255,0.08)",
+            backdropFilter: "blur(8px)",
+            borderRadius: "12px",
+            color: "white",
+          },
+          "& .MuiInputLabel-root": {
+            color: "rgba(255,255,255,0.8)",
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(255,255,255,0.25)",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#8B5CF6",
+          },
+        }}
+      />
+
+      {/* Sets */}
+      <Typography variant="h6" mt={2} fontWeight={600}>
+        Sets
+      </Typography>
+
+      {sets.map((set, idx) => (
+        <Box
+          key={idx}
+          display="flex"
+          gap={1.5}
+          alignItems="center"
+          mt={1}
+          borderRadius="12px"
+        >
+          <TextField
+            label="Reps"
+            type="number"
+            value={set.reps}
+            onChange={(e) => handleSetChange(idx, "reps", e.target.value)}
+            sx={{
+                  background: "rgba(255,255,255,0.08)",
+              "& .MuiInputBase-root": { color: "white" },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255,255,255,0.25)",
+              },
+            }}
+          />
+
+          <TextField
+            label="Weight"
+            type="number"
+            value={set.weight}
+            onChange={(e) => handleSetChange(idx, "weight", e.target.value)}
+            sx={{
+                  background: "rgba(255,255,255,0.08)",
+              "& .MuiInputBase-root": { color: "white" },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255,255,255,0.25)",
+              },
+            }}
+          />
+
+          {sets.length > 1 && (
+            <IconButton
+              onClick={() => handleRemoveSet(idx)}
+              sx={{
+                color: "#F87171",
+                "&:hover": { background: "rgba(248,113,113,0.15)" },
+              }}
+            >
+              <Delete />
+            </IconButton>
+          )}
+        </Box>
+      ))}
+
+      <Button
+        startIcon={<Add />}
+        onClick={handleAddSet}
+        sx={{
+          mt: 2,
+          color: "#A78BFA",
+          textTransform: "none",
+        }}
+      >
+        Add Set
+      </Button>
+    </Box>
+  </DialogContent>
+
+  {/* ACTIONS */}
+  <DialogActions
+    sx={{
+      px: 3,
+      py: 2,
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      borderTop: "1px solid rgba(255,255,255,0.15)",
+      gap: 1.5,
+    }}
+  >
+    <Button
+      onClick={handleClose}
+      sx={{
+        color: "white",
+        borderRadius: "10px",
+        px: 2.5,
+        background: "rgba(255,255,255,0.08)",
+        "&:hover": { background: "rgba(255,255,255,0.15)" },
+      }}
+    >
+      Cancel
+    </Button>
+
+    <Button
+      onClick={handleSubmit}
+      disabled={!exerciseId || sets.length === 0 || isPending}
+      sx={{
+        borderRadius: "12px",
+        px: 3,
+        color: "white",
+        background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
+        boxShadow: "0 0 14px rgba(139,92,246,0.8)",
+        "&:disabled": { opacity: 0.6 },
+      }}
+    >
+      {isPending ? "Saving..." : "Save"}
+    </Button>
+  </DialogActions>
+</Dialog>
+
     );
 };
 

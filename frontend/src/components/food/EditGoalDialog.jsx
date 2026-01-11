@@ -56,96 +56,186 @@ import {
     const pctError = totalPct !== 100;
   
     return (
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-       <DialogTitle sx={{ textAlign: "center", bgcolor: "#404040", color: "white" }}>Edit Daily Goals</DialogTitle>
-  
-       <DialogContent sx={{ bgcolor: "#404040", color: "white" }}>
-          <Box mt={1}>
-            <CustomInput
-              label="Total Calories (kcal)"
-              name="calories"
-              type="number"
-              formik={formik}
-            />
-          </Box>
-  
-          <Grid container spacing={2} mt={2}>
-            <Grid size={4}>
-              <CustomInput
-                label="Protein %"
-                name="proteinPct"
-                type="number"
-                formik={formik}
-              />
-            </Grid>
-            <Grid size={4}>
-              <CustomInput
-                label="Carbs %"
-                name="carbsPct"
-                type="number"
-                formik={formik}
-              />
-            </Grid>
-            <Grid size={4}>
-              <CustomInput
-                label="Fats %"
-                name="fatsPct"
-                type="number"
-                formik={formik}
-              />
-            </Grid>
-          </Grid>
-  
-          {/* % VALIDATION */}
-          <Box mt={2}>
-            <Typography
-              fontSize={15}
-              fontWeight={600}
-              color={pctError ? "error.main" : "success.main"}
-            >
-              Total: {totalPct}% {pctError && "(must be 100%)"}
-            </Typography>
-          </Box>
-  
-          {/* AUTO CALC GRAMS */}
-          <Box
-            mt={2}
-            p={2}
-            border="1px solid #E5E7EB"
-            borderRadius="10px"
-          >
-            <Typography fontWeight={600} mb={1}>
-              Daily Macro Targets
-            </Typography>
-  
-            <Grid container>
-              <Grid size={4}>
-                <Typography fontWeight={600}>{proteinG} g</Typography>
-                <Typography fontSize={12}>Protein</Typography>
-              </Grid>
-              <Grid size={4}>
-                <Typography fontWeight={600}>{carbsG} g</Typography>
-                <Typography fontSize={12}>Carbs</Typography>
-              </Grid>
-              <Grid size={4}>
-                <Typography fontWeight={600}>{fatsG} g</Typography>
-                <Typography fontSize={12}>Fats</Typography>
-              </Grid>
-            </Grid>
-          </Box>
-        </DialogContent>
-  
-        <DialogActions sx={{ px: 3, pb: 2, bgcolor: "#404040" }}>
-          <Button onClick={onClose} sx={{color:'white'}}>Cancel</Button>
-          <Button
-            variant="contained"
-            disabled={pctError || isPending}
-            onClick={formik.handleSubmit}
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Dialog
+  open={open}
+  onClose={onClose}
+  fullWidth
+  maxWidth="xs"
+  BackdropProps={{
+    sx: {
+      backdropFilter: "blur(4px)",
+      backgroundColor: "rgba(0,0,0,0.55)",
+    },
+  }}
+  PaperProps={{
+    sx: {
+      borderRadius: "22px",
+      position: "relative",
+      overflow: "hidden",
+
+      /* Glass paper */
+      background: "rgba(30,30,40,0.88)",
+      backdropFilter: "blur(20px)",
+      WebkitBackdropFilter: "blur(20px)",
+      border: "1px solid rgba(255,255,255,0.18)",
+
+      boxShadow: `
+        inset 0 0 0.5px rgba(255,255,255,0.6),
+        0 20px 60px rgba(0,0,0,0.6)
+      `,
+      color: "white",
+    },
+  }}
+>
+  {/* glossy overlay */}
+  <Box
+    sx={{
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(120deg, rgba(255,255,255,0.15), transparent 60%)",
+      pointerEvents: "none",
+      zIndex: 0,
+    }}
+  />
+
+  {/* TITLE */}
+  <DialogTitle
+    sx={{
+      textAlign: "center",
+      fontWeight: 600,
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      borderBottom: "1px solid rgba(255,255,255,0.15)",
+    }}
+  >
+    Edit Daily Goals
+  </DialogTitle>
+
+  {/* CONTENT */}
+  <DialogContent
+    sx={{
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      color: "white",
+    }}
+  >
+    <Box mt={1}>
+      <CustomInput
+        label="Total Calories (kcal)"
+        name="calories"
+        type="number"
+        formik={formik}
+      />
+    </Box>
+
+    <Grid container spacing={2} mt={2}>
+      <Grid size={4}>
+        <CustomInput label="Protein %" name="proteinPct" type="number" formik={formik} />
+      </Grid>
+      <Grid size={4}>
+        <CustomInput label="Carbs %" name="carbsPct" type="number" formik={formik} />
+      </Grid>
+      <Grid size={4}>
+        <CustomInput label="Fats %" name="fatsPct" type="number" formik={formik} />
+      </Grid>
+    </Grid>
+
+    {/* % VALIDATION */}
+    <Box mt={2}>
+      <Typography
+        fontSize={15}
+        fontWeight={600}
+        color={pctError ? "error.main" : "success.main"}
+      >
+        Total: {totalPct}% {pctError && "(must be 100%)"}
+      </Typography>
+    </Box>
+
+    {/* AUTO CALC GRAMS — GLASS BOX */}
+    <Box
+      mt={2}
+      p={2}
+      borderRadius="14px"
+      sx={{
+        background: "rgba(255,255,255,0.12)",
+        backdropFilter: "blur(10px)",
+        border: "1px solid rgba(255,255,255,0.25)",
+        boxShadow: `
+          inset 0 0 6px rgba(255,255,255,0.25),
+          0 6px 18px rgba(0,0,0,0.4)
+        `,
+      }}
+    >
+      <Typography fontWeight={600} mb={1}>
+        Daily Macro Targets
+      </Typography>
+
+      <Grid container>
+        <Grid size={4}>
+          <Typography fontWeight={600}>{proteinG} g</Typography>
+          <Typography fontSize={12} sx={{ opacity: 0.75 }}>
+            Protein
+          </Typography>
+        </Grid>
+        <Grid size={4}>
+          <Typography fontWeight={600}>{carbsG} g</Typography>
+          <Typography fontSize={12} sx={{ opacity: 0.75 }}>
+            Carbs
+          </Typography>
+        </Grid>
+        <Grid size={4}>
+          <Typography fontWeight={600}>{fatsG} g</Typography>
+          <Typography fontSize={12} sx={{ opacity: 0.75 }}>
+            Fats
+          </Typography>
+        </Grid>
+      </Grid>
+    </Box>
+  </DialogContent>
+
+  {/* ACTIONS */}
+  <DialogActions
+    sx={{
+      px: 3,
+      pb: 2,
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      borderTop: "1px solid rgba(255,255,255,0.15)",
+    }}
+  >
+    <Button
+      onClick={onClose}
+      sx={{
+        color: "white",
+        borderRadius: "10px",
+        px: 2.5,
+        background: "rgba(255,255,255,0.08)",
+        "&:hover": { background: "rgba(255,255,255,0.15)" },
+      }}
+    >
+      Cancel
+    </Button>
+
+    <Button
+      variant="contained"
+      disabled={pctError || isPending}
+      onClick={formik.handleSubmit}
+      sx={{
+        borderRadius: "12px",
+        px: 3,
+        background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
+        boxShadow: "0 0 14px rgba(139,92,246,0.8)",
+      }}
+    >
+      Save
+    </Button>
+  </DialogActions>
+</Dialog>
+
     );
   };
   

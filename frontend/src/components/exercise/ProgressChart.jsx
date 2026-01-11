@@ -5,30 +5,62 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 function Legend({ items, onToggle }) {
-    return (
-        <Stack direction="row" sx={{ gap: 2, alignItems: "center", justifyContent: "center", mt: 2.5, mb: 1.5 }}>
-            {items.map((item) => (
-                <Stack
-                    key={item.label}
-                    direction="row"
-                    sx={{ gap: 1.25, alignItems: "center", cursor: "pointer" }}
-                    onClick={() => onToggle(item.label)}
-                >
-                    <Box
-                        sx={{
-                            width: 12,
-                            height: 12,
-                            bgcolor: item.visible ? item.color : "grey.500",
-                            borderRadius: "50%",
-                        }}
-                    />
-                    <Typography variant="body2" color="text.primary">
-                        {item.label}
-                    </Typography>
-                </Stack>
-            ))}
+  return (
+    <Stack
+      direction="row"
+      sx={{
+        gap: 2,
+        alignItems: "center",
+        justifyContent: "center",
+        mt: 2,
+        flexWrap: "wrap",
+      }}
+    >
+      {items.map((item) => (
+        <Stack
+          key={item.label}
+          direction="row"
+          sx={{
+            gap: 1.25,
+            alignItems: "center",
+            cursor: "pointer",
+            px: 1.5,
+            py: 0.75,
+            borderRadius: "999px",
+
+            background: item.visible
+              ? "rgba(255,255,255,0.15)"
+              : "rgba(255,255,255,0.06)",
+            backdropFilter: "blur(8px)",
+            border: "1px solid rgba(255,255,255,0.2)",
+
+            "&:hover": {
+              background: "rgba(255,255,255,0.22)",
+            },
+          }}
+          onClick={() => onToggle(item.label)}
+        >
+          <Box
+            sx={{
+              width: 10,
+              height: 10,
+              bgcolor: item.visible ? item.color : "grey.500",
+              borderRadius: "50%",
+              boxShadow: item.visible
+                ? `0 0 8px ${item.color}`
+                : "none",
+            }}
+          />
+          <Typography
+            variant="body2"
+            sx={{ color: "white", fontWeight: 500 }}
+          >
+            {item.label}
+          </Typography>
         </Stack>
-    );
+      ))}
+    </Stack>
+  );
 }
 
 export default function ExerciseProgressChart({ progress }) {
@@ -79,76 +111,94 @@ export default function ExerciseProgressChart({ progress }) {
 
     return (
         <Box
-            sx={{
-                bgcolor: "white", // ✅ dark background
-                borderRadius: 3,
-                p: 2,
-            }}
-        >
-            <LineChart
-                height={400}
-                hideLegend
-                grid={{ horizontal: true }}
-                xAxis={[
-                    {
-                        scaleType: "point",
-                        data: labels,
-                        disableLine: true,
-                        tickLabelStyle: {
-                            fill: "#9CA3AF",
-                            fontSize: 11,
-                        },
-                    },
-                ]}
-                yAxis={[
-                    {
-                        disableLine: true,
-                        disableTicks: true,
-                        tickLabelStyle: {
-                            fill: "#9CA3AF",
-                            fontSize: 11,
-                        },
-                    },
-                ]}
-                sx={{
-                    "& .MuiChartsGrid-line": {
-                        stroke: "rgba(255,255,255,0.08)", // subtle grid
-                    },
-                    "& .MuiChartsAxis-tickLabel": {
-                        fill: "#9CA3AF",
-                    },
-                    "& .MuiChartsTooltip-root": {
-                        backgroundColor: "#1F2937",
-                        color: "white",
-                        borderRadius: "8px",
-                    },
-                }}
-                series={visibleSeries
-                    .filter((s) => s.visible)
-                    .map((s) => ({
-                        type: "line",
-                        data: s.data,
-                        label: s.label,
-                        id: s.id,
-                        curve: "monotoneX",
-                        color: s.color,
-                        stroke: s.color,
-                        strokeWidth: 2,
-                        area: true,
-                        showMark: true,
-                        areaOpacity: 0.25, // ✅ soft glow
-                    }))}
-            />
+  sx={{
+    borderRadius: "20px",
+    p: 2.5,
 
-            {/* Legend */}
-            <Legend
-                items={visibleSeries.map((i) => ({
-                    ...i,
-                    visible: visibility[i.label],
-                }))}
-                onToggle={toggleVisibility}
-            />
-        </Box>
+    background: "rgba(255,255,255,0.08)",
+    backdropFilter: "blur(18px)",
+    WebkitBackdropFilter: "blur(18px)",
+    border: "1px solid rgba(255,255,255,0.18)",
+
+    boxShadow: `
+      inset 0 0 0.5px rgba(255,255,255,0.6),
+      0 12px 40px rgba(0,0,0,0.45)
+    `,
+  }}
+>
+  <LineChart
+    height={380}
+    hideLegend
+    grid={{ horizontal: true }}
+    xAxis={[
+      {
+        scaleType: "point",
+        data: labels,
+        disableLine: true,
+        tickLabelStyle: {
+          fill: "rgba(255,255,255,0.65)",
+          fontSize: 11,
+        },
+      },
+    ]}
+    yAxis={[
+      {
+        disableLine: true,
+        disableTicks: true,
+        tickLabelStyle: {
+          fill: "rgba(255,255,255,0.65)",
+          fontSize: 11,
+        },
+      },
+    ]}
+    sx={{
+      "& .MuiChartsGrid-line": {
+        stroke: "rgba(255,255,255,0.08)",
+      },
+
+      "& .MuiChartsAxis-tickLabel": {
+        fill: "rgba(255,255,255,0.65)",
+      },
+
+      /* tooltip glass */
+      "& .MuiChartsTooltip-root": {
+        background: "rgba(30,30,40,0.9)",
+        backdropFilter: "blur(10px)",
+        border: "1px solid rgba(255,255,255,0.2)",
+        borderRadius: "10px",
+        color: "white",
+      },
+    }}
+    series={visibleSeries
+      .filter((s) => s.visible)
+      .map((s) => ({
+        type: "line",
+        data: s.data,
+        label: s.label,
+        id: s.id,
+        curve: "monotoneX",
+        color: s.color,
+        stroke: s.color,
+        strokeWidth: 2.5,
+        showMark: true,
+        area: true,
+        areaOpacity: 0.18,
+
+        /* glow effect */
+        highlightScope: { highlighted: "series", faded: "none" },
+      }))}
+  />
+
+  {/* Legend */}
+  <Legend
+    items={visibleSeries.map((i) => ({
+      ...i,
+      visible: visibility[i.label],
+    }))}
+    onToggle={toggleVisibility}
+  />
+</Box>
+
     );
 }
 

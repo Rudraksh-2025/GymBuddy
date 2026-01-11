@@ -47,67 +47,110 @@ const ExerciseInformation = () => {
             </Box>
 
             {/* Exercise Logs Table */}
-            <TableContainer component={Paper} sx={{ maxHeight: 550, overflowY: "auto", mt: 2 }}>
-                <Table stickyHeader sx={{ '& .MuiTableCell-root': { fontSize: '15px', } }}>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell><strong>Date</strong></TableCell>
-                            <TableCell><strong>Exercise Log</strong></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {exercises?.length > 0 ? (
-                            exercises.map((ex) => (
-                                <TableRow key={ex._id}>
-                                    <TableCell>
-                                        {ex.date ? (
-                                            <Typography variant="body1" fontWeight="bold">
-                                                {new Date(ex.date).toLocaleDateString("en-IN", {
-                                                    year: "numeric",
-                                                    month: "short",
-                                                    day: "numeric",
-                                                })}
-                                            </Typography>
-                                        ) : "-"}
-                                    </TableCell>
-                                    <TableCell>
-                                        {ex?.sets && ex?.sets?.length > 0 ? (
-                                            <Box display="flex" gap={0.5} flexWrap="wrap">
-                                                {ex.sets.map((s, i) => (
-                                                    <Chip
-                                                        key={i}
-                                                        label={`${s.reps} reps x ${s.weight} kg`}
-                                                        sx={{
-                                                            backgroundColor: '#E5E7EB',
-                                                            color: '#9CA3AF',
-                                                            fontWeight: 500,
-                                                            '& .MuiChip-label': {
-                                                                textTransform: 'capitalize',
-                                                                color: '#6B7280'
-                                                            }
-                                                        }}
-                                                        size="small"
-                                                    />
-                                                ))}
-                                            </Box>
-                                        ) : (
-                                            <Typography variant="body2" color="textSecondary">
-                                                No logs yet
-                                            </Typography>
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={4} align="center">
-                                    No Exercises Found
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+          <TableContainer
+  sx={{
+    mt: 2,
+    borderRadius: "20px",
+    overflow: "hidden",
+
+    background: "rgba(255,255,255,0.08)",
+    backdropFilter: "blur(18px)",
+    WebkitBackdropFilter: "blur(18px)",
+    border: "1px solid rgba(255,255,255,0.18)",
+
+    boxShadow: `
+      inset 0 0 0.5px rgba(255,255,255,0.6),
+      0 12px 40px rgba(0,0,0,0.45)
+    `,
+  }}
+>
+     <Table
+    stickyHeader
+    sx={{
+      "& .MuiTableCell-root": {
+        fontSize: "14px",
+        color: "white",
+        borderBottom: "1px solid rgba(255,255,255,0.12)",
+      },
+      "& tbody tr:last-of-type td": {
+        borderBottom: "none",
+      },
+    }}
+  >
+    {/* HEADER */}
+    <TableHead>
+      <TableRow
+        sx={{
+          background: "rgba(255,255,255,0.08)",
+          backdropFilter: "blur(10px)",
+        }}
+      >
+        <TableCell sx={{ fontWeight: 600, paddingLeft: "30px", color: "rgba(255,255,255,0.7)", background: "transparent", }}>
+          Date
+        </TableCell>
+        <TableCell sx={{ fontWeight: 600, background: "transparent", color: "rgba(255,255,255,0.7)" }}>
+          Exercise Log
+        </TableCell>
+      </TableRow>
+    </TableHead>
+
+
+    {/* BODY */}
+    <TableBody>
+      {exercises?.length > 0 ? (
+        exercises.map((ex) => (
+          <TableRow
+            key={ex._id}
+            sx={{
+              "&:hover": { background: "rgba(255,255,255,0.05)" },
+            }}
+          >
+            <TableCell sx={{ paddingLeft: "30px", fontWeight: 600 }}>
+              {ex.date
+                ? new Date(ex.date).toLocaleDateString("en-IN", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })
+                : "-"}
+            </TableCell>
+
+            <TableCell>
+              {ex?.sets && ex.sets.length > 0 ? (
+                <Box display="flex" gap={0.5} flexWrap="wrap">
+                  {ex.sets.map((s, i) => (
+                    <Chip
+                      key={i}
+                      label={`${s.reps} reps x ${s.weight} kg`}
+                      size="small"
+                      sx={{
+                        background: "rgba(255,255,255,0.15)",
+                        border: "1px solid rgba(255,255,255,0.25)",
+                        color: "white",
+                        "& .MuiChip-label": { fontWeight: 500 },
+                      }}
+                    />
+                  ))}
+                </Box>
+              ) : (
+                <Typography variant="body2" sx={{ opacity: 0.6 }}>
+                  No logs yet
+                </Typography>
+              )}
+            </TableCell>
+          </TableRow>
+        ))
+      ) : (
+        <TableRow>
+          <TableCell colSpan={2} align="center" sx={{ py: 3, opacity: 0.7 }}>
+            No Exercises Found
+          </TableCell>
+        </TableRow>
+      )}
+    </TableBody>
+  </Table>
+</TableContainer>
+
 
             {/* Progress Chart */}
             {progress && progress.length > 0 && (

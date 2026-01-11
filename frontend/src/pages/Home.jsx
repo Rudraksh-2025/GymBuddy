@@ -1,278 +1,313 @@
-import React, { useState } from 'react'
+import React from "react";
 import {
-    Box, Typography, Grid,
+  Box,
+  Typography,
+  Grid,
+  Card,
+  Divider,
+  Button,
+  LinearProgress,
+  Stack,
 } from "@mui/material";
-import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import WhatshotIcon from "@mui/icons-material/Whatshot";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import MonitorWeightIcon from "@mui/icons-material/MonitorWeight";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import AddIcon from "@mui/icons-material/Add";
+import StatCard from "../components/StatCard";
 
 const Home = () => {
+  return (
+    <Box sx={{ p: { xs: 0, sm: 2 } }}>
+      {/* =================== TOP STATS =================== */}
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+          <StatCard
+            title="Calories Today"
+            value="1680 / 2200"
+            sub="520 kcal left"
+            icon={<RestaurantIcon />}
+            color="#6366F1"
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+          <StatCard
+            title="Current Weight"
+            value="72.4 kg"
+            sub="-1.2 kg this month"
+            icon={<MonitorWeightIcon />}
+            color="#22C55E"
+          />
+        </Grid>
 
-    const PercentageChange = ({ flag, value }) => {
-        const isUp = flag === 'up';
-        return (
-            <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', color: isUp ? '#16A34A' : 'red', fontWeight: 500 }}>
-                {isUp ? (
-                    <ArrowUpward sx={{ color: '#16A34A', fontSize: 18, mr: 0.3 }} />
-                ) : (
-                    <ArrowDownward sx={{ color: 'red', fontSize: 18, mr: 0.3 }} />
-                )}
-                {value || 0}%
-                <Typography sx={{ color: '#878787' }}>&nbsp;since last month</Typography>
+        <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+          <StatCard
+            title="Workouts"
+            value="4 this week"
+            sub="Upper / Cardio"
+            icon={<FitnessCenterIcon />}
+            color="#F59E0B"
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+          <StatCard
+            title="Streak"
+            value="6 days"
+            sub="Keep going"
+            icon={<WhatshotIcon />}
+            color="#EF4444"
+          />
+        </Grid>
+      </Grid>
+
+      {/* =================== MID SECTION =================== */}
+      <Grid container spacing={3} mt={5}>
+        {/* CALORIE PROGRESS */}
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Box
+            sx={{
+              p: 2,
+              height: "100%",
+              borderRadius: "20px",
+              position: "relative",
+              overflow: "hidden",
+
+              background: "rgba(255,255,255,0.08)",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              border: "1px solid rgba(255,255,255,0.18)",
+
+              boxShadow: `
+          inset 0 0 0.5px rgba(255,255,255,0.6),
+          0 12px 40px rgba(0,0,0,0.45)
+        `,
+              color: "white",
+            }}
+          >
+            {/* highlight */}
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
+                pointerEvents: "none",
+              }}
+            />
+
+            <Box sx={{ position: "relative", zIndex: 1 }}>
+              <Typography fontWeight={600} mb={1}>
+                Calorie Progress
+              </Typography>
+
+              <Typography fontSize={13} sx={{ opacity: 0.7 }}>
+                1680 kcal consumed
+              </Typography>
+
+              <LinearProgress
+                variant="determinate"
+                value={76}
+                sx={{
+                  mt: 2,
+                  height: 10,
+                  borderRadius: 6,
+                  background: "rgba(255,255,255,0.15)",
+                  "& .MuiLinearProgress-bar": {
+                    background: "linear-gradient(90deg, #22D3EE, #8B5CF6)",
+                    boxShadow: "0 0 10px rgba(139,92,246,0.7)",
+                  },
+                }}
+              />
+
+              <Typography mt={1} fontSize={13} sx={{ opacity: 0.7 }}>
+                520 kcal remaining
+              </Typography>
             </Box>
-        );
-    };
+          </Box>
+        </Grid>
 
+        {/* WEIGHT TREND */}
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Box
+            sx={{
+              p: 2,
+              height: "100%",
+              borderRadius: "20px",
+              position: "relative",
+              overflow: "hidden",
 
-    return (
-        <>
-            home
-            {/* <Grid container spacing={3} my={5}>
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+              background: "rgba(255,255,255,0.08)",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              border: "1px solid rgba(255,255,255,0.18)",
 
-                    <Box sx={{ height: "100%", backgroundColor: '#2E86AB33', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Active Subscribers</Typography>
-                                <Typography variant="h4" fontWeight={650}>{analyticsData?.data?.totat_active_subscribers?.total_active_subscribers_count || 0}</Typography>
+              boxShadow: `
+          inset 0 0 0.5px rgba(255,255,255,0.6),
+          0 12px 40px rgba(0,0,0,0.45)
+        `,
+              color: "white",
+            }}
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
+                pointerEvents: "none",
+              }}
+            />
 
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    <PercentageChange
-                                        flag={analyticsData?.data?.totat_active_subscribers
-                                            ?.flag}
-                                        value={analyticsData?.data?.totat_active_subscribers
-                                            ?.percentage_change}
-                                    />
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={activeSubs} alt="ReportIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#4AA96C33', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Weekly Advances Issued</Typography>
-                                <Typography variant="h4" fontWeight={650}>R {analyticsData?.data?.total_weekly_advance_issues?.total_weekly_advance_issues || 0}</Typography>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    <PercentageChange
-                                        flag={analyticsData?.data?.total_weekly_advance_issues
-                                            ?.flag}
-                                        value={analyticsData?.data?.total_weekly_advance_issues
-                                            ?.percentage_change}
-                                    />
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={weeklyIssue} alt="LocationIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+            <Box sx={{ position: "relative", zIndex: 1 }}>
+              <Typography fontWeight={600} mb={1}>
+                Weekly Weight Trend
+              </Typography>
 
-                    <Box sx={{ height: "100%", backgroundColor: '#1B9AAA33', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Total Repayments</Typography>
-                                <Typography variant="h4" fontWeight={650}>R {analyticsData?.data?.total_repayments?.total_repayments || 0}</Typography>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    <PercentageChange
-                                        flag={analyticsData?.data?.total_repayments
-                                            ?.flag}
-                                        value={analyticsData?.data?.total_repayments
-                                            ?.percentage_change}
-                                    />
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={totalRepayment} alt="DangerIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+              <Box
+                sx={{
+                  mt: 2,
+                  height: 120,
+                  borderRadius: "14px",
+                  background: "rgba(255,255,255,0.12)",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  opacity: 0.7,
+                }}
+              >
+                Chart Coming Soon
+              </Box>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
 
-                    <Box sx={{ height: "100%", backgroundColor: '#D7263D33', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Total Outstanding</Typography>
-                                <Typography variant="h4" fontWeight={600}>R {analyticsData?.data?.total_outstandings?.total_outstandings || 0}</Typography>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    <PercentageChange
-                                        flag={analyticsData?.data?.total_outstandings
-                                            ?.flag}
-                                        value={analyticsData?.data?.total_outstandings
-                                            ?.percentage_change}
-                                    />
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={home1} alt="ReportIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+      {/* =================== BOTTOM SECTION =================== */}
+      <Grid container spacing={3} mt={10}>
+        {/* RECENT MEALS */}
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Box
+            sx={{
+              p: 2,
+              borderRadius: "20px",
+              position: "relative",
+              overflow: "hidden",
 
-                    <Box sx={{ height: "100%", backgroundColor: '#6C63FF33', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Wallet Balances</Typography>
-                                <Typography variant="h4" fontWeight={600}>R {analyticsData?.data?.total_wallet_balance?.total_wallet_balance || 0}</Typography>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    Available liquidity
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={home2} alt="LocationIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <TopUsersCard analyticsData={analyticsData} />
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+              background: "rgba(255,255,255,0.08)",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              border: "1px solid rgba(255,255,255,0.18)",
 
-                    <Box sx={{ height: "100%", backgroundColor: '#ECFDF5', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Total Active Subscriptions</Typography>
-                                <Typography variant="h4" fontWeight={600}>{analyticsData?.data?.total_active_subscriptions?.total_active_subscriptions_count || 0}</Typography>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    <PercentageChange
-                                        flag={analyticsData?.data?.total_active_subscriptions
-                                            ?.flag}
-                                        value={analyticsData?.data?.total_active_subscriptions
-                                            ?.percentage_change}
-                                    />
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={home3} alt="ReportIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#EFF6FF', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Total Revenue from Subscriptions</Typography>
-                                <Typography variant="h4" fontWeight={600}>R {analyticsData?.data?.total_revenue_from_subscription?.total_revenue_from_subscriptions || 0}</Typography>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    <PercentageChange
-                                        flag={analyticsData?.data?.total_revenue_from_subscription
-                                            ?.flag}
-                                        value={analyticsData?.data?.total_revenue_from_subscription
-                                            ?.percentage_change}
-                                    />
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={home4} alt="LocationIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+              boxShadow: `
+          inset 0 0 0.5px rgba(255,255,255,0.6),
+          0 12px 40px rgba(0,0,0,0.45)
+        `,
+              color: "white",
+            }}
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
+                pointerEvents: "none",
+              }}
+            />
 
-                    <Box sx={{ height: "100%", backgroundColor: '#FFF7ED', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Total Expired Subscriptions</Typography>
-                                <Typography variant="h4" fontWeight={600}>{analyticsData?.data?.total_expired_subscriptions?.total_expired_subscriptions_count || 0}</Typography>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    <PercentageChange
-                                        flag={analyticsData?.data?.total_expired_subscriptions
-                                            ?.flag}
-                                        value={analyticsData?.data?.total_expired_subscriptions
-                                            ?.percentage_change}
-                                    />
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={home5} alt="DangerIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#FEF2F2', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Suspended Subscriptions</Typography>
-                                <Typography variant="h4" fontWeight={600}>{analyticsData?.data?.total_suspended_subscription?.total_suspended_subscription_count || 0}</Typography>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    <PercentageChange
-                                        flag={analyticsData?.data?.total_suspended_subscription
-                                            ?.flag}
-                                        value={analyticsData?.data?.total_suspended_subscription
-                                            ?.percentage_change}
-                                    />
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={home6} alt="ReportIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+            <Box sx={{ position: "relative", zIndex: 1 }}>
+              <Stack direction="row" justifyContent="space-between">
+                <Typography fontWeight={600}>Recent Meals</Typography>
+                <Button
+                  size="small"
+                  startIcon={<AddIcon />}
+                  sx={{ color: "#8B5CF6" }}
+                >
+                  Add
+                </Button>
+              </Stack>
 
-                    <Box sx={{ height: "100%", backgroundColor: '#ECFEFF', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Upcoming Renewals</Typography>
-                                <Typography variant="h4" fontWeight={600}>{analyticsData?.data?.upcoming_renewals?.upcoming_renewals_count || 0}</Typography>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    <PercentageChange
-                                        flag={analyticsData?.data?.upcoming_renewals
-                                            ?.flag}
-                                        value={analyticsData?.data?.upcoming_renewals
-                                            ?.percentage_change}
-                                    />
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={home7} alt="LocationIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-                    <Box sx={{ height: "100%", backgroundColor: '#F5F3FF', borderRadius: '16px', }}>
-                        <Box sx={{ display: 'flex', height: "100%", flexDirection: 'row', justifyContent: 'space-between', gap: 2, px: 3, py: 3 }}>
-                            <Box>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>Average Subscription Value</Typography>
-                                <Typography variant="h4" fontWeight={600}>R {analyticsData?.data?.average_subscription_revenue?.averageSubscriptionValueAllTime || 0}</Typography>
-                                <Typography variant="body1" sx={{ color: '#878787' }}>
-                                    <PercentageChange
-                                        flag={analyticsData?.data?.average_subscription_revenue
-                                            ?.flag}
-                                        value={analyticsData?.data?.average_subscription_revenue
-                                            ?.percentage_change}
-                                    />
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <img src={home8} alt="DangerIcon" />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
+              <Divider sx={{ my: 1, borderColor: "rgba(255,255,255,0.15)" }} />
 
-            </Grid> */}
-            {/* <Grid container gap={2}>
-                <Grid size={{ xs: 12, lg: 5.89 }}>
-                    <WeeklyAdvance analyticsData={analyticsData} />
-                </Grid>
-                <Grid size={{ xs: 12, lg: 5.9 }}>
-                    <SubscriberGrowthTrend analyticsData={analyticsData} />
-                </Grid>
-            </Grid> */}
-        </>
-    )
-}
+              {["Oats & Milk", "Chicken & Rice", "Protein Shake"].map(
+                (m, i) => (
+                  <Typography
+                    key={i}
+                    fontSize={14}
+                    mb={0.8}
+                    sx={{ opacity: 0.85 }}
+                  >
+                    • {m}
+                  </Typography>
+                )
+              )}
+            </Box>
+          </Box>
+        </Grid>
 
-export default Home
+        {/* RECENT WORKOUTS */}
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Box
+            sx={{
+              p: 2,
+              borderRadius: "20px",
+              position: "relative",
+              overflow: "hidden",
+
+              background: "rgba(255,255,255,0.08)",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              border: "1px solid rgba(255,255,255,0.18)",
+
+              boxShadow: `
+          inset 0 0 0.5px rgba(255,255,255,0.6),
+          0 12px 40px rgba(0,0,0,0.45)
+        `,
+              color: "white",
+            }}
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
+                pointerEvents: "none",
+              }}
+            />
+
+            <Box sx={{ position: "relative", zIndex: 1 }}>
+              <Stack direction="row" justifyContent="space-between">
+                <Typography fontWeight={600}>Recent Workouts</Typography>
+                <Button
+                  size="small"
+                  startIcon={<AddIcon />}
+                  sx={{ color: "#8B5CF6" }}
+                >
+                  Log
+                </Button>
+              </Stack>
+
+              <Divider sx={{ my: 1, borderColor: "rgba(255,255,255,0.15)" }} />
+
+              {["Chest + Triceps", "Back + Biceps", "Leg Day"].map((w, i) => (
+                <Typography
+                  key={i}
+                  fontSize={14}
+                  mb={0.8}
+                  sx={{ opacity: 0.85 }}
+                >
+                  • {w}
+                </Typography>
+              ))}
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
+export default Home;

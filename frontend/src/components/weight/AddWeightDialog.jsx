@@ -39,45 +39,177 @@ const AddWeightDialog = ({ open, onClose }) => {
 
 
     return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-            <DialogTitle fontWeight={600}>Add Weight Entry</DialogTitle>
+        <Dialog
+  open={open}
+  onClose={onClose}
+  fullWidth
+  maxWidth="xs"
+  BackdropProps={{
+    sx: {
+      backdropFilter: "blur(4px)",
+      backgroundColor: "rgba(0,0,0,0.55)",
+    },
+  }}
+  PaperProps={{
+    sx: {
+      borderRadius: "22px",
+      position: "relative",
+      overflow: "hidden",
 
-            <DialogContent>
-                <Box display="flex" flexDirection="column" gap={2} mt={1}>
-                    <TextField
-                        label="Date"
-                        type="date"
-                        fullWidth
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        InputLabelProps={{ shrink: true }}
-                    />
+      /* Glass paper */
+      background: "rgba(30,30,40,0.88)",
+      backdropFilter: "blur(20px)",
+      WebkitBackdropFilter: "blur(20px)",
+      border: "1px solid rgba(255,255,255,0.18)",
 
-                    <TextField
-                        label="Weight (kg)"
-                        fullWidth
-                        type="number"
-                        value={weight}
-                        onChange={(e) => setWeight(e.target.value)}
-                        placeholder="Enter your weight"
-                    />
-                </Box>
-            </DialogContent>
+      boxShadow: `
+        inset 0 0 0.5px rgba(255,255,255,0.6),
+        0 20px 60px rgba(0,0,0,0.6)
+      `,
+      color: "white",
+    },
+  }}
+>
+  {/* glossy overlay */}
+  <Box
+    sx={{
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(120deg, rgba(255,255,255,0.15), transparent 60%)",
+      pointerEvents: "none",
+      zIndex: 0,
+    }}
+  />
 
-            <DialogActions sx={{ px: 3, pb: 2 }}>
-                <Button onClick={onClose} sx={{ textTransform: "none", color: 'black' }}>
-                    Cancel
-                </Button>
-                <Button
-                    variant="contained"
-                    sx={{ background: "#00DCE2", color: "white", textTransform: "none" }}
-                    onClick={handleSubmit}
-                    disabled={!weight}
-                >
-                    Save
-                </Button>
-            </DialogActions>
-        </Dialog>
+  {/* TITLE */}
+  <DialogTitle
+    fontWeight={600}
+    sx={{
+      textAlign: "center",
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      borderBottom: "1px solid rgba(255,255,255,0.15)",
+    }}
+  >
+    Add Weight Entry
+  </DialogTitle>
+
+  {/* CONTENT */}
+  <DialogContent
+    sx={{
+      position: "relative",
+      zIndex: 1,
+      mt:2,
+      background: "transparent",
+    }}
+  >
+    <Box display="flex" flexDirection="column" gap={2} mt={1}>
+      {/* DATE */}
+      <TextField
+        label="Date"
+        type="date"
+        fullWidth
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        InputLabelProps={{ shrink: true }}
+        sx={{
+          "& .MuiInputBase-root": {
+            background: "rgba(255,255,255,0.08)",
+            backdropFilter: "blur(8px)",
+            borderRadius: "12px",
+            color: "white",
+          },
+          "& .MuiInputLabel-root": {
+            color: "rgba(255,255,255,0.8)",
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(255,255,255,0.25)",
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(255,255,255,0.45)",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#8B5CF6",
+          },
+        }}
+      />
+
+      {/* WEIGHT */}
+      <TextField
+        label="Weight (kg)"
+        fullWidth
+        type="number"
+        value={weight}
+        onChange={(e) => setWeight(e.target.value)}
+        placeholder="Enter your weight"
+        sx={{
+          "& .MuiInputBase-root": {
+            background: "rgba(255,255,255,0.08)",
+            backdropFilter: "blur(8px)",
+            borderRadius: "12px",
+            color: "white",
+          },
+          "& .MuiInputLabel-root": {
+            color: "rgba(255,255,255,0.8)",
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(255,255,255,0.25)",
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(255,255,255,0.45)",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#8B5CF6",
+          },
+        }}
+      />
+    </Box>
+  </DialogContent>
+
+  {/* ACTIONS */}
+  <DialogActions
+    sx={{
+      px: 3,
+      pb: 2,
+      position: "relative",
+      zIndex: 1,
+      background: "transparent",
+      borderTop: "1px solid rgba(255,255,255,0.15)",
+    }}
+  >
+    <Button
+      onClick={onClose}
+      sx={{
+        textTransform: "none",
+        color: "white",
+        borderRadius: "10px",
+        px: 2.5,
+        background: "rgba(255,255,255,0.08)",
+        "&:hover": { background: "rgba(255,255,255,0.15)" },
+      }}
+    >
+      Cancel
+    </Button>
+
+    <Button
+      variant="contained"
+      disabled={!weight}
+      onClick={handleSubmit}
+      sx={{
+        textTransform: "none",
+        borderRadius: "12px",
+        px: 3,
+        background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
+        boxShadow: "0 0 14px rgba(139,92,246,0.8)",
+      }}
+    >
+      Save
+    </Button>
+  </DialogActions>
+</Dialog>
+
     );
 };
 
