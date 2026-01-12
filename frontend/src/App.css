@@ -369,19 +369,58 @@ input[type=number] {
   border-radius: 12px!important;
   color: white!important;
 }
-.glass-container{
-  background: rgba(255,255,255,0.08)!important;
-  backdrop-filter: blur(18px)!important;
-  -webkit-backdrop-filter: blur(18px)!important;
-  border: 1px solid rgba(255,255,255,0.18)!important;
-  /* box-shadow: inset 0 0 0.5px rgba(255, 255, 255, 0.6),
-  0 8px 32px rgba(0, 0, 0, 0.35)!important; */
+.glass-container {
+  position: relative!important;
+  overflow: hidden!important;
+  background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+/* glow layer */
+.glass-container::before {
+  content: ""!important;
+  position: absolute!important;
+  inset: 0!important;
+  background: radial-gradient(300px circle at var(--x, 50%) var(--y, 50%),rgba(139, 92, 246, 0.25),
+      transparent 40%)!important;
+  opacity: 0!important;
+  transition: opacity 0.25s ease!important;
+  pointer-events: none!important;
+}
+
+.glass-container:hover::before {
+  opacity: 1!important;
 }
 .glass-layer{
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, rgba(255,255,255,0.15), transparent 60%);
-  pointer-events: none;
+  position: absolute!important;
+  inset: 0!important;
+  background: linear-gradient(120deg, rgba(255,255,255,0.15), transparent 60%)!important;
+  pointer-events: none!important;
+}
+
+/* ===== Cursor glow for table rows / headers ===== */
+
+.glass-glow {
+  position: relative!important;
+  overflow: hidden!important;
+}
+
+.glass-glow::before {
+  content: ""!important;
+  position: absolute!important;
+  inset: 0!important;
+  background: radial-gradient(500px circle at var(--x, 50%) var(--y, 50%),
+      rgba(139, 92, 246, 0.25),
+      transparent 45%)!important;
+  opacity: 0!important;
+  transition: opacity 0.2s ease!important;
+  pointer-events: none!important;
+}
+
+.glass-glow:hover::before {
+  opacity: 1!important;
 }
 
 

@@ -40,6 +40,7 @@ const CalorieTracking = () => {
     deleteFoodLog(id);
   };
 
+
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
       {/* ---------------- ANALYTICS BOX ---------------- */}

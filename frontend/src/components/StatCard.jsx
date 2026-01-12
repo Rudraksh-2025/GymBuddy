@@ -3,6 +3,17 @@ import { Card, Stack, Box, Typography } from "@mui/material";
 const StatCard = ({ title, value, sub, icon, color }) => (
   <Card
     className="glass-container"
+    onMouseMove={(e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      e.currentTarget.style.setProperty(
+        "--x",
+        `${e.clientX - rect.left}px`
+      );
+      e.currentTarget.style.setProperty(
+        "--y",
+        `${e.clientY - rect.top}px`
+      );
+    }}
     sx={{
       p: 2,
       borderRadius: "18px",

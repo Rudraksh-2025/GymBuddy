@@ -16,35 +16,30 @@ const WeightChart = ({ data = [] }) => {
 
   return (
     <Box
+      className='glass-container'
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty(
+          "--x",
+          `${e.clientX - rect.left}px`
+        );
+        e.currentTarget.style.setProperty(
+          "--y",
+          `${e.clientY - rect.top}px`
+        );
+      }}
       sx={{
         py: 3,
         px: { xs: 1.5, sm: 3 },
         borderRadius: "20px",
         position: "relative",
         overflow: "hidden",
-
-        /* Glass surface */
-        background: "rgba(255,255,255,0.08)",
-        backdropFilter: "blur(18px)",
-        WebkitBackdropFilter: "blur(18px)",
-        border: "1px solid rgba(255,255,255,0.18)",
-
-        boxShadow: `
-          inset 0 0 0.5px rgba(255,255,255,0.6),
-          0 10px 34px rgba(0,0,0,0.4)
-        `,
         color: "white",
       }}
     >
       {/* glossy highlight */}
       <Box
-        sx={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
-          pointerEvents: "none",
-        }}
+        className='glass-layer'
       />
 
       <Typography

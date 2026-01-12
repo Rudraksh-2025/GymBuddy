@@ -9,10 +9,15 @@ const MacroRing = ({
 }) => {
   const remaining = Math.max(goal - consumed, 0);
   const progress = goal > 0 ? Math.min((consumed / goal) * 100, 100) : 0;
-
+  const handleGlowMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
+  };
   return (
     <Box
       className='glass-container'
+      onMouseMove={handleGlowMove}
       sx={{
         p: 2.5,
         borderRadius: "20px",

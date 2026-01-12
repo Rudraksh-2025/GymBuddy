@@ -17,6 +17,11 @@ import AddIcon from "@mui/icons-material/Add";
 import StatCard from "../components/StatCard";
 
 const Home = () => {
+  const handleGlowMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
+  };
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
       {/* =================== TOP STATS =================== */}
@@ -73,6 +78,7 @@ const Home = () => {
               overflow: "hidden", color: "white",
             }}
             className='glass-container'
+            onMouseMove={handleGlowMove}
           >
             {/* highlight */}
             <Box
@@ -122,6 +128,7 @@ const Home = () => {
               color: "white",
             }}
             className='glass-container'
+            onMouseMove={handleGlowMove}
           >
             <Box
               className='glass-layer'
@@ -165,6 +172,7 @@ const Home = () => {
               color: "white",
             }}
             className='glass-container'
+            onMouseMove={handleGlowMove}
           >
             <Box
               className='glass-layer'
@@ -211,6 +219,7 @@ const Home = () => {
               color: 'white'
             }}
             className='glass-container'
+            onMouseMove={handleGlowMove}
           >
             <Box
               className='glass-layer'

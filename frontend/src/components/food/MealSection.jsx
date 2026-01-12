@@ -3,10 +3,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const MealSection = ({ title, onAddFood, data = [], onDeleteFood }) => {
   const mealTotal = data.reduce((sum, item) => sum + (item.calories || 0), 0);
-
+  const handleGlowMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
+  };
   return (
     <Box
       className='glass-container'
+      onMouseMove={handleGlowMove}
       sx={{
         p: 2,
         mb: 2,

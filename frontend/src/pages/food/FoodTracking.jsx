@@ -44,10 +44,16 @@ const FoodTracking = () => {
     setOpenDelete(false);
     setSelectedFoodId(null);
   };
+  const handleGlowMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
+  };
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
       <Box
-        className="glass-container"
+        className='glass-container'
+        onMouseMove={handleGlowMove}
         sx={{
           mt: 5,
           borderRadius: "20px",

@@ -78,6 +78,11 @@ const WeightTracking = () => {
       weekday: "long",
     });
   };
+  const handleGlowMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
+  };
 
 
   return (
@@ -153,6 +158,7 @@ const WeightTracking = () => {
       {/* ---------------- WEIGHT TABLE ---------------- */}
       <Box
         className='glass-container'
+        onMouseMove={handleGlowMove}
         sx={{
           mt: 5,
           borderRadius: "20px",
@@ -169,6 +175,7 @@ const WeightTracking = () => {
           container
           justifyContent="space-between"
           alignItems="center"
+
           sx={{ p: { xs: 2, md: 3 }, position: "relative", zIndex: 1 }}
         >
           <Grid
@@ -206,12 +213,7 @@ const WeightTracking = () => {
                 <Table sx={{ "& .MuiTableCell-root": { fontSize: "15px", color: "white", } }}>
                   {/* Glass Header */}
                   <TableHead>
-                    <TableRow
-                      sx={{
-                        background: "rgba(255,255,255,0.08)",
-                        backdropFilter: "blur(10px)",
-                      }}
-                    >
+                    <TableRow>
                       {["Date", "Day", "Weight", "Weight Change", ""].map((h, i) => (
                         <TableCell
                           key={i}

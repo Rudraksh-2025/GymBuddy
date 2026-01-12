@@ -101,6 +101,11 @@ const Profile = () => {
   const selectedGoalType = goalTypeLabel.find(
     (item) => item.value === profileForm.values.goalType
   );
+  const handleGlowMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
+  };
   return (
     <Box sx={{ p: { xs: 0, sm: 1 } }}>
       <Box
@@ -109,27 +114,13 @@ const Profile = () => {
           mb: 3,
           borderRadius: "20px",
           position: "relative",
-          overflow: "hidden",
-
-          background: "rgba(255,255,255,0.08)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
-          border: "1px solid rgba(255,255,255,0.18)",
-
-          boxShadow: `
-      inset 0 0 0.5px rgba(255,255,255,0.6),
-      0 12px 40px rgba(0,0,0,0.45)
-    `,
+          overflow: "hidden"
         }}
+        className='glass-container'
+        onMouseMove={handleGlowMove}
       >
         <Box
-          sx={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
-            pointerEvents: "none",
-          }}
+          className='glass-layer'
         />
         <form>
           <Grid container spacing={edit ? 3 : 1}>
@@ -412,6 +403,7 @@ const Profile = () => {
                         color: "white",
                         fontSize: "16px",
                         fontWeight: 400,
+                        mt: 1,
                         border: "1px solid #D1D5DB",
                       }}
                       onClick={() => {
@@ -425,7 +417,7 @@ const Profile = () => {
                         width: 130,
                         height: 48,
                       }}
-                      className="glass-btn"
+                      className="purple-glosy-btn"
                       onClick={() => {
                         profileForm.handleSubmit();
                       }}
@@ -435,8 +427,8 @@ const Profile = () => {
                   </>
                 ) : (
                   <Button
-                    className="glass-btn"
-                    sx={{height:'40px',width:'100px'}}
+                    className="purple-glosy-btn"
+                    sx={{ height: '40px', width: '100px' }}
                     onClick={() => setedit(true)}
                   >
                     Edit
