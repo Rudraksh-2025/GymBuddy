@@ -70,29 +70,13 @@ const Home = () => {
               height: "100%",
               borderRadius: "20px",
               position: "relative",
-              overflow: "hidden",
-
-              background: "rgba(255,255,255,0.08)",
-              backdropFilter: "blur(18px)",
-              WebkitBackdropFilter: "blur(18px)",
-              border: "1px solid rgba(255,255,255,0.18)",
-
-              boxShadow: `
-          inset 0 0 0.5px rgba(255,255,255,0.6),
-          0 12px 40px rgba(0,0,0,0.45)
-        `,
-              color: "white",
+              overflow: "hidden", color: "white",
             }}
+            className='glass-container'
           >
             {/* highlight */}
             <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
-                pointerEvents: "none",
-              }}
+              className='glass-layer'
             />
 
             <Box sx={{ position: "relative", zIndex: 1 }}>
@@ -135,29 +119,13 @@ const Home = () => {
               borderRadius: "20px",
               position: "relative",
               overflow: "hidden",
-
-              background: "rgba(255,255,255,0.08)",
-              backdropFilter: "blur(18px)",
-              WebkitBackdropFilter: "blur(18px)",
-              border: "1px solid rgba(255,255,255,0.18)",
-
-              boxShadow: `
-          inset 0 0 0.5px rgba(255,255,255,0.6),
-          0 12px 40px rgba(0,0,0,0.45)
-        `,
               color: "white",
             }}
+            className='glass-container'
           >
             <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
-                pointerEvents: "none",
-              }}
+              className='glass-layer'
             />
-
             <Box sx={{ position: "relative", zIndex: 1 }}>
               <Typography fontWeight={600} mb={1}>
                 Weekly Weight Trend
@@ -194,27 +162,12 @@ const Home = () => {
               borderRadius: "20px",
               position: "relative",
               overflow: "hidden",
-
-              background: "rgba(255,255,255,0.08)",
-              backdropFilter: "blur(18px)",
-              WebkitBackdropFilter: "blur(18px)",
-              border: "1px solid rgba(255,255,255,0.18)",
-
-              boxShadow: `
-          inset 0 0 0.5px rgba(255,255,255,0.6),
-          0 12px 40px rgba(0,0,0,0.45)
-        `,
               color: "white",
             }}
+            className='glass-container'
           >
             <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
-                pointerEvents: "none",
-              }}
+              className='glass-layer'
             />
 
             <Box sx={{ position: "relative", zIndex: 1 }}>
@@ -255,27 +208,12 @@ const Home = () => {
               borderRadius: "20px",
               position: "relative",
               overflow: "hidden",
-
-              background: "rgba(255,255,255,0.08)",
-              backdropFilter: "blur(18px)",
-              WebkitBackdropFilter: "blur(18px)",
-              border: "1px solid rgba(255,255,255,0.18)",
-
-              boxShadow: `
-          inset 0 0 0.5px rgba(255,255,255,0.6),
-          0 12px 40px rgba(0,0,0,0.45)
-        `,
-              color: "white",
+              color: 'white'
             }}
+            className='glass-container'
           >
             <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%)",
-                pointerEvents: "none",
-              }}
+              className='glass-layer'
             />
 
             <Box sx={{ position: "relative", zIndex: 1 }}>

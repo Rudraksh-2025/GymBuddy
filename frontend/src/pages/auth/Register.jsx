@@ -15,6 +15,8 @@ import CustomSelect from '../../common/custom/CustomSelect'
 import logo3 from "../../assets/images/logo.svg";
 
 const Register = () => {
+    const [step, setStep] = useState(1);
+
     const nav = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
@@ -37,211 +39,223 @@ const Register = () => {
     const { mutate } = useRegister();
 
     return (
-        <Box
-            sx={{
-                minHeight: "95vh",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                // bgcolor: "var(--DarkBlue)",
-                backgroundPosition: "center",
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                p: 3
-            }}
-        >
-            <Card
-                sx={{
-                    p: 3,
-                    borderRadius: 3,
-                    boxShadow: 3,
-                    maxWidth: 450,
-                    width: "100%",
-                }}
-            >
+        <Box className='loginContainer'>
+            <Card className="loginCard">
+                {/* glossy overlay */}
+                <Box
+                    sx={{
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                            "linear-gradient(120deg, rgba(255,255,255,0.25), transparent 60%)",
+                        pointerEvents: "none",
+                    }}
+                />
                 <Box sx={{ textAlign: "center" }}>
                     <img src={logo3} alt="logo" style={{ width: "30%" }} />
                 </Box>
+                <Typography
+                    align="center"
+                    sx={{ color: "rgba(255,255,255,0.8)", my: 1, fontSize: 15 }}
+                >
+                    Step {step} of 2
+                </Typography>
+
 
                 <Typography
                     variant="h6"
                     align="center"
-                    sx={{ color: "#878787", fontWeight: 450, mb: 3 }}
+                    sx={{ color: "rgba(255,255,255,0.8)", fontWeight: 450, mb: 2 }}
                 >
                     Welcome to Gym Buddy
                 </Typography>
 
                 <form onSubmit={loginForm.handleSubmit}>
-                    {/* Name */}
-                    <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-                        <InputLabel shrink htmlFor="name" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
-                            Name
-                        </InputLabel>
-                        <BootstrapInput
-                            id="name"
-                            name="name"
-                            placeholder="Enter your Name"
-                            value={loginForm.values.name}
-                            onChange={loginForm.handleChange}
-                        />
-                        {loginForm.touched.name && <FormHelperText error>{loginForm.errors.name}</FormHelperText>}
-                    </FormControl>
-                    {/* Email */}
-                    <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-                        <InputLabel shrink htmlFor="email" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
-                            Email or Username
-                        </InputLabel>
-                        <BootstrapInput
-                            id="email"
-                            name="email"
-                            placeholder="Enter your email or username"
-                            value={loginForm.values.email}
-                            onChange={loginForm.handleChange}
-                        />
-                        {loginForm.touched.email && <FormHelperText error>{loginForm.errors.email}</FormHelperText>}
-                    </FormControl>
+                    {step === 1 && (
+                        <>
+                            {/* Name */}
+                            <FormControl variant="standard" fullWidth sx={{ mb: 2, position: "relative", zIndex: 1 }}>
+                                <InputLabel shrink htmlFor='name' className="login-input-label">Name</InputLabel>
+                                <BootstrapInput
+                                    name="name"
+                                    value={loginForm.values.name}
+                                    onChange={loginForm.handleChange}
+                                    placeholder="Your name"
+                                    className="login-textField"
+                                />
+                                {loginForm.touched.name && (
+                                    <FormHelperText error>{loginForm.errors.name}</FormHelperText>
+                                )}
+                            </FormControl>
 
-                    {/* Password */}
-                    <FormControl variant="standard" fullWidth sx={{ mb: 2, position: 'relative' }}>
-                        <InputLabel shrink htmlFor="password" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
-                            Password
-                        </InputLabel>
-                        <BootstrapInput
-                            id="password"
-                            name="password"
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Enter your password"
-                            value={loginForm.values.password}
-                            onChange={loginForm.handleChange}
+                            {/* Email */}
+                            <FormControl variant="standard" fullWidth sx={{ mb: 2, position: "relative", zIndex: 1 }}>
+                                <InputLabel shrink htmlFor='email' className="login-input-label">Email</InputLabel>
+                                <BootstrapInput
+                                    name="email"
+                                    value={loginForm.values.email}
+                                    onChange={loginForm.handleChange}
+                                    placeholder="Email address"
+                                    className="login-textField"
+                                />
+                                {loginForm.touched.email && (
+                                    <FormHelperText error>{loginForm.errors.email}</FormHelperText>
+                                )}
+                            </FormControl>
 
-                        />
-                        <IconButton
-                            onClick={() => setShowPassword(!showPassword)}
-                            style={{
-                                position: 'absolute',
-                                right: 8,
-                                top: '70%',
-                                transform: 'translateY(-50%)',
-                                padding: 0,
-                                zIndex: 2
-                            }}
-                            tabIndex={-1}
-                        >
-                            {showPassword ? <FaEye /> : <FaEyeSlash />}
-                        </IconButton>
-                        {loginForm.touched.password && <FormHelperText error>{loginForm.errors.password}</FormHelperText>}
-                    </FormControl>
+                            {/* Password */}
+                            <FormControl variant="standard" fullWidth sx={{ mb: 2, position: "relative", zIndex: 1 }}>
+                                <InputLabel shrink htmlFor='password' className="login-input-label">Password</InputLabel>
+                                <BootstrapInput
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    value={loginForm.values.password}
+                                    onChange={loginForm.handleChange}
+                                    placeholder="Password"
+                                    className="login-textField"
+                                />
+                                <IconButton
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    sx={{ position: "absolute", right: 8, top: "45%", color: "white" }}
+                                >
+                                    {showPassword ? <FaEye /> : <FaEyeSlash />}
+                                </IconButton>
+                            </FormControl>
 
-                    <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
-                        {/* Height */}
-                        <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-                            <InputLabel shrink htmlFor="height" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
-                                Height (cm)
-                            </InputLabel>
-                            <BootstrapInput
-                                id="height"
-                                name="height"
-                                type="number"
-                                placeholder="Enter your Height"
-                                value={loginForm.values.height}
-                                onChange={loginForm.handleChange}
-                            />
-                            {loginForm.touched.height && <FormHelperText error>{loginForm.errors.height}</FormHelperText>}
-                        </FormControl>
+                            {/* NEXT BUTTON */}
+                            <Button
+                                fullWidth
+                                className="purple-glosy-btn"
+                                onClick={() => setStep(2)}
+                            >
+                                Next
+                            </Button>
+                        </>
+                    )}
 
-                        {/* Gender */}
-                        <CustomSelect
-                            label="Gender"
-                            name="gender"
-                            value={loginForm.values.gender}
-                            onChange={loginForm.handleChange}
-                            options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]}
-                            error={loginForm.touched.gender && Boolean(loginForm.errors.gender)}
-                            helperText={loginForm.touched.gender && loginForm.errors.gender}
-                        />
+                    {step === 2 && (
+                        <>
+                            <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
 
-                    </Box>
-                    <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
-                        <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-                            <InputLabel shrink htmlFor="weight" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>Weight (kg)</InputLabel>
-                            <BootstrapInput
-                                id="weight"
-                                name="weight"
-                                type="number"
-                                placeholder="Enter your Weight"
-                                value={loginForm.values.weight}
-                                onChange={loginForm.handleChange}
-                            />
-                        </FormControl>
-                        <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-                            <InputLabel shrink htmlFor="age" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>Age</InputLabel>
-                            <BootstrapInput
-                                id="age"
-                                name="age"
-                                type="number"
-                                placeholder="Enter your Age"
-                                value={loginForm.values.age}
-                                onChange={loginForm.handleChange}
-                            />
-                        </FormControl>
-                    </Box>
-                    <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
-                        <CustomSelect
-                            label="Activity Level"
-                            name="activityLevel"
-                            value={loginForm.values.activityLevel}
-                            onChange={loginForm.handleChange}
-                            options={[
-                                { label: "Sedentary", value: "sedentary" },
-                                { label: "Light", value: "light" },
-                                { label: "Moderate", value: "moderate" },
-                                { label: "Active", value: "active" },
-                                { label: "Very Active", value: "very_active" },
-                            ]}
-                        />
-                        <CustomSelect
-                            label="Goal"
-                            name="goalType"
-                            value={loginForm.values.goalType}
-                            onChange={loginForm.handleChange}
-                            options={[
-                                { label: "Fat Loss", value: "fat_loss" },
-                                { label: "Maintain", value: "maintain" },
-                                { label: "Muscle Gain", value: "muscle_gain" },
-                            ]}
-                        />
-                    </Box>
+                                <FormControl variant="standard" fullWidth sx={{ mb: 2, position: "relative", zIndex: 1 }}>
+                                    <InputLabel shrink htmlFor='height' className="login-input-label">Height</InputLabel>
+                                    <BootstrapInput
+                                        name="height"
+                                        type="number"
+                                        placeholder="Height (cm)"
+                                        value={loginForm.values.height}
+                                        className="login-textField"
+                                        onChange={loginForm.handleChange}
+                                    />
+                                    {loginForm.touched.height && (
+                                        <FormHelperText error>{loginForm.errors.height}</FormHelperText>
+                                    )}
+                                </FormControl>
+                                <FormControl variant="standard" fullWidth sx={{ mb: 2, position: "relative", zIndex: 1 }}>
+                                    <InputLabel shrink htmlFor='weight' className="login-input-label">Weight</InputLabel>
+                                    <BootstrapInput
+                                        name="weight"
+                                        type="number"
+                                        placeholder="Weight (kg)"
+                                        value={loginForm.values.weight}
+                                        onChange={loginForm.handleChange}
+                                        className="login-textField"
+                                    />
+
+                                    {loginForm.touched.weight && (
+                                        <FormHelperText error>{loginForm.errors.weight}</FormHelperText>
+                                    )}
+                                </FormControl>
 
 
-                    {/* Forgot Password */}
-                    <Box sx={{ textAlign: "right", mb: 3, mt: 2 }}>
-                        <Typography
-                            component="a"
-                            href="#"
-                            sx={{ fontSize: "0.9rem", color: "black", textDecoration: "none" }}
-                        >
-                            Already have an account? <Link to='/' className='link'>Login</Link>
-                        </Typography>
-                    </Box>
+                            </Box>
 
-                    {/* Submit Button */}
-                    <Button
-                        fullWidth
-                        // variant="contained"
-                        type="submit"
-                        // disabled={loginfn.isPending}
-                        sx={{
-                            bgcolor: "var(--DarkBlue)",
-                            fontWeight: 700,
-                            borderRadius: 2,
-                            py: 1.5,
-                            color: "white",
-                            "&:hover": { bgcolor: "var(--DarkBlue)" },
-                        }}
-                    >
-                        {/* {loginfn.isPending ? <Loader color="white" /> : "Log In"} */}
-                        Register
-                    </Button>
+                            <Box sx={{ display: "flex", gap: 2, mt: 1 }}>
+                                <FormControl variant="standard" fullWidth sx={{ mb: 2, position: "relative", zIndex: 1 }}>
+                                    <InputLabel shrink htmlFor='age' className="login-input-label">Age</InputLabel>
+                                    <BootstrapInput
+                                        name="age"
+                                        placeholder="Age"
+                                        type="number"
+                                        value={loginForm.values.age}
+                                        className="login-textField"
+                                        onChange={loginForm.handleChange}
+                                    />
+
+                                    {loginForm.touched.age && (
+                                        <FormHelperText error>{loginForm.errors.age}</FormHelperText>
+                                    )}
+                                </FormControl>
+                                <CustomSelect
+                                    label="Gender"
+                                    name="gender"
+                                    theme="dark"
+                                    value={loginForm.values.gender}
+                                    onChange={loginForm.handleChange}
+                                    options={[
+                                        { label: "Male", value: "male" },
+                                        { label: "Female", value: "female" },
+                                    ]}
+                                />
+                            </Box>
+
+                            <Box sx={{ mt: 1 }}>
+                                <CustomSelect
+                                    label="Activity Level"
+                                    name="activityLevel"
+                                    value={loginForm.values.activityLevel}
+                                    theme="dark"
+                                    onChange={loginForm.handleChange}
+                                    options={[
+                                        { label: "Sedentary", value: "sedentary" },
+                                        { label: "Light", value: "light" },
+                                        { label: "Moderate", value: "moderate" },
+                                        { label: "Active", value: "active" },
+                                        { label: "Very Active", value: "very_active" },
+                                    ]}
+                                />
+                            </Box>
+
+                            <Box sx={{ mt: 2 }}>
+                                <CustomSelect
+                                    label="Goal"
+                                    name="goalType"
+                                    theme="dark"
+                                    value={loginForm.values.goalType}
+                                    onChange={loginForm.handleChange}
+                                    options={[
+                                        { label: "Fat Loss", value: "fat_loss" },
+                                        { label: "Maintain", value: "maintain" },
+                                        { label: "Muscle Gain", value: "muscle_gain" },
+                                    ]}
+                                />
+                            </Box>
+
+                            {/* BACK + REGISTER */}
+                            <Box display="flex" gap={2} mt={3}>
+                                <Button
+                                    fullWidth
+                                    variant="outlined"
+                                    sx={{
+                                        color: "white", borderColor: "white", marginTop: '8px',
+                                        paddingBlock: "10px",
+                                        borderRadius: "14px"
+                                    }}
+                                    onClick={() => setStep(1)}
+                                >
+                                    Back
+                                </Button>
+
+                                <Button
+                                    fullWidth
+                                    type="submit"
+                                    className="purple-glosy-btn"
+                                >
+                                    Register
+                                </Button>
+                            </Box>
+                        </>
+                    )}
                 </form>
             </Card>
         </Box>

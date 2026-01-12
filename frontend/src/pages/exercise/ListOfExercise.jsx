@@ -1,19 +1,5 @@
 import { useState } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Paper,
-  Chip,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { Box, Typography, Button, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Select, MenuItem } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import AddExerciseLog from "../../components/exercise/AddExerciseLog";
 import AddExercise from "../../components/exercise/AddExercise";
@@ -25,11 +11,7 @@ const ListOfExercise = () => {
   const [dialogOpen2, setDialogOpen2] = useState(false);
   const nav = useNavigate();
   const [muscle, setMuscle] = useState("back");
-  const {
-    data: exercises,
-    isLoading,
-    isError,
-  } = useGetExerciseByMuscle(muscle);
+  const { data: exercises } = useGetExerciseByMuscle(muscle);
   return (
     <Box p={1}>
       <Box
@@ -105,13 +87,8 @@ const ListOfExercise = () => {
               sx={{
                 height: "50px",
                 px: 2,
-                color: "white",
-                borderRadius: "12px",
-                background: "rgba(255,255,255,0.12)",
-                backdropFilter: "blur(8px)",
-                border: "1px solid rgba(255,255,255,0.25)",
-                "&:hover": { background: "rgba(255,255,255,0.2)" },
               }}
+              className="glass-btn"
             >
               Add Exercise
             </Button>
@@ -122,155 +99,146 @@ const ListOfExercise = () => {
               sx={{
                 height: "50px",
                 px: 2,
-                color: "white",
-                borderRadius: "12px",
-                background: "rgba(255,255,255,0.12)",
-                backdropFilter: "blur(8px)",
-                border: "1px solid rgba(255,255,255,0.25)",
-                "&:hover": { background: "rgba(255,255,255,0.2)" },
               }}
+              className="glass-btn"
             >
               Add Exercise Log
             </Button>
           </Box>
         </Box>
-        <AddExercise open={dialogOpen} onClose={() => { setDialogOpen(false);  }} muscle={muscle}  />
-            <AddExerciseLog muscle={muscle} open={dialogOpen2} onClose={() => setDialogOpen2(false)} />
+        <AddExercise open={dialogOpen} onClose={() => { setDialogOpen(false); }} muscle={muscle} />
+        <AddExerciseLog muscle={muscle} open={dialogOpen2} onClose={() => setDialogOpen2(false)} />
       </Box>
 
       <TableContainer
-  sx={{
-    borderRadius: "20px",
-    overflow: "hidden",
+        sx={{
+          borderRadius: "20px",
+          overflow: "hidden",
 
-    background: "rgba(255,255,255,0.08)",
-    backdropFilter: "blur(18px)",
-    WebkitBackdropFilter: "blur(18px)",
-    border: "1px solid rgba(255,255,255,0.18)",
+          background: "rgba(255,255,255,0.08)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+          border: "1px solid rgba(255,255,255,0.18)",
 
-    boxShadow: `
+          boxShadow: `
       inset 0 0 0.5px rgba(255,255,255,0.6),
       0 12px 40px rgba(0,0,0,0.45)
     `,
-  }}
->
-  <Table
-    stickyHeader
-    sx={{
-      "& .MuiTableCell-root": {
-        fontSize: "14px",
-        color: "white",
-        borderBottom: "1px solid rgba(255,255,255,0.12)",
-      },
-      "& tbody tr:last-of-type td": {
-        borderBottom: "none",
-      },
-    }}
-  >
-    {/* HEADER — SAME AS FOOD / WEIGHT TABLE */}
-    <TableHead>
-      <TableRow
-        sx={{
-          background: "rgba(255,255,255,0.08)",
-          backdropFilter: "blur(10px)",
         }}
       >
-        {[
-          "Exercise",
-          "Muscle Group",
-          "Last Log (Sets)",
-          "Max Weight",
-          "Action",
-        ].map((h, i) => (
-          <TableCell
-            key={i}
-            sx={{
-              color: "rgba(255,255,255,0.7)",
-              fontWeight: 600,
-              background: "transparent",
-              paddingLeft: i === 0 ? "30px" : undefined,
-            }}
-          >
-            {h}
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
+        <Table
+          stickyHeader
+          sx={{
+            "& .MuiTableCell-root": {
+              fontSize: "14px",
+              color: "white",
+              borderBottom: "1px solid rgba(255,255,255,0.12)",
+            },
+            "& tbody tr:last-of-type td": {
+              borderBottom: "none",
+            },
+          }}
+        >
+          {/* HEADER — SAME AS FOOD / WEIGHT TABLE */}
+          <TableHead>
+            <TableRow
+              sx={{
+                background: "rgba(255,255,255,0.08)",
+                backdropFilter: "blur(10px)",
+              }}
+            >
+              {[
+                "Exercise",
+                "Muscle Group",
+                "Last Log (Sets)",
+                "Max Weight",
+                "Action",
+              ].map((h, i) => (
+                <TableCell
+                  key={i}
+                  sx={{
+                    color: "rgba(255,255,255,0.7)",
+                    fontWeight: 600,
+                    background: "transparent",
+                    paddingLeft: i === 0 ? "30px" : undefined,
+                  }}
+                >
+                  {h}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
 
-    {/* BODY */}
-    <TableBody>
-      {exercises?.length > 0 ? (
-        exercises.map((ex) => (
-          <TableRow
-            key={ex._id}
-            sx={{
-              "&:hover": { background: "rgba(255,255,255,0.05)" },
-            }}
-          >
-            <TableCell sx={{ paddingLeft: "30px", fontWeight: 500 }}>
-              {ex.exerciseName}
-            </TableCell>
+          {/* BODY */}
+          <TableBody>
+            {exercises?.length > 0 ? (
+              exercises.map((ex) => (
+                <TableRow
+                  key={ex._id}
+                  sx={{
+                    "&:hover": { background: "rgba(255,255,255,0.05)" },
+                  }}
+                >
+                  <TableCell sx={{ paddingLeft: "30px", fontWeight: 500 }}>
+                    {ex.exerciseName}
+                  </TableCell>
 
-            <TableCell sx={{ textTransform: "capitalize", opacity: 0.85 }}>
-              {ex.muscleGroup}
-            </TableCell>
+                  <TableCell sx={{ textTransform: "capitalize", opacity: 0.85 }}>
+                    {ex.muscleGroup}
+                  </TableCell>
 
-            <TableCell>
-              {ex.lastLog && ex.lastLog.sets?.length > 0 ? (
-                <Box display="flex" gap={0.5} flexWrap="wrap">
-                  {ex.lastLog.sets.map((s, i) => (
-                    <Chip
-                      key={i}
-                      label={`${s.reps} reps x ${s.weight} kg`}
-                      size="small"
-                      sx={{
-                        background: "rgba(255,255,255,0.15)",
-                        border: "1px solid rgba(255,255,255,0.25)",
-                        color: "white",
-                        "& .MuiChip-label": { fontWeight: 500 },
-                      }}
-                    />
-                  ))}
-                </Box>
-              ) : (
-                <Typography variant="body2" sx={{ opacity: 0.6 }}>
-                  No logs yet
-                </Typography>
-              )}
-            </TableCell>
+                  <TableCell>
+                    {ex.lastLog && ex.lastLog.sets?.length > 0 ? (
+                      <Box display="flex" gap={0.5} flexWrap="wrap">
+                        {ex.lastLog.sets.map((s, i) => (
+                          <Chip
+                            key={i}
+                            label={`${s.reps} reps x ${s.weight} kg`}
+                            size="small"
+                            sx={{
+                              background: "rgba(255,255,255,0.15)",
+                              border: "1px solid rgba(255,255,255,0.25)",
+                              color: "white",
+                              "& .MuiChip-label": { fontWeight: 500 },
+                            }}
+                          />
+                        ))}
+                      </Box>
+                    ) : (
+                      <Typography variant="body2" sx={{ opacity: 0.6 }}>
+                        No logs yet
+                      </Typography>
+                    )}
+                  </TableCell>
 
-            <TableCell sx={{ fontWeight: 600 }}>
-              {ex.maxWeight ? `${ex.maxWeight} kg` : "-"}
-            </TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>
+                    {ex.maxWeight ? `${ex.maxWeight} kg` : "-"}
+                  </TableCell>
 
-            <TableCell>
-              <Button
-                variant="contained"
-                onClick={() =>
-                  nav(`/home/exercise/exercise-information/${ex._id}`)
-                }
-                sx={{
-                  borderRadius: "10px",
-                  background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
-                  boxShadow: "0 0 10px rgba(139,92,246,0.7)",
-                  textTransform: "none",
-                }}
-              >
-                View
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))
-      ) : (
-        <TableRow>
-          <TableCell colSpan={5} align="center" sx={{ py: 3, opacity: 0.7 }}>
-            No Exercises Found
-          </TableCell>
-        </TableRow>
-      )}
-    </TableBody>
-  </Table>
-</TableContainer>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        nav(`/home/exercise/exercise-information/${ex._id}`)
+                      }
+                      sx={{ height: '38px' }}
+                      className="purple-glosy-btn"
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} align="center" sx={{ py: 3, opacity: 0.7 }}>
+                  No Exercises Found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
     </Box>
   );

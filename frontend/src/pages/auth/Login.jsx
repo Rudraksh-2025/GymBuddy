@@ -28,54 +28,74 @@ const Login = () => {
     const { mutate } = useLogin();
 
     return (
-        <Box
-            className='loginBox'
-            sx={{
-                p: 3
-            }}
-        >
-            <Card
-                sx={{
-                    p: 3,
-                    borderRadius: 3,
-                    boxShadow: 3,
-                    maxWidth: 450,
-                    width: "100%",
-                }}
-            >
-                <Box sx={{ textAlign: "center" }}>
+        <Box className="loginContainer">
+            <Card className='loginCard'>
+                {/* glossy overlay */}
+                <Box
+                    sx={{
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                            "linear-gradient(120deg, rgba(255,255,255,0.25), transparent 60%)",
+                        pointerEvents: "none",
+                    }}
+                />
+
+                <Box sx={{ textAlign: "center", position: "relative", zIndex: 1 }}>
                     <img src={logo3} alt="logo" style={{ width: "30%" }} />
                 </Box>
 
                 <Typography
                     variant="h6"
                     align="center"
-                    sx={{ color: "#878787", fontWeight: 450, mb: 3 }}
+                    sx={{
+                        color: "rgba(255,255,255,0.8)",
+                        fontWeight: 500,
+                        mb: 3,
+                        position: "relative",
+                        zIndex: 1,
+                    }}
                 >
                     Welcome to Gym Buddy
                 </Typography>
 
+
                 <form onSubmit={loginForm.handleSubmit}>
 
-                    <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-                        <InputLabel shrink htmlFor="email" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
+                    <FormControl variant="standard" fullWidth sx={{ mb: 2, position: "relative", zIndex: 1 }}>
+                        <InputLabel
+                            shrink
+                            htmlFor="email"
+                            className="login-input-label"
+                        >
                             Email
                         </InputLabel>
+
                         <BootstrapInput
                             id="email"
                             name="email"
                             placeholder="Enter your email"
                             value={loginForm.values.email}
                             onChange={loginForm.handleChange}
+                            className="login-textField"
                         />
-                        {loginForm.touched.email && <FormHelperText error>{loginForm.errors.email}</FormHelperText>}
+
+                        {loginForm.touched.email && (
+                            <FormHelperText error>{loginForm.errors.email}</FormHelperText>
+                        )}
                     </FormControl>
 
+
                     {/* Password */}
-                    <FormControl variant="standard" fullWidth sx={{ mb: 2, position: 'relative' }}>
-                        <InputLabel shrink htmlFor="password" sx={{ fontSize: '1.3rem', fontWeight: 500, color: 'rgba(0, 0, 0, 0.8)', '&.Mui-focused': { color: 'black' } }}>
+                    <FormControl variant="standard" fullWidth sx={{ mb: 2, position: "relative", zIndex: 1 }}>
+                        <InputLabel
+                            shrink
+                            htmlFor="password"
+                            className="login-input-label"
+                        >
                             Password
                         </InputLabel>
+
                         <BootstrapInput
                             id="password"
                             name="password"
@@ -83,55 +103,50 @@ const Login = () => {
                             placeholder="Enter your password"
                             value={loginForm.values.password}
                             onChange={loginForm.handleChange}
-
+                            className="login-textField"
                         />
+
                         <IconButton
                             onClick={() => setShowPassword(!showPassword)}
-                            style={{
-                                position: 'absolute',
+                            sx={{
+                                position: "absolute",
                                 right: 8,
-                                top: '70%',
-                                transform: 'translateY(-50%)',
-                                padding: 0,
-                                zIndex: 2
+                                top: "70%",
+                                transform: "translateY(-50%)",
+                                color: "white",
                             }}
                             tabIndex={-1}
                         >
                             {showPassword ? <FaEye /> : <FaEyeSlash />}
                         </IconButton>
-                        {loginForm.touched.password && <FormHelperText error>{loginForm.errors.password}</FormHelperText>}
+
+                        {loginForm.touched.password && (
+                            <FormHelperText error>{loginForm.errors.password}</FormHelperText>
+                        )}
                     </FormControl>
 
 
+
                     {/* Forgot Password */}
-                    <Box sx={{ textAlign: "right", mb: 3 }}>
-                        <Typography
-                            component="a"
-                            href="#"
-                            sx={{ fontSize: "0.9rem", color: "black", textDecoration: "none" }}
-                        >
-                            Dont Have Account? <Link to='/register' className='link'>Register</Link>
+                    <Box sx={{ textAlign: "right", mb: 3, position: "relative", zIndex: 1 }}>
+                        <Typography sx={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.8)" }}>
+                            Don’t have an account?{" "}
+                            <Link to="/register" className="link" style={{ color: "#A78BFA" }}>
+                                Register
+                            </Link>
                         </Typography>
                     </Box>
+
 
                     {/* Submit Button */}
                     <Button
                         fullWidth
-                        // variant="contained"
                         type="submit"
-                        // disabled={loginfn.isPending}
-                        sx={{
-                            bgcolor: "var(--DarkBlue)",
-                            fontWeight: 700,
-                            borderRadius: 2,
-                            py: 1.5,
-                            color: "white",
-                            "&:hover": { bgcolor: "var(--DarkBlue)" },
-                        }}
+                        className="purple-glosy-btn"
                     >
-                        {/* {loginfn.isPending ? <Loader color="white" /> : "Log In"} */}
                         Log In
                     </Button>
+
                 </form>
             </Card>
         </Box>

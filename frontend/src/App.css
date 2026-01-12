@@ -49,13 +49,23 @@ body {
 .rdp-selected .rdp-day_button {
     border: none !important;
     border-radius: 50% !important;
-    background-color: #3EC2CD;
+    background-color: #8B5CF6;
     color: white !important
 }
 
 .rdp-today:not(.rdp-outside) {
     border: none;
     color: black !important
+}
+.rdrDateDisplayWrapper{
+  background-color: #33333C!important;
+}
+.rdrDateDisplayItem{
+  background-color: #33333C !important;
+  color:white!important;
+}
+.rdrDateDisplayItemActive input {
+  color:white!important;
 }
 
 
@@ -113,17 +123,6 @@ body {
 .recharts-tooltip-cursor {
     fill: none
 }
-
-.loginBox{
-    background-position: center;
-    /* background-image: url('../src/assets/images/loginBackground.png'); */
-    min-height: 95vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-size: contain;
-    /* background-repeat: no-repeat; */
-}
 .link{
     color: var(--DarkBlue);
     text-decoration: none;
@@ -140,22 +139,6 @@ body {
 .blue-button:hover{
     background-color: var(--Blue)!important;
 }
-.glass-btn{
-    padding-inline: 8px!important;
-    border-radius: 12px!important;
-    font-size: 0.9rem!important;
-    font-weight: 600!important;
-    color:white!important;
-    background: rgba(255,255,255,0.15)!important;
-    backdrop-filter: blur(8px)!important;
-    border: 1px solid rgba(255,255,255,0.25)!important;
-    box-shadow: inset 0 0 6px rgba(255,255,255,0.25),
-            0 4px 14px rgba(0,0,0,0.4)!important;
-          
-}
-.glass-btn:hover{
-     background: rgba(255,255,255,0.22)!important;
-}
 /* Chrome, Safari, Edge */
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
@@ -170,94 +153,236 @@ input[type=number] {
 
 /* ================= GLASS THEME — react-date-range ================= */
 
+
+.rdrMonthAndYearWrapper{
+  padding-top: 0px!important;
+  height: 45px !important;
+}
 .rdrCalendarWrapper {
   background: transparent !important;
-  color: white;
-  font-family: inherit;
+  color: white!important;
+  font-family: inherit!important;
 }
 
 /* Month container */
 .rdrMonth {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 8px;
+  background: rgba(255, 255, 255, 0.06)!important;
+  backdrop-filter: blur(12px)!important;
+  border-radius: 16px!important;
+  padding: 8px!important;
+}
+.rdrMonthAndYearPickers select {
+  color:white !important;
+  background: url("data:image/svg+xml;utf8,<svg width='9px' height='6px' viewBox='0 0 9 6' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><g stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' fill-opacity='1'><g fill='%23FFFFFF' fill-rule='nonzero'><path d='M1.28,0.24 C0.99,-0.08 0.51,-0.08 0.22,0.24 C-0.07,0.56 -0.07,1.07 0.22,1.38 L4.5,6 L8.78,1.38 C9.07,1.06 9.07,0.55 8.78,0.24 C8.49,-0.08 8.01,-0.08 7.72,0.24 L4.5,3.71 L1.28,0.24 Z'/></g></g></svg>") no-repeat !important;
+  background-position: right 8px center !important;
 }
 
 /* Month title (March 2026) */
 .rdrMonthName {
-  color: white;
-  font-weight: 600;
+  color: white!important;
+  font-weight: 600!important;
 }
 
 /* Week day labels */
 .rdrWeekDay {
-  color: rgba(255, 255, 255, 0.6);
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6)!important;
+  font-weight: 500!important;
 }
 
 /* Day cells */
-.rdrDay {
-  color: white;
-}
+/* .rdrDay {
+  color: white!important;
+} */
 
 .rdrDayNumber span {
-  color: white;
+  color: white!important;
 }
 
 /* Hover day */
 .rdrDayHovered .rdrDayNumber span {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 50%;
+  border-radius: 50%!important;
 }
 
 /* Today */
 .rdrDayToday .rdrDayNumber span:after {
-  background: #8b5cf6;
+  background: #8b5cf6!important;
 }
 
 /* Selected day */
 .rdrDaySelected .rdrDayNumber span {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  box-shadow: 0 0 10px rgba(139, 92, 246, 0.9);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6)!important;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.9)!important;
 }
 
 /* In-range background (if using ranges) */
 .rdrDayInRange .rdrDayNumber span {
-  background: rgba(139, 92, 246, 0.35);
+  background: rgba(139, 92, 246, 0.35)!important;
 }
 
 /* Range edges */
 .rdrDayStartPreview .rdrDayNumber span,
 .rdrDayEndPreview .rdrDayNumber span {
-  background: rgba(139, 92, 246, 0.55);
+  background: rgba(139, 92, 246, 0.55)!important;
 }
 
 /* Disabled days */
 .rdrDayDisabled {
-  background: transparent;
+  background: transparent!important;
 }
 
 .rdrDayDisabled span {
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.25)!important;
 }
 
-/* Navigation buttons */
-.rdrNextPrevButton {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(6px);
-  border-radius: 8px;
-}
-
-.rdrNextPrevButton i {
-  border-color: white;
-}
 
 /* Remove white borders */
 .rdrMonths {
   background: transparent;
+  color:'white'!important;
 }
 
+/* ============ GLASS THEME — react-day-picker ============ */
+
+.glass-day-picker {
+  --rdp-cell-size: 40px!important;
+  color: white!important;
+}
+
+/* Header */
+.glass-day-picker .rdp-caption_label {
+  color: white!important;
+  font-weight: 600!important;
+}
+
+.glass-day-picker .rdp-nav_button {
+  color: white!important;
+  border-radius: 8px!important;
+}
+
+.glass-day-picker .rdp-nav_button:hover {
+  background: rgba(255, 255, 255, 0.15)!important;
+}
+.rdp-chevron{
+  fill:white!important;
+}
+
+/* Weekdays */
+.glass-day-picker .rdp-head_cell {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500!important;
+}
+
+/* Day cells */
+.glass-day-picker .rdp-day {
+  border-radius: 10px!important;
+  transition: all 0.2s ease!important;
+  color: white!important;
+}
+
+.glass-day-picker .rdp-day:hover {
+  background: rgba(255, 255, 255, 0.15)!important;
+}
+
+/* Today */
+.glass-day-picker .rdp-day_today {
+  border: 1px solid rgba(255, 255, 255, 0.4)!important;
+}
+.rdp-today:not(.rdp-outside) {
+  color:gray!important;
+}
+/* Selected */
+.glass-day-picker .rdp-day_selected,
+.glass-day-picker .rdp-day_selected:hover {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6)!important;
+  color: white!important;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.9)!important;
+}
+
+/* Disabled */
+.glass-day-picker .rdp-day_disabled {
+  color: rgba(255, 255, 255, 0.25)!important;
+}
+
+
+.glass-btn {
+  padding-inline: 8px !important;
+  border-radius: 12px !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.25),
+    0 4px 14px rgba(0, 0, 0, 0.4) !important;
+
+}
+
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+}
+.purple-glosy-btn{
+    margin-top: 8px!important;
+    padding-block: 10px!important;
+    border-radius: 14px!important;
+    font-weight: 700!important;
+    color: white!important;
+    background: linear-gradient(135deg, #6366F1, #8B5CF6)!important;
+    box-shadow: 0 0 18px rgba(139,92,246,0.8)!important;
+}
+.purple-glosy-btn:hover{
+  background: linear-gradient(135deg, #6366F1, #8B5CF6)!important;
+  box-shadow: 0 0 22px rgba(139,92,246,1)!important;
+}
+
+.loginContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(17,24,39,1), rgba(30,41,59,1));
+  padding: 18px;
+}
+.loginCard{
+    padding: 24px!important;
+    border-radius: 22px!important;
+    max-width: 450px!important;
+    width: 100%!important;
+    position: relative!important;
+    overflow:hidden!important;
+    background: rgba(255,255,255,0.12)!important;
+    backdrop-filter: blur(18px)!important;
+    -webkit-backdrop-filter: blur(18px)!important;
+    border: 1px solid rgba(255,255,255,0.25)!important;
+    box-shadow: inset 0 0 0.5px rgba(255, 255, 255, 0.6),
+    0 20px 60px rgba(0, 0, 0, 0.6)!important;
+}
+.login-input-label{
+  font-size: 1.5rem!important;
+    font-weight: 500!important;
+    color: rgba(255,255,255,0.8)!important;
+}
+.login-input-label:focus{
+  color: white!important;
+}
+.login-textField{
+  border-radius: 12px!important;
+  color: white!important;
+}
+.glass-container{
+  background: rgba(255,255,255,0.08)!important;
+  backdrop-filter: blur(18px)!important;
+  -webkit-backdrop-filter: blur(18px)!important;
+  border: 1px solid rgba(255,255,255,0.18)!important;
+  /* box-shadow: inset 0 0 0.5px rgba(255, 255, 255, 0.6),
+  0 8px 32px rgba(0, 0, 0, 0.35)!important; */
+}
+.glass-layer{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255,255,255,0.15), transparent 60%);
+  pointer-events: none;
+}
 
 
 

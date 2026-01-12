@@ -161,7 +161,7 @@ const AddFoodLog = ({
           zIndex: 1,
           background: "transparent",
           color: "white",
-          mt:2
+          mt: 2
         }}
       >
         {/* FOOD */}
@@ -253,10 +253,11 @@ const AddFoodLog = ({
           {/* RING */}
           <Box sx={{
             position: "relative",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: 1,}}>
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1,
+          }}>
             <CircularProgress
               variant="determinate"
               value={100}

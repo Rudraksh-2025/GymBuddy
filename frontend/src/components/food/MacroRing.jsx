@@ -12,37 +12,17 @@ const MacroRing = ({
 
   return (
     <Box
+      className='glass-container'
       sx={{
         p: 2.5,
         borderRadius: "20px",
         position: "relative",
         overflow: "hidden",
-
-        /* Glass effect */
-        background: "rgba(255,255,255,0.08)",
-        backdropFilter: "blur(18px)",
-        WebkitBackdropFilter: "blur(18px)",
-
-        border: "1px solid rgba(255,255,255,0.18)",
-
-        boxShadow: `
-          inset 0 0 0.5px rgba(255,255,255,0.6),
-          0 8px 32px rgba(0,0,0,0.35)
-        `,
-
         color: "white",
       }}
     >
       {/* subtle highlight layer */}
-      <Box
-        sx={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(120deg, rgba(255,255,255,0.15), transparent 60%)",
-          pointerEvents: "none",
-        }}
-      />
+      <Box className='glass-layer' />
 
       <Typography textAlign="center" fontWeight={600} mb={1} zIndex={1}>
         {title}

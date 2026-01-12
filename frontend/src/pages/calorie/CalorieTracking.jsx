@@ -49,42 +49,43 @@ const CalorieTracking = () => {
           Edit Goals
         </Button>
       </Box>
-      
-        <Grid container spacing={3} my={5}>
-          {/* Weekly Avg Calories */}
-          <Grid size={{ xs: 12, sm: 6,lg:4 }}>
-            <StatCard
-              title="Weekly Avg Calories"
-              value={`${analytics?.data?.weekly?.averageCalories ?? 0} kcal`}
-              sub="Last 7 days"
-              icon={<LocalFireDepartmentIcon sx={{ color: "white" }} />}
-              color="#16A34A"
-            />
-          </Grid>
 
-          {/* TDEE */}
-    <Grid size={{ xs: 12, sm: 6,lg:4 }}>
-            <StatCard
-              title="TDEE"
-              value={`${analytics?.data?.tdee ?? 0} kcal`}
-              sub="Daily energy burn"
-              icon={<TrendingUpIcon sx={{ color: "white" }} />}
-              color="#F59E0B"
-            />
-          </Grid>
+      <Grid container spacing={3} my={5}>
+        {/* Weekly Avg Calories */}
+        <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+          <StatCard
+            title="Weekly Avg Calories"
+            value={`${analytics?.data?.weekly?.averageCalories ?? 0} kcal`}
+            sub="Last 7 days"
+            icon={<LocalFireDepartmentIcon />}
+            color="#F59E0B"
 
-          {/* BMR */}
-         <Grid size={{ xs: 12, sm: 6,lg:4 }}>
-            <StatCard
-              title="BMR"
-              value={`${analytics?.data?.bmr ?? 0} kcal`}
-              sub="Resting burn"
-              icon={<MonitorHeartIcon sx={{ color: "white" }} />}
-              color="#EF4444"
-            />
-          </Grid>
+          />
         </Grid>
-    
+
+        {/* TDEE */}
+        <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+          <StatCard
+            title="TDEE"
+            value={`${analytics?.data?.tdee ?? 0} kcal`}
+            sub="Daily energy burn"
+            icon={<TrendingUpIcon />}
+            color="#16A34A"
+          />
+        </Grid>
+
+        {/* BMR */}
+        <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+          <StatCard
+            title="BMR"
+            value={`${analytics?.data?.bmr ?? 0} kcal`}
+            sub="Resting burn"
+            icon={<MonitorHeartIcon />}
+            color="#EF4444"
+          />
+        </Grid>
+      </Grid>
+
       <Grid container spacing={3} my={5} >
         <Grid size={{ xs: 12, sm: 4, md: 4, lg: 3 }}>
           <MacroRing
