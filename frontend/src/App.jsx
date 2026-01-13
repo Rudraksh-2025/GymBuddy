@@ -5,7 +5,7 @@ import './App.css'
 import Verification from './pages/auth/Verification';
 import PageNotFound from './pages/PageNotFound';
 import ListOfExercise from './pages/exercise/ListOfExercise';
-import ExerciseInformation from './pages/Exercise/ExerciseInformation';
+import ExerciseInformation from './pages/exercise/ExerciseInformation';
 import Login from './pages/auth/Login';
 import Profile from './pages/profile/Profile'
 import Register from "./pages/auth/Register";
