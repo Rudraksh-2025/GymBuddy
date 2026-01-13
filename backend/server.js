@@ -17,20 +17,11 @@ import { updateStreak } from './middleware/streakMiddleware.js'
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-const allowedOrigins = [
-    'https://gymbuddy1310.netlify.app/',
-    "http://localhost:3001",
-];
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin) return callback(null, true); // Postman / server-to-server
-        if (allowedOrigins.includes(origin)) {
-            return callback(null, true);
-        }
-        return callback(new Error("CORS not allowed for this origin"));
-    },
+    origin: true,
     credentials: true
 }));
+
 
 app.use('/api/auth', authRoutes);
 // 🔐 Auth middleware
