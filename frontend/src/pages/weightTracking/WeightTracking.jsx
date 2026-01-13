@@ -175,11 +175,10 @@ const WeightTracking = () => {
           container
           justifyContent="space-between"
           alignItems="center"
-
           sx={{ p: { xs: 2, md: 3 }, position: "relative", zIndex: 1 }}
         >
           <Grid
-            size={{ xs: 12, sm: 6 }}
+            size={{ xs: 7 }}
             sx={{ display: "flex", flexDirection: "row", gap: 2, mb: { xs: 1, md: 0 } }}
           >
             <Typography variant="h6" fontWeight={600}>
@@ -188,7 +187,7 @@ const WeightTracking = () => {
           </Grid>
 
           <Grid
-            size={{ xs: 12, sm: 6 }}
+            size={{ xs: 5 }}
             sx={{ display: "flex", justifyContent: { xs: "flex-start", sm: "flex-end" } }}
           >
             <IconButton
@@ -213,14 +212,17 @@ const WeightTracking = () => {
                 <Table sx={{ "& .MuiTableCell-root": { fontSize: "15px", color: "white", } }}>
                   {/* Glass Header */}
                   <TableHead>
-                    <TableRow>
+                    <TableRow sx={{
+                      background: "rgba(255,255,255,0.08)",
+                      backdropFilter: "blur(10px)",
+                    }}>
                       {["Date", "Day", "Weight", "Weight Change", ""].map((h, i) => (
                         <TableCell
                           key={i}
                           sx={{
                             color: "rgba(255,255,255,0.7)",
                             borderBottom: "1px solid rgba(255,255,255,0.12)",
-                            paddingLeft: i === 0 ? "30px" : undefined,
+                            paddingLeft: i === 0 ? "15px" : undefined,
                           }}
                         >
                           {h}
@@ -234,12 +236,13 @@ const WeightTracking = () => {
                       <TableRow
                         key={user._id}
                         sx={{
+                          alignItems: 'center',
                           "&:hover": {
                             background: "rgba(255,255,255,0.05)",
                           },
                         }}
                       >
-                        <TableCell sx={{ paddingLeft: "30px", opacity: 0.8 }}>
+                        <TableCell sx={{ paddingLeft: { xs: '10px', sm: '15px' }, padding: 0, opacity: 0.8, width: '100px' }}>
                           {FormateDate(user.date) || "-"}
                         </TableCell>
 

@@ -75,7 +75,7 @@ const FoodTracking = () => {
           sx={{ p: { xs: 2 }, position: "relative", zIndex: 1 }}
         >
           <Grid
-            size={{ xs: 12, sm: 6 }}
+            size={{ xs: 7 }}
             sx={{ display: "flex", flexDirection: "row", gap: 2, mb: { xs: 1, md: 0 } }}
           >
             <Typography variant="h6" fontWeight={600}>
@@ -84,7 +84,7 @@ const FoodTracking = () => {
           </Grid>
 
           <Grid
-            size={{ xs: 12, sm: 6 }}
+            size={{ xs: 5 }}
             sx={{ display: "flex", justifyContent: { xs: "flex-start", sm: "flex-end" } }}
           >
             <IconButton
@@ -127,7 +127,7 @@ const FoodTracking = () => {
                             sx={{
                               color: "rgba(255,255,255,0.7)",
                               borderBottom: "1px solid rgba(255,255,255,0.12)",
-                              paddingLeft: i === 0 ? "30px" : undefined,
+                              paddingLeft: i === 0 ? "15px" : undefined,
                             }}
                           >
                             {h}
@@ -145,27 +145,27 @@ const FoodTracking = () => {
                           "&:hover": { background: "rgba(255,255,255,0.05)" },
                         }}
                       >
-                        <TableCell sx={{ paddingLeft: "30px", fontWeight: 500 }}>
+                        <TableCell sx={{ paddingLeft: { xs: '10px', sm: '15px' }, padding: 0, fontWeight: 500, minWidth: '100px' }}>
                           {food.name}
                         </TableCell>
 
-                        <TableCell sx={{ opacity: 0.8 }}>
+                        <TableCell sx={{ opacity: 0.8, minWidth: '70px' }}>
                           {food.calories || "0"} kcal
                         </TableCell>
 
-                        <TableCell sx={{ fontWeight: 500 }}>
+                        <TableCell sx={{ fontWeight: 500, minWidth: '70px' }}>
                           {food.protein || "0"} gm
                         </TableCell>
 
-                        <TableCell sx={{ opacity: 0.8 }}>
+                        <TableCell sx={{ opacity: 0.8, minWidth: '70px' }}>
                           {food.carbs || "0"} gm
                         </TableCell>
 
-                        <TableCell sx={{ opacity: 0.8 }}>
+                        <TableCell sx={{ opacity: 0.8, minWidth: '70px' }}>
                           {food.fats || "0"} gm
                         </TableCell>
 
-                        <TableCell>
+                        <TableCell sx={{ minWidth: '70px' }}>
                           {!food.isGlobal && (
                             <>
                               <IconButton

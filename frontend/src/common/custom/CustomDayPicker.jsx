@@ -45,9 +45,6 @@ const CustomDayPicker = ({ value, onChange }) => {
                             position: "absolute",
                             right: "10px",
                             top: "30%",
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center"
                         }}
                     >
                         <img src={calender} alt="calendar" style={{ width: 18, height: 18 }} />

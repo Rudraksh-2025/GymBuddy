@@ -51,7 +51,7 @@ const CalorieTracking = () => {
         </Button>
       </Box>
 
-      <Grid container spacing={3} my={5}>
+      <Grid container spacing={3} sx={{ my: { xs: 3, sm: 5 } }}>
         {/* Weekly Avg Calories */}
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
           <StatCard
@@ -87,7 +87,7 @@ const CalorieTracking = () => {
         </Grid>
       </Grid>
 
-      <Grid container spacing={3} my={5} >
+      <Grid container spacing={3} sx={{ my: { xs: 3, sm: 5 } }} >
         <Grid size={{ xs: 12, sm: 4, md: 4, lg: 3 }}>
           <MacroRing
             title="Calories"

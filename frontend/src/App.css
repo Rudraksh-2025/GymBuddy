@@ -13,6 +13,7 @@
 
 body {
     background-color: #1F2022;
+    height: 100vh;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -421,6 +422,13 @@ input[type=number] {
 
 .glass-glow:hover::before {
   opacity: 1!important;
+}
+.recharts-bar-rectangle:focus {
+  outline: none;
+}
+
+.recharts-wrapper svg *:focus {
+  outline: none;
 }
 
 

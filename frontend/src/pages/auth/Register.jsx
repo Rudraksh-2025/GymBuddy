@@ -230,9 +230,17 @@ const Register = () => {
                                     ]}
                                 />
                             </Box>
+                            <Box sx={{ textAlign: "right", mt: 2, position: "relative", zIndex: 1 }}>
+                                <Typography sx={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.8)" }}>
+                                    Already have an account?{" "}
+                                    <Link to="/" className="link" style={{ color: "#A78BFA" }}>
+                                        Login
+                                    </Link>
+                                </Typography>
+                            </Box>
 
                             {/* BACK + REGISTER */}
-                            <Box display="flex" gap={2} mt={3}>
+                            <Box display="flex" gap={2} mt={2}>
                                 <Button
                                     fullWidth
                                     variant="outlined"

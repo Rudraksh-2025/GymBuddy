@@ -30,7 +30,7 @@ const WeightChart = ({ data = [] }) => {
       }}
       sx={{
         py: 3,
-        px: { xs: 1.5, sm: 3 },
+        px: { xs: 0, sm: 3 },
         borderRadius: "20px",
         position: "relative",
         overflow: "hidden",
@@ -46,6 +46,7 @@ const WeightChart = ({ data = [] }) => {
         fontSize="18px"
         fontWeight={600}
         mb={1}
+        pl={2}
         sx={{ position: "relative", zIndex: 1 }}
       >
         Weight Change

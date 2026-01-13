@@ -36,7 +36,7 @@ const ExerciseInformation = () => {
   );
 
   return (
-    <Box p={1}>
+    <Box sx={{ p: { xs: 0, sm: 1 } }}>
       {/* Date Range Filter */}
       <Box>
         <CustomDateRangePicker

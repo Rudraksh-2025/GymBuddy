@@ -91,7 +91,7 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
       }}
       PaperProps={{
         sx: {
-          borderRadius: "22px",
+          borderRadius: "16px",
           position: "relative",
           overflow: "hidden",
 
@@ -190,11 +190,17 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
                 },
               }}
             >
-              {exercises?.map((ex) => (
-                <MenuItem key={ex.id} value={ex.id}>
-                  {ex.value}
+              {exercises && exercises.length > 0 ? (
+                exercises.map((ex) => (
+                  <MenuItem key={ex.id} value={ex.id}>
+                    {ex.value}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled value="">
+                  No exercise found
                 </MenuItem>
-              ))}
+              )}
             </Select>
           </FormControl>
 
@@ -241,7 +247,7 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
 
 
               <TextField
-                label="Weight"
+                label="Weight (kg)"
                 type="number"
                 value={set.weight}
                 onChange={(e) => handleSetChange(idx, "weight", e.target.value)}

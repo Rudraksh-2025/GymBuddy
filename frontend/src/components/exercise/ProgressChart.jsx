@@ -113,7 +113,9 @@ export default function ExerciseProgressChart({ progress }) {
     <Box
       sx={{
         borderRadius: "20px",
-        p: 2.5,
+        px: { xs: 0, sm: 2.5 },
+        py: { xs: 2, sm: 2.5 },
+
       }}
       className='glass-container'
     >

@@ -13,14 +13,14 @@ const ListOfExercise = () => {
   const [muscle, setMuscle] = useState("back");
   const { data: exercises } = useGetExerciseByMuscle(muscle);
   return (
-    <Box p={1}>
+    <Box sx={{ p: { xs: 0, sm: 1 } }}>
       <Box
         display="flex"
         sx={{ flexDirection: { xs: "column", lg: "row" } }}
         justifyContent="space-between"
         mb={2}
       >
-        <Typography variant="h4" sx={{ color: "white", fontWeight: 600 }}>
+        <Typography variant="h5" sx={{ color: "white", fontWeight: 600 }}>
           Exercise Library
         </Typography>
 
@@ -80,7 +80,7 @@ const ListOfExercise = () => {
           </Select>
 
           {/* Action Buttons — Glass */}
-          <Box sx={{ display: "flex", gap: 2 }}>
+          <Box sx={{ display: "flex", gap: 2, justifyContent: { xs: 'space-between' } }}>
             <Button
               startIcon={<Add />}
               onClick={() => setDialogOpen(true)}
@@ -112,8 +112,7 @@ const ListOfExercise = () => {
 
       <TableContainer
         sx={{
-          borderRadius: "20px",
-          overflow: "hidden",
+          borderRadius: "16px",
 
           background: "rgba(255,255,255,0.08)",
           backdropFilter: "blur(18px)",

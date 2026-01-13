@@ -161,7 +161,8 @@ const AddFoodLog = ({
           zIndex: 1,
           background: "transparent",
           color: "white",
-          mt: 2
+          mt: 2,
+          p: { xs: 2, sm: 3 }
         }}
       >
         {/* FOOD */}

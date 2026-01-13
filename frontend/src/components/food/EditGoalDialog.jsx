@@ -120,6 +120,8 @@ const EditGoalDialog = ({ open, onClose, data }) => {
           zIndex: 1,
           background: "transparent",
           color: "white",
+          mt: 1,
+          p: { xs: 2, sm: 3 }
         }}
       >
         <Box mt={1}>

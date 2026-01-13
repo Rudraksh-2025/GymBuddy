@@ -83,20 +83,17 @@ const CustomDateRangePicker = ({
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: { xs: 'column', sm: 'row' },
                 gap: 2,
                 p: 2,
                 borderRadius: "18px",
-
                 background: "rgba(30,30,40,0.9)",
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
                 border: "1px solid rgba(255,255,255,0.18)",
-
                 boxShadow: `
-        inset 0 0 0.5px rgba(255,255,255,0.6),
-        0 20px 60px rgba(0,0,0,0.6)
-      `,
+                inset 0 0 0.5px rgba(255,255,255,0.6),
+                0 20px 60px rgba(0,0,0,0.6)`,
               }}
             >
 
@@ -108,14 +105,14 @@ const CustomDateRangePicker = ({
                 gap={1}
                 sx={{
                   minWidth: 100,
-                  p: 1.5,
+                  p: 1,
                   borderRadius: "14px",
                   background: "rgba(255,255,255,0.08)",
                   backdropFilter: "blur(10px)",
                   border: "1px solid rgba(255,255,255,0.18)",
                 }}
               >
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                <Box sx={{ display: "flex", flexDirection: { xs: 'row', sm: 'column' }, gap: 0 }}>
                   {[
                     { label: "Last Week", days: 7 },
                     { label: "Last Month", days: 30 },
@@ -155,7 +152,6 @@ const CustomDateRangePicker = ({
                     setAnchorEl(null);
                   }}
                   sx={{
-                    mt: 1,
                     color: "#F87171",
                     borderRadius: "10px",
                     "&:hover": { background: "rgba(248,113,113,0.15)" },
