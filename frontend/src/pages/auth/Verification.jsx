@@ -26,7 +26,7 @@ const Verification = () => {
 
 
 
-    const { mutate } = useVerification();
+    const { mutate, isPending } = useVerification();
 
     return (
         <Box className='loginContainer'>
@@ -76,8 +76,9 @@ const Verification = () => {
                         fullWidth
                         type="submit"
                         className="purple-glosy-btn"
+                        disabled={isPending}
                     >
-                        Verify
+                        {isPending ? "Loading..." : "Verify"}
                     </Button>
                 </form>
             </Card>

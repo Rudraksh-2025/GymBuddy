@@ -312,7 +312,7 @@ input[type=number] {
   font-weight: 600 !important;
   color: white !important;
   background: rgba(255, 255, 255, 0.15) !important;
-  backdrop-filter: blur(8px) !important;
+  /* backdrop-filter: blur(8px) !important; */
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
   box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.25),
     0 4px 14px rgba(0, 0, 0, 0.4) !important;
@@ -337,7 +337,6 @@ input[type=number] {
 }
 
 .loginContainer {
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -352,8 +351,6 @@ input[type=number] {
     position: relative!important;
     overflow:hidden!important;
     background: rgba(255,255,255,0.12)!important;
-    backdrop-filter: blur(18px)!important;
-    -webkit-backdrop-filter: blur(18px)!important;
     border: 1px solid rgba(255,255,255,0.25)!important;
     box-shadow: inset 0 0 0.5px rgba(255, 255, 255, 0.6),
     0 20px 60px rgba(0, 0, 0, 0.6)!important;
@@ -374,9 +371,7 @@ input[type=number] {
   position: relative!important;
   overflow: hidden!important;
   background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(18px) !important;
-    -webkit-backdrop-filter: blur(18px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
 }
 
 /* glow layer */

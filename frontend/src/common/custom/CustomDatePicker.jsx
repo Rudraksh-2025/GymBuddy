@@ -102,8 +102,7 @@ const CustomDatePicker = ({
                   overflow: "hidden",
 
                   background: "rgba(255,255,255,0.08)",
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
+
                   border: "1px solid rgba(255,255,255,0.18)",
 
                   boxShadow: `

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, IconButton } from "@mui/material";
+import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, IconButton, Button } from "@mui/material";
 import { useGetFoods, useDeleteFood } from '../../Api/Api'
 import AddIcon from "@mui/icons-material/Add";
 import { useQueryClient } from "@tanstack/react-query";
@@ -87,13 +87,18 @@ const FoodTracking = () => {
             size={{ xs: 5 }}
             sx={{ display: "flex", justifyContent: { xs: "flex-start", sm: "flex-end" } }}
           >
-            <IconButton
+            <Button
               onClick={() => setOpenAddFood(true)}
+              startIcon={<AddIcon />}
               className="glass-btn"
+              sx={{
+                whiteSpace: "nowrap",
+                minWidth: "auto",
+              }}
             >
-              <AddIcon sx={{ mr: 0.5 }} />
               Add Food
-            </IconButton>
+            </Button>
+
           </Grid>
         </Grid>
 
@@ -105,19 +110,34 @@ const FoodTracking = () => {
             </Typography>
           ) : Array.isArray(food?.data) && food?.data?.length > 0 ? (
             <>
-              <TableContainer>
+              <TableContainer
+                sx={{
+                  backgroundColor: "transparent",
+                  boxShadow: "none",
+                  overflowX: "auto",
+                  WebkitOverflowScrolling: "touch",
+                }}
+              >
+
                 <Table
                   sx={{
-                    "& .MuiTableCell-root": { fontSize: "15px", color: "white" },
-                    "& tbody tr:last-of-type td": { borderBottom: "none" },
+                    backgroundColor: "transparent",
+                    "& .MuiTableCell-root": {
+                      fontSize: "15px",
+                      color: "white",
+                      backgroundColor: "transparent",
+                    },
                   }}
                 >
+
                   {/* Glass Header */}
                   <TableHead>
                     <TableRow
+
                       sx={{
                         background: "rgba(255,255,255,0.08)",
                         backdropFilter: "blur(10px)",
+
                       }}
                     >
                       {["Name", "Calories", "Protein", "Carbs", "Fats", "Action"].map(
@@ -142,6 +162,9 @@ const FoodTracking = () => {
                       <TableRow
                         key={food._id}
                         sx={{
+                          "&:last-child td, &:last-child th": {
+                            borderBottom: "none",
+                          },
                           "&:hover": { background: "rgba(255,255,255,0.05)" },
                         }}
                       >
@@ -167,7 +190,7 @@ const FoodTracking = () => {
 
                         <TableCell sx={{ minWidth: '70px' }}>
                           {!food.isGlobal && (
-                            <>
+                            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                               <IconButton
                                 sx={{
                                   color: "#60A5FA",
@@ -194,7 +217,7 @@ const FoodTracking = () => {
                               >
                                 <DeleteIcon />
                               </IconButton>
-                            </>
+                            </Box>
                           )}
                         </TableCell>
                       </TableRow>

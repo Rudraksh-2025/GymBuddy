@@ -25,10 +25,10 @@ const Login = () => {
         onSubmit: (values) => mutate(values),
     });
 
-    const { mutate } = useLogin();
+    const { mutate, isPending } = useLogin();
 
     return (
-        <Box className="loginContainer">
+        <Box className="loginContainer" sx={{ minHeight: { xs: '85vh', sm: '100vh' } }}>
             <Card className='loginCard'>
                 {/* glossy overlay */}
                 <Box
@@ -142,9 +142,10 @@ const Login = () => {
                     <Button
                         fullWidth
                         type="submit"
+                        disabled={isPending}
                         className="purple-glosy-btn"
                     >
-                        Log In
+                        {isPending ? "Loading..." : "Log In"}
                     </Button>
 
                 </form>

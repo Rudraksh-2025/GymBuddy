@@ -36,7 +36,7 @@ const Register = () => {
         onSubmit: (values) => mutate(values),
     });
 
-    const { mutate } = useRegister();
+    const { mutate, isLoading, isPending } = useRegister();
 
     return (
         <Box className='loginContainer'>
@@ -120,16 +120,40 @@ const Register = () => {
                                 >
                                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                                 </IconButton>
+                                {loginForm.touched.password && (
+                                    <FormHelperText error>{loginForm.errors.password}</FormHelperText>
+                                )}
                             </FormControl>
 
                             {/* NEXT BUTTON */}
                             <Button
                                 fullWidth
                                 className="purple-glosy-btn"
-                                onClick={() => setStep(2)}
+                                onClick={async () => {
+                                    const errors = await loginForm.validateForm();
+
+                                    // fields required for step 1
+                                    const step1Fields = ["name", "email", "password"];
+
+                                    const hasStep1Errors = step1Fields.some(
+                                        (field) => errors[field]
+                                    );
+
+                                    if (hasStep1Errors) {
+                                        loginForm.setTouched({
+                                            name: true,
+                                            email: true,
+                                            password: true,
+                                        });
+                                        return; // ❌ stop going next
+                                    }
+
+                                    setStep(2); // ✅ move next
+                                }}
                             >
                                 Next
                             </Button>
+
                         </>
                     )}
 
@@ -258,8 +282,9 @@ const Register = () => {
                                     fullWidth
                                     type="submit"
                                     className="purple-glosy-btn"
+                                    disabled={isPending}
                                 >
-                                    Register
+                                    {isPending ? "Loading..." : "Register"}
                                 </Button>
                             </Box>
                         </>

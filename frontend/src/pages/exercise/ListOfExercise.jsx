@@ -113,16 +113,15 @@ const ListOfExercise = () => {
       <TableContainer
         sx={{
           borderRadius: "16px",
-
           background: "rgba(255,255,255,0.08)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
           border: "1px solid rgba(255,255,255,0.18)",
-
           boxShadow: `
       inset 0 0 0.5px rgba(255,255,255,0.6),
-      0 12px 40px rgba(0,0,0,0.45)
-    `,
+      0 12px 40px rgba(0,0,0,0.45)`,
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
         }}
       >
         <Table

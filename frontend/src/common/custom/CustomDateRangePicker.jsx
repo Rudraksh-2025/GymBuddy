@@ -168,7 +168,6 @@ const CustomDateRangePicker = ({
                   borderRadius: "16px",
                   overflow: "hidden",
                   background: "rgba(255,255,255,0.08)",
-                  backdropFilter: "blur(10px)",
                   border: "1px solid rgba(255,255,255,0.18)",
                 }}
               >
