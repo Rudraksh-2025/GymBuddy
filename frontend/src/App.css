@@ -428,4 +428,13 @@ input[type=number] {
 
 
 
+/* Disable hover / glow effect on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .glass-container::before {
+    display: none !important;
+  }
 
+  .glass-container:hover::before {
+    opacity: 0 !important;
+  }
+}
