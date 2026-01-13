@@ -18,7 +18,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 const allowedOrigins = [
-    process.env.FRONTEND_URL,
+    'https://gymbuddy1310.netlify.app/',
     "http://localhost:3001",
 ];
 app.use(cors({
