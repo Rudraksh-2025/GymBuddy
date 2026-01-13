@@ -17,9 +17,21 @@ import { updateStreak } from './middleware/streakMiddleware.js'
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    "http://localhost:3001",
+];
 app.use(cors({
-    origin: 'http://localhost:3001' // Allow requests from your frontend
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true); // Postman / server-to-server
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error("CORS not allowed for this origin"));
+    },
+    credentials: true
 }));
+
 app.use('/api/auth', authRoutes);
 // 🔐 Auth middleware
 app.use(auth);
