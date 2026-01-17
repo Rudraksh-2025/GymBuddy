@@ -425,7 +425,12 @@ input[type=number] {
 .recharts-wrapper svg *:focus {
   outline: none;
 }
-
+.css-1o28g4q-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled{
+  -webkit-text-fill-color: white!important;
+}
+.css-1c3jatj-MuiAutocomplete-listbox .MuiAutocomplete-option{
+  justify-content: space-between!important;
+}
 
 
 /* Disable hover / glow effect on touch devices */

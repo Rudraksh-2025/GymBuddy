@@ -7,11 +7,11 @@ import mongoose from "mongoose";
 export const getExercisesByGroup = async (req, res) => {
   try {
     const { muscleGroup } = req.params;
-
+    const userId = new mongoose.Types.ObjectId(req.user.id);
     // Find exercises for this user + group
     const exercises = await Exercise.find({
-      userId: req.user.id,
-      muscleGroup
+      muscleGroup,
+      $or: [{ userId }, { isGlobal: true }],
     }).sort({ createdAt: -1 });
 
     // For each exercise, fetch last log and max weight
@@ -19,13 +19,13 @@ export const getExercisesByGroup = async (req, res) => {
       exercises.map(async (ex) => {
         // Get last log
         const lastLog = await ExerciseLog.findOne({
-          userId: req.user.id,
+          userId,
           exerciseId: ex._id
         }).sort({ date: -1 });
 
         // Get max weight across all logs
         const maxWeightAgg = await ExerciseLog.aggregate([
-          { $match: { userId: req.user._id, exerciseId: ex._id } },
+          { $match: { userId, exerciseId: ex._id } },
           { $unwind: "$sets" },
           { $group: { _id: null, maxWeight: { $max: "$sets.weight" } } }
         ]);
@@ -33,6 +33,8 @@ export const getExercisesByGroup = async (req, res) => {
         return {
           _id: ex._id,
           exerciseName: ex.exerciseName,
+          imageUrl: ex.imageUrl,
+          isGlobal: ex.isGlobal,
           muscleGroup: ex.muscleGroup,
           lastLog: lastLog || null,
           maxWeight: maxWeightAgg.length > 0 ? maxWeightAgg[0].maxWeight : null,
@@ -50,16 +52,20 @@ export const getExercises = async (req, res) => {
   try {
     const { muscleGroup } = req.params;
 
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+
     const exercises = await Exercise.find({
-      userId: req.user.id,
-      muscleGroup
+      muscleGroup,
+      $or: [{ userId }, { isGlobal: true }],
     })
       .sort({ createdAt: -1 })
-      .select("_id exerciseName"); // Only fetch id + name
+      .select("_id exerciseName imageUrl isGlobal");
 
     const formatted = exercises.map(ex => ({
       id: ex._id,
       value: ex.exerciseName,
+      image: ex.imageUrl,
+      isGlobal: ex.isGlobal,
     }));
 
     res.json(formatted);
@@ -71,18 +77,21 @@ export const getExercises = async (req, res) => {
 export const addExercise = async (req, res) => {
   try {
     const { muscleGroup, exerciseName } = req.body;
+    const userId = req.user.id;
     const existing = await Exercise.findOne({
-      userId: req.user.id,
       muscleGroup,
-      exerciseName: { $regex: new RegExp(`^${exerciseName}$`, "i") } // case-insensitive
+      exerciseName: { $regex: new RegExp(`^${exerciseName}$`, "i") },
+      $or: [{ userId }, { isGlobal: true }],
     });
     if (existing) {
       return res.status(400).json({ message: "Exercise with this name already exists in this muscle group" });
     }
     const exercise = new Exercise({
-      userId: req.user.id,
+      userId,
       muscleGroup,
-      exerciseName
+      exerciseName,
+      imageUrl: req.file?.path || null,
+      isGlobal: false,
     });
     await exercise.save();
     res.status(201).json({ message: "Exercise added", data: exercise });

@@ -1,19 +1,24 @@
 import {
   Box, Typography, Button, Paper, Chip,
   Table, TableBody, TableCell, TableContainer, TableHead,
-  TableRow, TextField
+  TableRow, TextField, IconButton
 } from '@mui/material';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import calender from '../../assets/images/calender.svg'
-import { useGetExerciseLogs, useGetExerciseProgress } from '../../Api/Api';
+import { useGetExerciseLogs, useGetExerciseProgress, useUpdateExerciseLog, useDeleteExerciseLog } from '../../Api/Api';
 import ProgressChart from '../../components/exercise/ProgressChart';
 import { startOfYear } from "date-fns";
 import CustomDateRangePicker from '../../common/custom/CustomDateRangePicker';
-const ExerciseInformation = () => {
-  const { id: exerciseId } = useParams();
-  const nav = useNavigate();
+import { Edit, Delete } from "@mui/icons-material";
+import AddExerciseLog from "../../components/exercise/AddExerciseLog";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
+const ExerciseInformation = () => {
+  const [openEdit, setOpenEdit] = useState(false);
+  const [selectedLog, setSelectedLog] = useState(null);
+  const location = useLocation()
   const [range, setRange] = useState([
     {
       startDate: startOfYear(new Date()),
@@ -23,6 +28,19 @@ const ExerciseInformation = () => {
   ]);
   const startDate = range[0].startDate.toISOString();
   const endDate = range[0].endDate.toISOString();
+  const client = useQueryClient();
+  const nav = useNavigate();
+
+
+  const { id: exerciseId } = useParams();
+  const { mutate: deleteLog } = useDeleteExerciseLog(
+    () => {
+      toast.success("Log deleted");
+      client.invalidateQueries({ queryKey: ["exercise"] });
+      client.invalidateQueries({ queryKey: ["ExerciseSummary"] });
+    },
+    () => toast.error("Delete failed")
+  );
 
   // fetch logs
   const { data: exercises, isLoading, isError } = useGetExerciseLogs(exerciseId, startDate,
@@ -89,6 +107,12 @@ const ExerciseInformation = () => {
               <TableCell sx={{ fontWeight: 600, background: "transparent", color: "rgba(255,255,255,0.7)" }}>
                 Exercise Log
               </TableCell>
+              <TableCell
+                sx={{ fontWeight: 600, background: "transparent", color: "rgba(255,255,255,0.7)" }}
+              >
+                Actions
+              </TableCell>
+
             </TableRow>
           </TableHead>
 
@@ -136,6 +160,27 @@ const ExerciseInformation = () => {
                       </Typography>
                     )}
                   </TableCell>
+                  <TableCell>
+                    <Box display="flex" gap={1}>
+                      <IconButton
+                        onClick={() => {
+                          setSelectedLog(ex);
+                          setOpenEdit(true);
+                        }}
+                        sx={{ color: "#A78BFA" }}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+
+                      <IconButton
+                        onClick={() => deleteLog(ex._id)}
+                        sx={{ color: "#F87171" }}
+                      >
+                        <Delete fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  </TableCell>
+
                 </TableRow>
               ))
             ) : (
@@ -148,6 +193,19 @@ const ExerciseInformation = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {openEdit && (
+        <AddExerciseLog
+          open={openEdit}
+          onClose={() => {
+            setOpenEdit(false);
+            setSelectedLog(null);
+          }}
+          muscle={location.state.muscle}
+          editData={selectedLog}
+          isEdit
+        />
+      )}
+
 
 
       {/* Progress Chart */}

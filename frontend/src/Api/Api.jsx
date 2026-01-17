@@ -149,8 +149,8 @@ export const useGetExerciseLogs = (exerciseId, start, end) => {
 // Update exercise log
 export const useUpdateExerciseLog = (onSuccess, onError) => {
     return useMutation({
-        mutationFn: async ({ exerciseID, data }) => {
-            const response = await axiosInstance.put(`/exercises/${exerciseID}`, data);
+        mutationFn: async ({ id, data }) => {
+            const response = await axiosInstance.put(`/exercises/${id}`, data);
             return response.data;
         },
         onSuccess,
@@ -171,7 +171,7 @@ export const useDeleteExerciseLog = (onSuccess, onError) => {
 // get exercise progress 
 export const useGetExerciseProgress = (exerciseId, start, end) => {
     return useQuery({
-        queryKey: ['muscleGroup', exerciseId, start, end],
+        queryKey: ['ExerciseSummary', exerciseId, start, end],
         queryFn: async () => {
             const response = await axiosInstance.get(`/exercises/progress/`, {
                 params: { exerciseId, start, end }

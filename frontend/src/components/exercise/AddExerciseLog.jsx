@@ -1,28 +1,14 @@
-import React, { useState } from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl
-} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, Button, IconButton, Typography } from '@mui/material';
 import { Add, Delete } from '@mui/icons-material';
 import CustomAuto from '../../common/custom/CustomAuto'
-import { useCreateExerciselog, useGetExercise } from '../../Api/Api';
+import { useCreateExerciselog, useGetExercise, useUpdateExerciseLog, useDeleteExercise } from '../../Api/Api';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import CustomDayPicker from '../../common/custom/CustomDayPicker';
 import { useQueryClient } from '@tanstack/react-query';
 
-const AddExerciseLog = ({ open, onClose, muscle }) => {
+const AddExerciseLog = ({ open, onClose, muscle, editData, isEdit }) => {
   const [exerciseId, setExerciseId] = useState('');
   const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
   const [sets, setSets] = useState([{ reps: '', weight: '' }]);
@@ -42,6 +28,27 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
       toast.error(error?.response?.data?.message || "Failed to add log");
     }
   );
+
+  const { mutate: updateLog, isPending: updating } = useUpdateExerciseLog(
+    () => {
+      toast.success("Exercise log updated!");
+      client.invalidateQueries({ queryKey: ["exercise"] });
+      client.invalidateQueries({ queryKey: ["ExerciseSummary"] });
+      onClose();
+    },
+    () => toast.error("Update failed")
+  );
+  const { mutate: deleteExercise } = useDeleteExercise(
+    () => {
+      toast.success("Exercise deleted");
+      client.invalidateQueries({ queryKey: ["exerciseList"], exact: false });
+      setExerciseId("");
+    },
+    (err) =>
+      toast.error(err?.response?.data?.message || "Delete failed")
+  );
+
+
 
   const handleAddSet = () => {
     setSets([...sets, { reps: '', weight: '' }]);
@@ -66,10 +73,14 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
         weight: Number(s.weight)
       }))
     };
-    createLog(payload);
-    setExerciseId('')
-    onClose();
+
+    if (isEdit) {
+      updateLog({ id: editData._id, data: payload });
+    } else {
+      createLog(payload);
+    }
   };
+
 
   const handleClose = () => {
     setExerciseId('');
@@ -77,6 +88,15 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
     setSets([{ reps: '', weight: '' }]);
     onClose();
   };
+
+  useEffect(() => {
+    if (isEdit && editData) {
+      setExerciseId(editData?.exerciseId);
+      setDate(dayjs(editData?.date).format("YYYY-MM-DD"));
+      setSets(editData?.sets);
+    }
+  }, [isEdit, editData]);
+
 
   return (
     <Dialog
@@ -134,7 +154,7 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
           borderBottom: "1px solid rgba(255,255,255,0.15)",
         }}
       >
-        Add Exercise Log
+        {isEdit ? "Update Exercise Log" : "Add Exercise Log"}
       </DialogTitle>
 
       {/* CONTENT */}
@@ -153,11 +173,14 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
             name="exerciseId"
             value={exerciseId}
             theme="dark"
+            showDelete
+            onDeleteOption={deleteExercise}
             onChange={(e) => setExerciseId(e.target.value)}
             options={exercises?.map((f) => ({
               label: f.value,
               value: f.id,
             }))}
+            readOnly={isEdit}
           />
 
           {/* Date */}
@@ -247,7 +270,7 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
               textTransform: "none",
             }}
           >
-            Add Set
+            Add set
           </Button>
         </Box>
       </DialogContent>
@@ -279,7 +302,8 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
 
         <Button
           onClick={handleSubmit}
-          disabled={!exerciseId || sets.length === 0 || isPending}
+          disabled={!exerciseId || sets.length === 0 || isPending || updating}
+
           sx={{
             borderRadius: "12px",
             px: 3,

@@ -12,6 +12,7 @@ const ListOfExercise = () => {
   const nav = useNavigate();
   const [muscle, setMuscle] = useState("back");
   const { data: exercises } = useGetExerciseByMuscle(muscle);
+  console.log(exercises)
   return (
     <Box sx={{ p: { xs: 0, sm: 1 } }}>
       <Box
@@ -177,8 +178,24 @@ const ListOfExercise = () => {
                     "&:hover": { background: "rgba(255,255,255,0.05)" },
                   }}
                 >
+
                   <TableCell sx={{ paddingLeft: "30px", fontWeight: 500 }}>
-                    {ex.exerciseName}
+                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+                      <Box
+                        component="img"
+                        src={ex.imageUrl}
+                        sx={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: "12px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      {/* <img src={ex.imageUrl} alt="" /> */}
+                      <Box>
+                        <Typography fontWeight={600}>{ex.exerciseName}</Typography>
+                      </Box>
+                    </Box>
                   </TableCell>
 
                   <TableCell sx={{ textTransform: "capitalize", opacity: 0.85 }}>
@@ -217,7 +234,7 @@ const ListOfExercise = () => {
                     <Button
                       variant="contained"
                       onClick={() =>
-                        nav(`/home/exercise/exercise-information/${ex._id}`)
+                        nav(`/home/exercise/exercise-information/${ex._id}`, { state: { muscle: muscle } })
                       }
                       sx={{ height: '38px' }}
                       className="purple-glosy-btn"

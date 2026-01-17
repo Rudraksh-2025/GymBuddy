@@ -3,9 +3,9 @@ import {
     FormControl,
     TextField,
     FormHelperText,
-    Autocomplete,
+    Autocomplete, Box, IconButton
 } from "@mui/material";
-
+import DeleteIcon from "@mui/icons-material/Delete";
 const CustomAuto = ({
     label,
     name,
@@ -16,6 +16,9 @@ const CustomAuto = ({
     theme = "light",
     helperText,
     placeholder,
+    ReadOnly = false,
+    onDeleteOption,
+    showDelete = false,
     ...props
 }) => {
     // find selected option object from value
@@ -41,19 +44,55 @@ const CustomAuto = ({
                 isOptionEqualToValue={(option, value) =>
                     option.value === value.value
                 }
+                readOnly
                 noOptionsText="No data available"
+                renderOption={(props, option) => (
+                    <Box
+                        component="li"
+                        {...props}
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            color: "black",
+                            width: "100%",
+                        }}
+                    >
+                        <span>{option.label}</span>
+
+                        {showDelete && !ReadOnly && (
+                            <IconButton
+                                size="small"
+                                onClick={(e) => {
+                                    e.stopPropagation(); // ⛔ prevent select
+                                    onDeleteOption?.(option.value);
+                                }}
+                                sx={{
+                                    color: "red",
+                                    "&:hover": {
+                                        background: "rgba(248,113,113,0.15)",
+                                    },
+                                }}
+                            >
+                                <DeleteIcon fontSize="small" />
+                            </IconButton>
+                        )}
+                    </Box>
+                )}
                 renderInput={(params) => (
                     <TextField
                         {...params}
                         name={name}
                         placeholder={placeholder || `Select ${label}`}
                         error={!!error}
+                        disabled={ReadOnly}
                         sx={{
+
                             mt: "3px",
                             "& .MuiInputBase-root": {
                                 height: 45,
-                                color: theme === "dark" ? "white" : "inherit",
-                                background: theme === "dark" ? "transparent" : "inherit",
+                                color: "white",
+                                background: "transparent",
                             },
                             "& .MuiOutlinedInput-notchedOutline": {
                                 borderColor: "#E0E3E7 !important",
@@ -66,11 +105,12 @@ const CustomAuto = ({
                                 opacity: 1,
                             },
                             "& .MuiAutocomplete-popupIndicator": {
-                                color: "white", // ✅ down arrow color
+                                color: "white",
+                                display: ReadOnly ? "none" : "flex",
                             },
 
                             "& .MuiAutocomplete-clearIndicator": {
-                                color: "white", // (optional) clear X icon also white
+                                color: "white",
                             },
                         }}
                     />

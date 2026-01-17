@@ -12,12 +12,13 @@ import {
   getExercises
 } from "../controllers/exerciseController.js";
 import { auth } from "../middleware/authMiddleware.js";
+import { upload } from '../middleware/upload.js'
 
 const router = express.Router();
 
 router.get('/group/:muscleGroup', auth, getExercisesByGroup);
 router.get('/exercise/:muscleGroup', auth, getExercises)
-router.post('/exercise/', auth, addExercise)
+router.post('/exercise/', auth, upload.single("image"), addExercise)
 router.delete('/exercise/:id', auth, deleteExercise)
 router.post("/", auth, addExerciseLog);
 router.get("/logs", auth, getExerciseLogs);
