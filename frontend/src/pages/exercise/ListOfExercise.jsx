@@ -159,7 +159,6 @@ const ListOfExercise = () => {
                     color: "rgba(255,255,255,0.7)",
                     fontWeight: 600,
                     background: "transparent",
-                    paddingLeft: i === 0 ? "30px" : undefined,
                   }}
                 >
                   {h}
@@ -179,14 +178,14 @@ const ListOfExercise = () => {
                   }}
                 >
 
-                  <TableCell sx={{ paddingLeft: "30px", fontWeight: 500 }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+                  <TableCell sx={{ fontWeight: 500 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
                       <Box
                         component="img"
                         src={ex.imageUrl}
                         sx={{
-                          width: 50,
-                          height: 50,
+                          width: 55,
+                          height: 55,
                           borderRadius: "12px",
                           objectFit: "cover",
                         }}
