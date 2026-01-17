@@ -26,7 +26,7 @@ const AddExercise = ({ open, onClose, onSubmit, muscle, defaultValues }) => {
   const { mutate: createExercise, isPending } = useCreateExercise(
     () => {
       toast.success('Exercise created successfully!');
-      queryClient.invalidateQueries({ queryKey: ["muscleGroup"], exact: false });
+      queryClient.invalidateQueries({ queryKey: ["exerciseList"], exact: false });
       resetForm();
     },
     (error) => {

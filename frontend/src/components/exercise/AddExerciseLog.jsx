@@ -15,6 +15,7 @@ import {
   FormControl
 } from '@mui/material';
 import { Add, Delete } from '@mui/icons-material';
+import CustomAuto from '../../common/custom/CustomAuto'
 import { useCreateExerciselog, useGetExercise } from '../../Api/Api';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
@@ -147,68 +148,25 @@ const AddExerciseLog = ({ open, onClose, muscle }) => {
       >
         <Box mt={2}>
           {/* Select Exercise */}
-          <FormControl fullWidth margin="normal" sx={{ mb: 2 }}>
-            <InputLabel
-              id="exercise-select"
-              sx={{
-                color: "rgba(255,255,255,0.8)",
-                "&.Mui-focused": { color: "white" },
-              }}
-            >
-              Exercise
-            </InputLabel>
-
-            <Select
-              labelId="exercise-select"
-              value={exerciseId}
-              onChange={(e) => setExerciseId(e.target.value)}
-              sx={{
-                background: "rgba(255,255,255,0.08)",
-                backdropFilter: "blur(8px)",
-                borderRadius: "8px",
-                color: "white",
-
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "rgba(255,255,255,0.25)",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "rgba(255,255,255,0.45)",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#8B5CF6",
-                },
-                "& .MuiSelect-icon": { color: "white" },
-              }}
-              MenuProps={{
-                PaperProps: {
-                  sx: {
-                    background: "rgba(20,20,30,0.95)",
-                    backdropFilter: "blur(12px)",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    color: "white",
-                  },
-                },
-              }}
-            >
-              {exercises && exercises.length > 0 ? (
-                exercises.map((ex) => (
-                  <MenuItem key={ex.id} value={ex.id}>
-                    {ex.value}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled value="">
-                  No exercise found
-                </MenuItem>
-              )}
-            </Select>
-          </FormControl>
+          <CustomAuto
+            label="Exercise"
+            name="exerciseId"
+            value={exerciseId}
+            theme="dark"
+            onChange={(e) => setExerciseId(e.target.value)}
+            options={exercises?.map((f) => ({
+              label: f.value,
+              value: f.id,
+            }))}
+          />
 
           {/* Date */}
-          <CustomDayPicker
-            value={date}
-            onChange={(date) => setDate(date)}
-          />
+          <Box mt={3}>
+            <CustomDayPicker
+              value={date}
+              onChange={(date) => setDate(date)}
+            />
+          </Box>
 
           {/* Sets */}
           <Typography variant="h6" mt={2} fontWeight={600}>

@@ -234,7 +234,7 @@ export const useDeleteWeight = (onSuccess, onError) => {
 //  Update user goals
 export const useUpdateDailyGoal = (onSuccess, onError) => {
     return useMutation({
-        mutationFn: async (data ) => {
+        mutationFn: async (data) => {
             const response = await axiosInstance.put(`/food/summary`, data);
             return response.data;
         },
@@ -245,10 +245,10 @@ export const useUpdateDailyGoal = (onSuccess, onError) => {
 // get food summary
 export const useGetCalorieSummary = (date) => {
     return useQuery({
-        queryKey: ['foodSummary',date],
+        queryKey: ['foodSummary', date],
         queryFn: async () => {
-            const response = await axiosInstance.get('/food/summary',{
-                params:{date}
+            const response = await axiosInstance.get('/food/summary', {
+                params: { date }
             })
             return response.data
         },
@@ -306,9 +306,9 @@ export const useGetFoodLog = (date) => {
     return useQuery({
         queryKey: ['foodLogs', date],
         queryFn: async () => {
-         const response = await axiosInstance.get('/foodLog', {
-  params: { date }
-});
+            const response = await axiosInstance.get('/foodLog', {
+                params: { date }
+            });
 
             return response.data
         },
@@ -362,6 +362,20 @@ export const useGetUserMetrices = () => {
         placeholderData: keepPreviousData,
     })
 }
+// dashboard
+export const useGetDashboard = () => {
+    return useQuery({
+        queryKey: ["dashboard"],
+        queryFn: async () => {
+            const response = await axiosInstance.get("/dashboard");
+            return response.data;
+        },
+        staleTime: 0,
+        refetchOnMount: "always",
+        refetchOnWindowFocus: false,
+    });
+};
+
 
 
 // login

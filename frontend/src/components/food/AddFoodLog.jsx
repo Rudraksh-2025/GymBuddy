@@ -7,10 +7,10 @@ import {
   Typography,
   Button,
   CircularProgress,
-  TextField,
   FormControl,
   InputLabel,
 } from "@mui/material";
+import CustomAuto from "../../common/custom/CustomAuto";
 import { useEffect, useMemo } from "react";
 import { useFormik } from "formik";
 import CustomInput from "../../common/custom/CustomInput";
@@ -166,7 +166,7 @@ const AddFoodLog = ({
         }}
       >
         {/* FOOD */}
-        <CustomSelect
+        <CustomAuto
           label="Food"
           name="foodId"
           value={foodForm.values.foodId}
@@ -177,6 +177,8 @@ const AddFoodLog = ({
             value: f._id,
           }))}
         />
+
+
 
         {/* Serving Size */}
         <Box mt={2}>

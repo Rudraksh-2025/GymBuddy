@@ -7,9 +7,9 @@ import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import CaloriesBarChart from "../components/CalorieBarChar";
-
-
+import { useGetDashboard } from "../Api/Api";
 import StatCard from "../components/StatCard";
+import { useNavigate } from "react-router-dom";
 
 const MacroBar = ({ label, value, goal, color }) => {
   const percent = goal > 0 ? Math.min((value / goal) * 100, 100) : 0;
@@ -41,6 +41,7 @@ const MacroBar = ({ label, value, goal, color }) => {
 };
 
 const Home = () => {
+  const nav = useNavigate()
   const handleGlowMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
@@ -62,21 +63,18 @@ const Home = () => {
     );
   };
   /* 🔧 Replace with API later */
-  const dashboard = {
-    calories: { consumed: 1680, goal: 2200 },
-    weight: 72.4,
-    workouts: 4,
-    streak: 6,
-    weeklyAvgCalories: 1845,
-    protein: { consumed: 110, goal: 150 },
-    carbs: { consumed: 180, goal: 250 },
-    fats: { consumed: 52, goal: 70 },
-    meals: ["Oats & Milk", "Chicken & Rice", "Protein Shake"],
-    workoutsRecent: ["Chest + Triceps", "Back + Biceps", "Leg Day"],
-  };
+
+  const { data: dashboardData } = useGetDashboard()
+  const todayCalories =
+    dashboardData?.data?.calories?.todayConsumed?.calories || 0;
+
+  const goalCalories =
+    dashboardData?.data?.calories?.goal || 0;
 
   const caloriePercent =
-    (dashboard.calories.consumed / dashboard.calories.goal) * 100;
+    goalCalories > 0 ? (todayCalories / goalCalories) * 100 : 0;
+
+
 
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
@@ -86,8 +84,8 @@ const Home = () => {
         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <StatCard
             title="Current Weight"
-            value={`${dashboard.weight} kg`}
-            sub="-1.2 kg this month"
+            value={`${dashboardData?.data?.weight?.current} kg`}
+            sub="this week"
             icon={<MonitorWeightIcon />}
             color="#22C55E"
           />
@@ -95,7 +93,7 @@ const Home = () => {
         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <StatCard
             title="Body Fat"
-            value="19.8%"
+            value={`${dashboardData?.data?.weight?.bodyFat}`}
             sub="-0.6% this month"
             icon={<TrendingDownIcon />}
             color="#06B6D4"
@@ -113,7 +111,7 @@ const Home = () => {
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
           <StatCard
             title="Weekly Avg Calories"
-            value="420 kcal"
+            value={`${dashboardData?.data?.calories?.weeklyAvg}`}
             sub="Last 7 days"
             icon={<LocalFireDepartmentIcon />}
             color="#F59E0B"
@@ -123,7 +121,7 @@ const Home = () => {
         <Grid size={{ xs: 12, md: 6, lg: 3 }}>
           <StatCard
             title="Total Weight Lost"
-            value={`3 kg`}
+            value={`${dashboardData?.data?.weight?.totalLost} kg`}
             sub={
               <PercentageChange
                 flag={'up'}
@@ -168,7 +166,7 @@ const Home = () => {
             <Typography fontWeight={600}>Calorie Progress</Typography>
 
             <Typography fontSize={13} sx={{ opacity: 0.7, mt: 2 }}>
-              {dashboard.calories.consumed} kcal consumed
+              {todayCalories} kcal consumed
             </Typography>
 
             <LinearProgress
@@ -188,8 +186,7 @@ const Home = () => {
             />
 
             <Typography mt={1} fontSize={13} sx={{ opacity: 0.7 }}>
-              {dashboard.calories.goal - dashboard.calories.consumed} kcal
-              remaining
+              {goalCalories - todayCalories} kcal remaining
             </Typography>
           </Box>
         </Grid>
@@ -216,22 +213,22 @@ const Home = () => {
 
               <MacroBar
                 label="Protein"
-                value={dashboard.protein.consumed}
-                goal={dashboard.protein.goal}
+                value={dashboardData?.data?.macros?.consumed?.protein || 0}
+                goal={dashboardData?.data?.macros?.goal?.protein || 0}
                 color="#22C55E"
               />
 
               <MacroBar
                 label="Carbs"
-                value={dashboard.carbs.consumed}
-                goal={dashboard.carbs.goal}
+                value={dashboardData?.data?.macros?.consumed?.carbs || 0}
+                goal={dashboardData?.data?.macros?.goal?.carbs || 0}
                 color="#F59E0B"
               />
 
               <MacroBar
                 label="Fats"
-                value={dashboard.fats.consumed}
-                goal={dashboard.fats.goal}
+                value={dashboardData?.data?.macros?.consumed?.fats || 0}
+                goal={dashboardData?.data?.macros?.goal?.fats || 0}
                 color="#EF4444"
               />
             </Box>
@@ -259,14 +256,14 @@ const Home = () => {
             <Box sx={{ position: "relative", zIndex: 1 }}>
               <Stack direction="row" justifyContent="space-between">
                 <Typography fontWeight={600}>Recent Meals</Typography>
-                <Button size="small" startIcon={<AddIcon />} sx={{ color: "#8B5CF6" }}>
+                <Button size="small" startIcon={<AddIcon />} sx={{ color: "#8B5CF6" }} onClick={() => nav('/home/calorie')}>
                   Add
                 </Button>
               </Stack>
 
               <Divider sx={{ my: 1, borderColor: "rgba(255,255,255,0.15)" }} />
 
-              {dashboard.meals.map((m, i) => (
+              {dashboardData?.data?.meals.map((m, i) => (
                 <Typography key={i} fontSize={14} mb={0.8} sx={{ opacity: 0.85 }}>
                   • {m}
                 </Typography>
@@ -293,14 +290,14 @@ const Home = () => {
             <Box sx={{ position: "relative", zIndex: 1 }}>
               <Stack direction="row" justifyContent="space-between">
                 <Typography fontWeight={600}>Recent Workouts</Typography>
-                <Button size="small" startIcon={<AddIcon />} sx={{ color: "#8B5CF6" }}>
+                <Button size="small" startIcon={<AddIcon />} sx={{ color: "#8B5CF6" }} onClick={() => nav('/home/weight')}>
                   Log
                 </Button>
               </Stack>
 
               <Divider sx={{ my: 1, borderColor: "rgba(255,255,255,0.15)" }} />
 
-              {dashboard.workoutsRecent.map((w, i) => (
+              {dashboardData?.data?.workouts?.recent?.map((w, i) => (
                 <Typography key={i} fontSize={14} mb={0.8} sx={{ opacity: 0.85 }}>
                   • {w}
                 </Typography>
@@ -312,7 +309,7 @@ const Home = () => {
 
       <Grid container spacing={3} sx={{ mt: 4 }}>
         <Grid size={{ xs: 12 }}>
-          <CaloriesBarChart />
+          <CaloriesBarChart data={dashboardData?.data?.charts} />
         </Grid>
       </Grid>
     </Box>

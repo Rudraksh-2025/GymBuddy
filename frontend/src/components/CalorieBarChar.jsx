@@ -50,14 +50,14 @@ const yearlyData = [
 
 /* -------------------------------------------------------------------- */
 
-const CaloriesBarChart = () => {
+const CaloriesBarChart = ({ data }) => {
     const [tab, setTab] = useState(0);
-
     const getData = () => {
-        if (tab === 0) return weeklyData;
-        if (tab === 1) return monthlyData;
-        return yearlyData;
+        if (tab === 0) return data?.weekly || [];
+        if (tab === 1) return data?.monthly || [];
+        return [];
     };
+
     const handleGlowMove = (e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
@@ -115,13 +115,12 @@ const CaloriesBarChart = () => {
                 >
                     <Tab label="Weekly" />
                     <Tab label="Monthly" />
-                    <Tab label="Yearly" />
                 </Tabs>
 
                 {/* CHART */}
                 <Box sx={{ width: "100%", height: 260 }}>
                     <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={getData()}>
+                        <BarChart data={getData() || []}>
                             <XAxis dataKey="name" stroke="#E5E7EB" />
                             {/* <YAxis stroke="#E5E7EB" /> */}
                             <Tooltip
