@@ -84,7 +84,7 @@ const Home = () => {
         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <StatCard
             title="Current Weight"
-            value={`${dashboardData?.data?.weight?.current} kg`}
+            value={`${dashboardData?.data?.weight?.current ?? "0"} kg`}
             sub="this week"
             icon={<MonitorWeightIcon />}
             color="#22C55E"
@@ -93,7 +93,7 @@ const Home = () => {
         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <StatCard
             title="Body Fat"
-            value={`${dashboardData?.data?.weight?.bodyFat}`}
+            value={`${dashboardData?.data?.weight?.bodyFat ?? "0"}%`}
             sub="-0.6% this month"
             icon={<TrendingDownIcon />}
             color="#06B6D4"
@@ -111,7 +111,7 @@ const Home = () => {
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
           <StatCard
             title="Weekly Avg Calories"
-            value={`${dashboardData?.data?.calories?.weeklyAvg}`}
+            value={`${dashboardData?.data?.calories?.weeklyAvg ?? "0"} kcal`}
             sub="Last 7 days"
             icon={<LocalFireDepartmentIcon />}
             color="#F59E0B"
@@ -121,7 +121,7 @@ const Home = () => {
         <Grid size={{ xs: 12, md: 6, lg: 3 }}>
           <StatCard
             title="Total Weight Lost"
-            value={`${dashboardData?.data?.weight?.totalLost} kg`}
+            value={`${dashboardData?.data?.weight?.totalLost ?? 0} kg`}
             sub={
               <PercentageChange
                 flag={'up'}

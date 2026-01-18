@@ -42,6 +42,7 @@ const AddExerciseLog = ({ open, onClose, muscle, editData, isEdit }) => {
     () => {
       toast.success("Exercise deleted");
       client.invalidateQueries({ queryKey: ["exerciseList"], exact: false });
+      client.invalidateQueries(['muscleGroup'], { exact: false })
       setExerciseId("");
     },
     (err) =>
@@ -179,6 +180,7 @@ const AddExerciseLog = ({ open, onClose, muscle, editData, isEdit }) => {
             options={exercises?.map((f) => ({
               label: f.value,
               value: f.id,
+              isGlobal: f.isGlobal,
             }))}
             readOnly={isEdit}
           />

@@ -60,7 +60,7 @@ const CustomAuto = ({
                     >
                         <span>{option.label}</span>
 
-                        {showDelete && !ReadOnly && (
+                        {showDelete && !ReadOnly && !option.isGlobal && (
                             <IconButton
                                 size="small"
                                 onClick={(e) => {

@@ -11,8 +11,7 @@ const ListOfExercise = () => {
   const [dialogOpen2, setDialogOpen2] = useState(false);
   const nav = useNavigate();
   const [muscle, setMuscle] = useState("back");
-  const { data: exercises } = useGetExerciseByMuscle(muscle);
-  console.log(exercises)
+  const { data: exercises, isLoading } = useGetExerciseByMuscle(muscle);
   return (
     <Box sx={{ p: { xs: 0, sm: 1 } }}>
       <Box
@@ -78,6 +77,8 @@ const ListOfExercise = () => {
             <MenuItem value="tricep">Tricep</MenuItem>
             <MenuItem value="legs">Legs</MenuItem>
             <MenuItem value="shoulder">Shoulder</MenuItem>
+            <MenuItem value="abs">Abs</MenuItem>
+
           </Select>
 
           {/* Action Buttons — Glass */}
@@ -169,87 +170,94 @@ const ListOfExercise = () => {
 
           {/* BODY */}
           <TableBody>
-            {exercises?.length > 0 ? (
-              exercises.map((ex) => (
-                <TableRow
-                  key={ex._id}
-                  sx={{
-                    "&:hover": { background: "rgba(255,255,255,0.05)" },
-                  }}
-                >
+            {isLoading ? (<TableRow>
+              <TableCell colSpan={5} sx={{ textAlign: "center" }}>
+                Loading...
+              </TableCell>
+            </TableRow>) :
+              (exercises?.length > 0 ? (
+                exercises.map((ex) => (
+                  <TableRow
+                    key={ex._id}
+                    sx={{
+                      "&:hover": { background: "rgba(255,255,255,0.05)" },
+                    }}
+                  >
 
-                  <TableCell sx={{ fontWeight: 500 }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                      <Box
-                        component="img"
-                        src={ex.imageUrl}
-                        sx={{
-                          width: 55,
-                          height: 55,
-                          borderRadius: "12px",
-                          objectFit: "cover",
-                        }}
-                      />
-                      {/* <img src={ex.imageUrl} alt="" /> */}
-                      <Box>
-                        <Typography fontWeight={600}>{ex.exerciseName}</Typography>
+                    <TableCell sx={{ fontWeight: 500 }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+
+                        {ex.imageUrl && <Box
+                          component="img"
+                          src={ex.imageUrl}
+                          sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            width: 55,
+                            height: 55,
+                            borderRadius: "12px",
+                            objectFit: "cover",
+                          }}
+                        />}
+                        <Box>
+                          <Typography fontWeight={600}>{ex.exerciseName}</Typography>
+                        </Box>
                       </Box>
-                    </Box>
-                  </TableCell>
+                    </TableCell>
 
-                  <TableCell sx={{ textTransform: "capitalize", opacity: 0.85 }}>
-                    {ex.muscleGroup}
-                  </TableCell>
+                    <TableCell sx={{ textTransform: "capitalize", opacity: 0.85 }}>
+                      {ex.muscleGroup}
+                    </TableCell>
 
-                  <TableCell>
-                    {ex.lastLog && ex.lastLog.sets?.length > 0 ? (
-                      <Box display="flex" gap={0.5} flexWrap="wrap">
-                        {ex.lastLog.sets.map((s, i) => (
-                          <Chip
-                            key={i}
-                            label={`${s.reps} reps x ${s.weight} kg`}
-                            size="small"
-                            sx={{
-                              background: "rgba(255,255,255,0.15)",
-                              border: "1px solid rgba(255,255,255,0.25)",
-                              color: "white",
-                              "& .MuiChip-label": { fontWeight: 500 },
-                            }}
-                          />
-                        ))}
-                      </Box>
-                    ) : (
-                      <Typography variant="body2" sx={{ opacity: 0.6 }}>
-                        No logs yet
-                      </Typography>
-                    )}
-                  </TableCell>
+                    <TableCell>
+                      {ex.lastLog && ex.lastLog.sets?.length > 0 ? (
+                        <Box display="flex" gap={0.5} flexWrap="wrap">
+                          {ex.lastLog.sets.map((s, i) => (
+                            <Chip
+                              key={i}
+                              label={`${s.reps} reps x ${s.weight} kg`}
+                              size="small"
+                              sx={{
+                                background: "rgba(255,255,255,0.15)",
+                                border: "1px solid rgba(255,255,255,0.25)",
+                                color: "white",
+                                "& .MuiChip-label": { fontWeight: 500 },
+                              }}
+                            />
+                          ))}
+                        </Box>
+                      ) : (
+                        <Typography variant="body2" sx={{ opacity: 0.6 }}>
+                          No logs yet
+                        </Typography>
+                      )}
+                    </TableCell>
 
-                  <TableCell sx={{ fontWeight: 600 }}>
-                    {ex.maxWeight ? `${ex.maxWeight} kg` : "-"}
-                  </TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>
+                      {ex.maxWeight ? `${ex.maxWeight} kg` : "-"}
+                    </TableCell>
 
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      onClick={() =>
-                        nav(`/home/exercise/exercise-information/${ex._id}`, { state: { muscle: muscle } })
-                      }
-                      sx={{ height: '38px' }}
-                      className="purple-glosy-btn"
-                    >
-                      View
-                    </Button>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        onClick={() =>
+                          nav(`/home/exercise/exercise-information/${ex._id}`, { state: { muscle: muscle } })
+                        }
+                        sx={{ height: '38px' }}
+                        className="purple-glosy-btn"
+                      >
+                        View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} align="center" sx={{ py: 3, opacity: 0.7 }}>
+                    No Exercises Found
                   </TableCell>
                 </TableRow>
               ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5} align="center" sx={{ py: 3, opacity: 0.7 }}>
-                  No Exercises Found
-                </TableCell>
-              </TableRow>
-            )}
+            }
           </TableBody>
         </Table>
       </TableContainer>
