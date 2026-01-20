@@ -15,7 +15,6 @@ export const buildPromptByIntent = ({
             - Max 120 words
             - Bullet points only
             - No paragraphs
-            - No emojis
             - No headings
             - Actionable advice only
             - Use Indian foods
@@ -51,6 +50,28 @@ export const buildPromptByIntent = ({
             `;
 
     /* ================= INTENT PROMPTS ================= */
+
+    if (intent === INTENTS.GREETING) {
+        return `
+            You are a friendly fitness assistant.
+
+            RULES:
+            - Max 50 words
+            - Bullet points only
+            - No emojis
+            - Ask how you can help
+            - Mention diet, workout, or progress
+
+            TASK:
+            Respond to greeting and guide user on what you can help with.
+
+            FORMAT:
+            - Friendly greeting
+            - What help you provide
+            - Ask next question
+        `;
+    }
+
 
     if (intent === INTENTS.DIET_TODAY) {
         return `

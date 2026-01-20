@@ -50,7 +50,11 @@ const Chat = () => {
                             width: 'fit-content',
 
                         }}>
-                            <Typography variant="body1">{m.text}</Typography>
+                            <Typography variant="body1" sx={{
+                                whiteSpace: "pre-line",
+                                lineHeight: 1.6,
+                            }}
+                            >{m.text}</Typography>
                         </Box>
                     </Box>
                 ))}
@@ -83,7 +87,7 @@ const Chat = () => {
                         }}
                     >
                         Thinking
-                        <Box className="dot-typing" />
+                        <Box className="dot-typing" ml={1} />
 
                     </Box>
                 </Box>

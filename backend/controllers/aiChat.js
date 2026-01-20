@@ -144,7 +144,15 @@ export const aiChat = async (req, res) => {
             ],
         });
 
-        const reply = completion.choices[0].message.content;
+        let reply = completion.choices[0].message.content;
+
+        // force each bullet to new line
+        reply = reply
+            .replace(/\s*[•-]\s*/g, "\n- ")
+            .replace(/^\n/, "")
+            .trim();
+
+
 
         /* ---------------- SAVE CHAT ---------------- */
         await AiChat.insertMany([

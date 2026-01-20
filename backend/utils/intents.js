@@ -1,4 +1,5 @@
 export const INTENTS = {
+    GREETING: "greeting",
     DIET_TODAY: "diet_today",
     MEAL_SUGGEST: "meal_suggest",
     WORKOUT_PLAN: "workout_plan",

@@ -3,6 +3,13 @@ import { INTENTS } from "./intents.js";
 export const detectIntent = (text = "") => {
     const q = text.toLowerCase().trim();
 
+    /* ---------- GREETING ---------- */
+    if (
+        /^(hi|hello|hey|yo|hii|hiii|good morning|good evening|good afternoon)\b/i.test(q)
+    ) {
+        return INTENTS.GREETING;
+    }
+
     /* ---------- DIET TODAY ---------- */
     if (
         /(what.*eat|what should i eat|diet today|today.*meal|today.*diet)/i.test(q)
