@@ -1,7 +1,5 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
-
 import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
@@ -15,6 +13,7 @@ import foodLogRoutes from './routes/foodLogRoutes.js'
 import cors from 'cors'
 import { auth } from './middleware/authMiddleware.js';
 import { updateStreak } from './middleware/streakMiddleware.js'
+import aiRoutes from './routes/aiRoutes.js'
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -32,6 +31,7 @@ app.use(auth);
 app.use(updateStreak);
 app.use('/api/food', foodRoutes)
 app.use('/api/dashboard', dashboardRoutes)
+app.use('/api/ai', aiRoutes)
 app.use("/api/weight", weightRoutes);
 app.use('/api/exercises', exerciseRoutes)
 app.use("/api/profile", profileRoutes);

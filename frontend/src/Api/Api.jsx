@@ -376,6 +376,16 @@ export const useGetDashboard = () => {
     });
 };
 
+export const useAiChat = () => {
+    return useMutation({
+        mutationFn: async (message) => {
+            const { data } = await axiosInstance.post("/ai/chat", { message });
+            return data;
+        },
+    });
+};
+
+
 
 
 // login

@@ -1,0 +1,180 @@
+import { INTENTS } from "./intents.js";
+
+export const buildPromptByIntent = ({
+    intent,
+    user,
+    goal,
+    foodAgg,
+    mealsText,
+    workoutsText,
+    message,
+    memoryText
+}) => {
+    const baseRules = `
+            RULES (VERY IMPORTANT):
+            - Max 120 words
+            - Bullet points only
+            - No paragraphs
+            - No emojis
+            - No headings
+            - Actionable advice only
+            - Use Indian foods
+            - Avoid medical claims
+            `;
+
+    const profile = `
+            USER PROFILE:
+            Age: ${user.age}
+            Gender: ${user.gender}
+            Height: ${user.height} cm
+            Weight: ${user.weight} kg
+            Goal: ${user.goalType}
+            Activity: ${user.activityLevel}
+
+            TARGET:
+            Calories: ${goal?.calories}
+            Protein: ${goal?.protein}g
+            Carbs: ${goal?.carbs}g
+            Fats: ${goal?.fats}g
+
+            TODAY INTAKE:
+            Calories: ${foodAgg.calories}
+            Protein: ${foodAgg.protein}g
+            Carbs: ${foodAgg.carbs}g
+            Fats: ${foodAgg.fats}g
+
+            TODAY MEALS:
+            ${mealsText}
+
+            RECENT WORKOUTS:
+            ${workoutsText}
+            `;
+
+    /* ================= INTENT PROMPTS ================= */
+
+    if (intent === INTENTS.DIET_TODAY) {
+        return `
+            You are a fitness diet coach.
+
+            ${baseRules}
+            ${profile}
+
+            TASK:
+            Suggest remaining meals for today to hit protein target and stay within calories.
+
+            USER QUESTION:
+            ${message}
+
+            FORMAT:
+            - Meal suggestion
+            - Protein focus
+            - Easy to cook
+            - Include quantities
+            `;
+    }
+
+    if (intent === INTENTS.MEAL_SUGGEST) {
+        return `
+            You are a nutrition coach.
+
+            ${baseRules}
+            ${profile}
+
+            TASK:
+            Suggest 3 healthy Indian meal options based on goal.
+
+            FORMAT:
+            - Meal name + portion
+            - Approx protein source
+            - Suitable for goal
+            `;
+    }
+
+    if (intent === INTENTS.WORKOUT_TODAY) {
+        return `
+            You are a gym coach.
+
+            ${baseRules}
+            ${profile}
+
+            TASK:
+            Suggest today's workout based on recent training to avoid overtraining.
+
+            FORMAT:
+            - Muscle group
+            - 4 exercises
+            - Sets and reps
+            `;
+    }
+
+    if (intent === INTENTS.WORKOUT_PLAN) {
+        return `
+            You are a strength coach.
+
+            ${baseRules}
+            ${profile}
+
+            TASK:
+            Suggest simple weekly workout split for gym.
+
+            FORMAT:
+            - Day wise split
+            - Major muscle focus
+            - Rest days included
+            `;
+    }
+
+    if (intent === INTENTS.PROGRESS_CHECK) {
+        return `
+            You are a fitness progress coach.
+
+            ${baseRules}
+            ${profile}
+
+            TASK:
+            Evaluate user's progress and give corrective actions.
+
+            FORMAT:
+            - What is going well
+            - What to improve
+            - 2 diet actions
+            - 1 workout action
+            `;
+    }
+
+    if (intent === INTENTS.MOTIVATION) {
+        return `
+            You are a motivational fitness coach.
+
+            ${baseRules}
+            ${profile}
+
+            TASK:
+            Motivate user with short actionable steps.
+
+            FORMAT:
+            - Simple mindset advice
+            - Small workout suggestion
+            - Consistency reminder
+            `;
+    }
+
+    /* ========== GENERAL FALLBACK ========== */
+
+    return `
+            You are a helpful fitness coach.
+
+            ${baseRules}
+            ${profile}
+
+            USER QUESTION:
+            ${message}
+
+            USER PREFERENCES & LIMITATIONS:
+            ${memoryText}
+
+
+            TASK:
+            Give best fitness advice based on context.
+            `;
+};

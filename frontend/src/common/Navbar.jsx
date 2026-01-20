@@ -15,7 +15,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from '@mui/icons-material/Person';
 import FireStreak from "../components/FireStreak";
-
+import ChatBot from '../components/ChatBot'
 
 
 const Navbar = ({ setActive, isActive, streak, profilePhoto }) => {
@@ -85,7 +85,11 @@ const Navbar = ({ setActive, isActive, streak, profilePhoto }) => {
         setIsSubMenu(false); // No arrow
         if (parentMenu) {
             setPageTitle(parentMenu.name);
-        } else {
+        }
+        else if (location.pathname === '/home/chat') {
+            setPageTitle('Gym Buddy Ai Coach 🤖')
+        }
+        else {
             setPageTitle("Dasboard");
         }
     }, [location]);
@@ -128,7 +132,13 @@ const Navbar = ({ setActive, isActive, streak, profilePhoto }) => {
                 </Typography>
 
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2, pr: 0 }}>
-                    <FireStreak streak={streak} />
+
+                    {location.pathname === '/home/calorie' &&
+                        <FireStreak streak={streak} />}
+                    {location.pathname !== '/home/chat' &&
+                        <ChatBot />
+                    }
+
 
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2, pr: 0, cursor: 'pointer' }} onClick={() => nav('/home/profile')}>
                         <Avatar

@@ -14,6 +14,7 @@ import { LogGuard, AuthGuard } from './common/Gaurd'
 import WeightTracking from "./pages/weightTracking/WeightTracking";
 import FoodTracking from "./pages/food/FoodTracking";
 import CalorieTracking from "./pages/calorie/CalorieTracking";
+import Chat from "./pages/chat/Chat";
 
 function App() {
 
@@ -86,6 +87,10 @@ function App() {
         {
           path: "profile",
           element: <Profile />
+        },
+        {
+          path: "chat",
+          element: <Chat />
         },
       ],
     },
