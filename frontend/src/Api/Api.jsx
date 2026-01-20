@@ -257,11 +257,11 @@ export const useGetCalorieSummary = (date) => {
     })
 }
 // Get Food List
-export const useGetFoods = () => {
+export const useGetFoods = (search) => {
     return useQuery({
-        queryKey: ['foodList'],
+        queryKey: ['foodList', search],
         queryFn: async () => {
-            const response = await axiosInstance.get(`/food`)
+            const response = await axiosInstance.get(`/food`, { params: { search } })
             return response.data
         }
     })

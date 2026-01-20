@@ -32,7 +32,7 @@ export const getFoodSummary = async (req, res) => {
       protein = grams.protein;
       carbs = grams.carbs;
       fats = grams.fats;
-    } 
+    }
     // ---------- USE SAVED GOALS ----------
     else {
       calories = goal.calories;
@@ -147,8 +147,8 @@ export const getFoodSummary = async (req, res) => {
           totalCalories: weeklyTotalCalories,
         },
         macrosPct,
-    bmr,
-    tdee,
+        bmr,
+        tdee,
       },
     });
   } catch (error) {
@@ -233,102 +233,115 @@ export const updateDailyGoal = async (req, res) => {
 
 // CREATE FOOD
 export const createFood = async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const { name, calories, protein = 0, carbs = 0, fats = 0, isReusable = true, servingSize } = req.body;
+  try {
+    const userId = req.user.id;
+    const { name, calories, protein = 0, carbs = 0, fats = 0, isReusable = true, servingSize } = req.body;
 
-        if (!name || calories == null) {
-            return res.status(400).json({ message: "Name and calories are required" });
-        }
-
-        const food = await Food.create({
-            userId,
-            name,
-            calories,
-            protein,
-            carbs,
-            fats,
-            servingSize,
-            isReusable,
-             isGlobal: false,
-        });
-
-        res.status(201).json({
-            success: true,
-            data: food,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to create food",
-        });
+    if (!name || calories == null) {
+      return res.status(400).json({ message: "Name and calories are required" });
     }
+
+    const food = await Food.create({
+      userId,
+      name,
+      calories,
+      protein,
+      carbs,
+      fats,
+      servingSize,
+      isReusable,
+      isGlobal: false,
+    });
+
+    res.status(201).json({
+      success: true,
+      data: food,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to create food",
+    });
+  }
 };
 
 // GET ALL FOODS (USER LIBRARY)
 export const getAllFoods = async (req, res) => {
   try {
     const userId = req.user.id;
+    const { search } = req.query;
 
-    const foods = await Food.find({
+    const filter = {
       $or: [{ isGlobal: true }, { userId }],
-    }).sort({ name: 1 });
+    };
+
+    if (search) {
+      filter.$and = [
+        { $or: [{ isGlobal: true }, { userId }] },
+        { name: { $regex: search, $options: "i" } }, // case-insensitive
+      ];
+      delete filter.$or;
+    }
+
+    const foods = await Food.find(filter).sort({ name: 1 });
 
     res.json({ success: true, data: foods });
   } catch (e) {
+    console.error(e);
     res.status(500).json({ success: false, message: "Failed to fetch foods" });
   }
 };
 
+
 // UPDATE FOOD BY ID
 export const updateFoodById = async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        const updated = await Food.findOneAndUpdate(
-            { _id: id, userId: req.user.id },
-            req.body,
-            { new: true }
-        );
+    const updated = await Food.findOneAndUpdate(
+      { _id: id, userId: req.user.id },
+      req.body,
+      { new: true }
+    );
 
-        if (!updated) {
-            return res.status(404).json({ message: "Food not found" });
-        }
-
-        res.json({
-            success: true,
-            data: updated,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to update food",
-        });
+    if (!updated) {
+      return res.status(404).json({ message: "Food not found" });
     }
+
+    res.json({
+      success: true,
+      data: updated,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update food",
+    });
+  }
 };
 
 // DELETE FOOD BY ID
 export const deleteFoodById = async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        const deleted = await Food.findOneAndDelete({
-            _id: id,
-            userId: req.user.id,
-        });
+    const deleted = await Food.findOneAndDelete({
+      _id: id,
+      userId: req.user.id,
+    });
 
-        if (!deleted) {
-            return res.status(404).json({ message: "Food not found" });
-        }
-
-        res.json({
-            success: true,
-            message: "Food deleted successfully",
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to delete food",
-        });
+    if (!deleted) {
+      return res.status(404).json({ message: "Food not found" });
     }
+
+    res.json({
+      success: true,
+      message: "Food deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete food",
+    });
+  }
 };

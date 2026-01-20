@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, IconButton, Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, IconButton, Button, TextField, InputAdornment } from "@mui/material";
 import { useGetFoods, useDeleteFood } from '../../Api/Api'
 import AddIcon from "@mui/icons-material/Add";
 import { useQueryClient } from "@tanstack/react-query";
@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import AddFoodDialog from "../../components/food/AddFoodDialog";
 import EditIcon from "@mui/icons-material/Edit";
 
-
+import search2 from '../../assets/images/search2.svg'
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import DeleteConfirm from "../../common/DeleteConfirm2";
@@ -16,9 +16,13 @@ const FoodTracking = () => {
   const [openAddFood, setOpenAddFood] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [name, setName] = useState('')
+  const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
   const [selectedFoodId, setSelectedFoodId] = useState(null);
   const [selectedFood, setSelectedFood] = useState()
-  const { data: food, isLoading } = useGetFoods()
+  const { data: food, isLoading } = useGetFoods(debouncedSearch)
+
   const { mutate: deleteFood } = useDeleteFood()
 
   const client = useQueryClient()
@@ -49,6 +53,15 @@ const FoodTracking = () => {
     e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
     e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
       <Box
@@ -75,7 +88,7 @@ const FoodTracking = () => {
           sx={{ p: { xs: 2 }, position: "relative", zIndex: 1 }}
         >
           <Grid
-            size={{ xs: 7 }}
+            size={{ xs: 12, md: 5 }}
             sx={{ display: "flex", flexDirection: "row", gap: 2, mb: { xs: 1, md: 0 } }}
           >
             <Typography variant="h6" fontWeight={600}>
@@ -84,9 +97,47 @@ const FoodTracking = () => {
           </Grid>
 
           <Grid
-            size={{ xs: 5 }}
-            sx={{ display: "flex", justifyContent: { xs: "flex-start", sm: "flex-end" } }}
+            size={{ xs: 12, md: 7 }}
+            sx={{ display: "flex", justifyContent: { xs: "flex-start", sm: "flex-end" }, gap: 2 }}
           >
+            <TextField
+              variant="outlined"
+              placeholder="Search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              fullWidth
+              sx={{
+                width: '100%',
+                height: '40px',
+                borderRadius: '8px',
+                '& .MuiInputBase-root': {
+                  height: '40px',
+                  fontSize: '14px',
+                  color: 'white'
+                },
+                '& .MuiOutlinedInput-input': {
+                  padding: '10px 14px',
+                },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'var(--light-gray)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'var(--light-gray)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'var(--light-gray)',
+                  },
+                },
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <img src={search2} alt="search icon" />
+                  </InputAdornment>
+                ),
+              }}
+            />
             <Button
               onClick={() => setOpenAddFood(true)}
               startIcon={<AddIcon />}
