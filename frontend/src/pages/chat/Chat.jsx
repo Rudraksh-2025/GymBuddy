@@ -25,7 +25,7 @@ const Chat = () => {
     };
 
     return (
-        <Box sx={{ p: 0, height: '89vh', display: "flex", flexDirection: "column" }}>
+        <Box sx={{ p: 0, height: '79vh', display: "flex", flexDirection: "column" }}>
             <Box
                 sx={{
                     flex: 1,
@@ -89,7 +89,7 @@ const Chat = () => {
                 </Box>
             )}
 
-            <Stack direction="row" spacing={1}>
+            <Stack display={'flex'} alignItems={'flex-end'} direction="row" spacing={1}>
                 <TextField
                     fullWidth
                     sx={{

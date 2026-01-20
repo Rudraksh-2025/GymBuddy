@@ -19,9 +19,12 @@ const AddExerciseLog = ({ open, onClose, muscle, editData, isEdit }) => {
 
   const { mutate: createLog, isPending } = useCreateExerciselog(
     (data) => {
-      console.log("✅ Success response:", data);
       toast.success("Exercise log added successfully!");
       client.invalidateQueries(['muscleGroup'], { exact: false })
+      onClose();
+      setExerciseId("")
+      setDate(dayjs().format('YYYY-MM-DD'))
+      setSets([{ reps: '', weight: '' }])
     },
     (error) => {
       console.log("❌ Error response:", error);
@@ -204,7 +207,7 @@ const AddExerciseLog = ({ open, onClose, muscle, editData, isEdit }) => {
               display="flex"
               gap={1.5}
               alignItems="center"
-              mt={1}
+              mt={2}
               borderRadius="12px"
             >
               <TextField

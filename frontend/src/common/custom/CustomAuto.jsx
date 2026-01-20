@@ -87,6 +87,19 @@ const CustomAuto = ({
                         error={!!error}
                         disabled={ReadOnly}
                         sx={{
+                            "& .MuiAutocomplete-endAdornment": {
+                                right: 8,
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                display: "flex",
+                                gap: "4px",
+                            },
+                            "& .MuiAutocomplete-popupIndicator, & .MuiAutocomplete-clearIndicator": {
+                                color: "white",
+                                padding: "2px",
+                            },
+
+
 
                             mt: "3px",
                             "& .MuiInputBase-root": {

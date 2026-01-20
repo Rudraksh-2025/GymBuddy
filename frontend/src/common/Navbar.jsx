@@ -112,12 +112,12 @@ const Navbar = ({ setActive, isActive, streak, profilePhoto }) => {
             }}>
             <Toolbar sx={{ justifyContent: "space-between" }}>
                 {isSubMenu ? (
-                    <IconButton onClick={() => nav(-1)} sx={{ mr: 2, color: 'white' }}>
+                    <IconButton onClick={() => nav(-1)} sx={{ mr: 0, color: 'white' }}>
                         <IoArrowBack size={24} />
                     </IconButton>
                 ) : (
                     !isMdUp && ( // Show hamburger only on xs/sm
-                        <IconButton sx={{ mr: 2, color: 'white' }} onClick={() => setActive(true)}>
+                        <IconButton sx={{ mr: 0, color: 'white' }} onClick={() => setActive(true)}>
                             <MenuIcon size={24} />
                         </IconButton>
                     )
@@ -131,16 +131,13 @@ const Navbar = ({ setActive, isActive, streak, profilePhoto }) => {
                     {pageTitle}
                 </Typography>
 
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2, pr: 0 }}>
-
+                <Box sx={{ display: "flex", alignItems: "center", gap: 0, pr: 0 }}>
                     {location.pathname === '/home/calorie' &&
                         <FireStreak streak={streak} />}
                     {location.pathname !== '/home/chat' &&
                         <ChatBot />
                     }
-
-
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 2, pr: 0, cursor: 'pointer' }} onClick={() => nav('/home/profile')}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 0, pr: 0, cursor: 'pointer' }} onClick={() => nav('/home/profile')}>
                         <Avatar
                             alt="User"
                             src={profilePhoto || undefined}

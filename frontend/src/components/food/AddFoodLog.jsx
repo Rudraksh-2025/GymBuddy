@@ -169,6 +169,7 @@ const AddFoodLog = ({
         <CustomAuto
           label="Food"
           name="foodId"
+          readOnly={false}
           value={foodForm.values.foodId}
           theme="dark"
           onChange={foodForm.handleChange}
