@@ -7,7 +7,8 @@ import { useCreateFood, useUpdateFood } from "../../Api/Api";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 
-const AddFoodDialog = ({ open, onClose, selectedFood, setSelectedFood }) => {
+const AddFoodDialog = ({ open, onClose, selectedFood, setSelectedFood, scannedFood }) => {
+  console.log(scannedFood)
   const client = useQueryClient()
   const isEditMode = Boolean(selectedFood?._id);
   const foodForm = useFormik({

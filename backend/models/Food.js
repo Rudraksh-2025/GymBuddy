@@ -19,7 +19,7 @@ const foodSchema = new mongoose.Schema(
 
     isReusable: { type: Boolean, default: true },
 
-    isGlobal: { type: Boolean, default: false }, // 🔥 admin foods
+    isGlobal: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

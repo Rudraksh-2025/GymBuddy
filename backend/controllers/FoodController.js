@@ -340,3 +340,37 @@ export const deleteFoodById = async (req, res) => {
     });
   }
 };
+
+
+export const getFoodByBarcode = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+
+
+    // fetch from OpenFoodFacts
+    const url = `https://world.openfoodfacts.org/api/v0/product/${code}.json`;
+    const { data } = await axios.get(url);
+
+    if (!data.product) {
+      return res.status(404).json({ message: "Food not found for this barcode" });
+    }
+
+    const p = data.product;
+
+    const mappedFood = {
+      name: p.product_name || "Unknown food",
+      calories: Math.round(p.nutriments?.["energy-kcal_100g"] || 0),
+      protein: Number(p.nutriments?.proteins_100g || 0),
+      carbs: Number(p.nutriments?.carbohydrates_100g || 0),
+      fats: Number(p.nutriments?.fat_100g || 0),
+      servingSize: "100 g",
+      barcode: code,
+    };
+
+    res.json({ success: true, data: mappedFood, source: "api" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Barcode lookup failed" });
+  }
+};

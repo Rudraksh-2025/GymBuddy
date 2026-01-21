@@ -9,11 +9,13 @@ import EditIcon from "@mui/icons-material/Edit";
 
 import search2 from '../../assets/images/search2.svg'
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import BarCodeScanner from '../../common/BarCodeScanner'
 import DeleteConfirm from "../../common/DeleteConfirm2";
+import apiClient from "../../Api/ApiClient";
 
 const FoodTracking = () => {
   const [openAddFood, setOpenAddFood] = useState(false);
+  const [scannedFood, setScannedFood] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
   const [name, setName] = useState('')
   const [search, setSearch] = useState('')
@@ -62,8 +64,19 @@ const FoodTracking = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
+  const fetchFoodByBarcode = async (code) => {
+    const res = await apiClient.get(`/food/by-barcode/${code}`);
+    console.log(res.data)
+
+    setScannedFood(res.data.data);
+    setOpenAddFood(true);
+  };
+
+
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
+      <BarCodeScanner onDetected={(code) => fetchFoodByBarcode(code)} />
+
       <Box
         className='glass-container'
         onMouseMove={handleGlowMove}
@@ -290,6 +303,7 @@ const FoodTracking = () => {
           onClose={() => setOpenAddFood(false)}
           selectedFood={selectedFood}
           setSelectedFood={setSelectedFood}
+          scannedFood={scannedFood}
         />
 
         <DeleteConfirm
