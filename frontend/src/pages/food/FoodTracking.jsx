@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import AddFoodDialog from "../../components/food/AddFoodDialog";
 import EditIcon from "@mui/icons-material/Edit";
-
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import search2 from '../../assets/images/search2.svg'
 import DeleteIcon from "@mui/icons-material/Delete";
 import BarCodeScanner from '../../common/BarCodeScanner'
@@ -76,14 +76,18 @@ const FoodTracking = () => {
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
 
-      <Button onClick={() => setOpenScanner(true)} className="glass-btn">
+      <Button onClick={() => setOpenScanner(true)} className="glass-btn" sx={{ display: 'flex', gap: 1, p: 1 }}>
+        <QrCodeScannerIcon />
         Scan Barcode
       </Button>
       {openScanner && (
         <BarCodeScanner
-          onClose={() => setOpenScanner(false)}
+          onClose={() => {
+            console.log('hello')
+            setOpenScanner(false)
+          }}
           onDetected={(code) => {
-            console.log("Scanned:", code);
+            setOpenScanner(false);
             fetchFoodByBarcode(code);
           }}
         />

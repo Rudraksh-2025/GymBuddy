@@ -4,52 +4,71 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const BarCodeScanner = ({ onClose, onDetected }) => {
     const videoRef = useRef(null);
+    const controlsRef = useRef(null);
+    const closedRef = useRef(false);
 
     useEffect(() => {
         const codeReader = new BrowserMultiFormatReader();
 
-        codeReader.decodeFromVideoDevice(
-            null,
-            videoRef.current,
-            (result, err) => {
-                if (result) {
-                    onDetected(result.getText());
-                    onClose();
+        const startScan = async () => {
+            controlsRef.current = await codeReader.decodeFromVideoDevice(
+                null,
+                videoRef.current,
+                (result, err) => {
+                    if (result && !closedRef.current) {
+                        closedRef.current = true;
+                        stopCamera();
+                        onDetected(result.getText());
+                        onClose();
+                    }
                 }
-            }
-        );
+            );
+        };
 
-        return () => codeReader.reset();
+        startScan();
+
+        return () => {
+            stopCamera();
+        };
     }, []);
+
+    const stopCamera = () => {
+        if (controlsRef.current) {
+            controlsRef.current.stop();
+            controlsRef.current = null;
+        }
+    };
+
+    const handleClose = () => {
+        closedRef.current = true;
+        stopCamera();
+        onClose();
+    };
 
     return (
         <div style={styles.overlay}>
-            {/* Header */}
             <div style={styles.header}>
-                <button onClick={onClose} style={styles.closeBtn}>
+                <button onClick={handleClose} style={styles.closeBtn}>
                     <CloseIcon sx={{ color: "#fff" }} />
                 </button>
                 <span>Scan a Barcode</span>
             </div>
 
-            {/* Camera */}
             <video ref={videoRef} style={styles.video} autoPlay playsInline />
 
-            {/* Focus Box */}
             <div style={styles.box}>
                 <span style={styles.cornerTL} />
                 <span style={styles.cornerTR} />
                 <span style={styles.cornerBL} />
                 <span style={styles.cornerBR} />
             </div>
-
-            {/* Manual Input */}
-            <div style={styles.manual}>
-                Manually enter barcode
-            </div>
         </div>
     );
 };
+
+export default BarCodeScanner;
+
+
 
 const styles = {
     overlay: {
@@ -108,6 +127,3 @@ const styles = {
         fontSize: 14,
     },
 };
-
-export default BarCodeScanner;
-
