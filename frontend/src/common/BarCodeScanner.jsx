@@ -72,7 +72,7 @@ export default BarCodeScanner;
 
 const styles = {
     overlay: {
-        position: "relative",
+        position: "fixed",
         inset: 0,
         background: "#000",
         zIndex: 9999,
@@ -114,8 +114,16 @@ const styles = {
         height: 30,
         borderColor: "#4F8EF7",
     },
-    cornerTL: { top: 0, left: 0, borderLeft: "4px solid", borderTop: "4px solid" },
-    cornerTR: { top: 0, right: 0, borderRight: "4px solid", borderTop: "4px solid" },
-    cornerBL: { bottom: 0, left: 0, borderLeft: "4px solid", borderBottom: "4px solid" },
-    cornerBR: { bottom: 0, right: 0, borderRight: "4px solid", borderBottom: "4px solid" },
+    cornerTL: { position: "absolute", top: 0, left: 0, borderLeft: "4px solid", borderTop: "4px solid" },
+    cornerTR: { position: "absolute", top: 0, right: 0, borderRight: "4px solid", borderTop: "4px solid" },
+    cornerBL: { position: "absolute", bottom: 0, left: 0, borderLeft: "4px solid", borderBottom: "4px solid" },
+    cornerBR: { position: "absolute", bottom: 0, right: 0, borderRight: "4px solid", borderBottom: "4px solid" },
+    manual: {
+        position: "absolute",
+        bottom: 30,
+        width: "100%",
+        textAlign: "center",
+        color: "#ddd",
+        fontSize: 14,
+    },
 };
