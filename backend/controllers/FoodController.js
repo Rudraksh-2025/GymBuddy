@@ -6,6 +6,7 @@ import Food from "../models/Food.js";
 import { calcMacrosFromCalories } from "../utils/calcMacrosFromCalories.js";
 import { calcBMR, calcTDEE, applyGoalType, calcMacrosFromCaloriesPct } from "../utils/nutrition.js";
 import User from '../models/User.js'
+import axios from 'axios'
 
 
 export const getFoodSummary = async (req, res) => {
