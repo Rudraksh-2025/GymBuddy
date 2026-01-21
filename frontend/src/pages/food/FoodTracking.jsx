@@ -20,7 +20,7 @@ const FoodTracking = () => {
   const [name, setName] = useState('')
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState("");
-
+  const [openScanner, setOpenScanner] = useState(false);
   const [selectedFoodId, setSelectedFoodId] = useState(null);
   const [selectedFood, setSelectedFood] = useState()
   const { data: food, isLoading } = useGetFoods(debouncedSearch)
@@ -75,13 +75,25 @@ const FoodTracking = () => {
 
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
-      <BarCodeScanner onDetected={(code) => fetchFoodByBarcode(code)} />
+
+      <Button onClick={() => setOpenScanner(true)} className="glass-btn">
+        Scan Barcode
+      </Button>
+      {openScanner && (
+        <BarCodeScanner
+          onClose={() => setOpenScanner(false)}
+          onDetected={(code) => {
+            console.log("Scanned:", code);
+            fetchFoodByBarcode(code);
+          }}
+        />
+      )}
 
       <Box
         className='glass-container'
         onMouseMove={handleGlowMove}
         sx={{
-          mt: 0,
+          mt: 2,
           borderRadius: "20px",
           position: "relative",
           overflow: "hidden",
