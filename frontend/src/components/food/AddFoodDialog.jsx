@@ -64,6 +64,20 @@ const AddFoodDialog = ({ open, onClose, selectedFood, setSelectedFood, scannedFo
     }
   }, [selectedFood]);
 
+  useEffect(() => {
+    if (scannedFood) {
+      foodForm.setValues({
+        name: scannedFood.name || "",
+        servingSize: scannedFood.servingSize || "100 g",
+        calories: scannedFood.calories || "",
+        protein: scannedFood.protein || "",
+        carbs: scannedFood.carbs || "",
+        fats: scannedFood.fats || "",
+      });
+    }
+  }, [scannedFood]);
+
+
 
   return (
     <Dialog
