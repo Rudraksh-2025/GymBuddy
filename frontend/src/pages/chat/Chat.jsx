@@ -4,10 +4,14 @@ import { useState } from "react";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import { useAiChat } from "../../Api/Api";
 import { chatPrompts } from '../../utils/chatPrompts'
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+
 
 const Chat = () => {
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState([]);
+    const location = useLocation();
 
     const { mutate, isPending } = useAiChat();
 
@@ -35,6 +39,21 @@ const Chat = () => {
             },
         });
     };
+
+    useEffect(() => {
+        if (location.state?.autoPrompt) {
+            const text = location.state.autoPrompt;
+
+            setMessages((p) => [...p, { role: "user", text }]);
+
+            mutate(text, {
+                onSuccess: (res) => {
+                    setMessages((p) => [...p, { role: "ai", text: res.reply }]);
+                },
+            });
+        }
+    }, []);
+
 
 
     return (

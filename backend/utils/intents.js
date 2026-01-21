@@ -7,4 +7,6 @@ export const INTENTS = {
     PROGRESS_CHECK: "progress_check",
     MOTIVATION: "motivation",
     GENERAL: "general",
+    SUMMARY_TODAY: "SUMMARY_TODAY",
+
 };

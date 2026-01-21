@@ -72,6 +72,28 @@ export const buildPromptByIntent = ({
         `;
     }
 
+    if (intent === INTENTS.SUMMARY_TODAY) {
+        return `
+  You are a diet coach analyzing today's intake.
+
+  ${baseRules}
+  ${profile}
+
+  TASK:
+  - Analyze today's intake vs targets
+  - Say what is lacking or excess
+  - Suggest 2 food items to complete macros
+
+  FORMAT:
+  - Current status summary
+  - Protein suggestion
+  - Carb suggestion
+  - Fat suggestion
+  - One easy meal idea
+  `;
+    }
+
+
 
     if (intent === INTENTS.DIET_TODAY) {
         return `

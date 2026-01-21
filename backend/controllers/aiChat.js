@@ -79,25 +79,32 @@ export const aiChat = async (req, res) => {
             date: { $gte: today },
         })
             .populate("foodId", "name")
-            .select("foodId mealType")
+            .select("foodId mealType calories")
             .lean();
 
         const mealsText =
             todayMeals.length > 0
-                ? todayMeals.map((m) => `- ${m.foodId?.name} (${m.mealType})`).join("\n")
-                : "- No meals logged yet";
+                ? todayMeals
+                    .map(m => `- ${m.foodId?.name} (${m.mealType}, ${m.calories} kcal)`)
+                    .join("\n")
+                : "- No meals logged today";
 
         /* ---------------- WORKOUTS ---------------- */
-        const workouts = await ExerciseLog.find({ userId })
-            .sort({ date: -1 })
-            .limit(5)
+        const todayWorkouts = await ExerciseLog.find({
+            userId,
+            date: { $gte: today },
+        })
             .populate("exerciseId", "exerciseName")
+            .select("exerciseId sets reps duration")
             .lean();
 
         const workoutsText =
-            workouts.length > 0
-                ? workouts.map((w) => `- ${w.exerciseId?.exerciseName}`).join("\n")
-                : "- None";
+            todayWorkouts.length > 0
+                ? todayWorkouts
+                    .map(w => `- ${w.exerciseId?.exerciseName}`)
+                    .join("\n")
+                : "- No workouts logged today";
+
 
         /* ---------------- INTENT ---------------- */
         const intent = detectIntent(message);
@@ -147,13 +154,9 @@ export const aiChat = async (req, res) => {
 
         let reply = completion.choices[0].message.content;
 
-        // force each bullet to new line
         reply = reply
-            .replace(/\s*[•-]\s*/g, "\n- ")
-            .replace(/^\n/, "")
+            .replace(/^[•-]\s*/gm, "- ")
             .trim();
-
-
 
         /* ---------------- SAVE CHAT ---------------- */
         await AiChat.insertMany([

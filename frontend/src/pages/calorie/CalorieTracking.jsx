@@ -16,6 +16,7 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import StatCard from "../../components/StatCard";
+import { useNavigate } from "react-router-dom";
 
 const CalorieTracking = () => {
   const [openAddFood, setOpenAddFood] = useState();
@@ -23,6 +24,7 @@ const CalorieTracking = () => {
   const [date, setDate] = useState(new Date());
   const [openEdit, setOpenEdit] = useState(false);
   const client = useQueryClient();
+  const nav = useNavigate();
 
   const { data: analytics } = useGetCalorieSummary(date);
   const { data: foodLog } = useGetFoodLog(date);
@@ -48,6 +50,18 @@ const CalorieTracking = () => {
         <CustomDatePicker value={date} onChange={setDate} />
         <Button className="glass-btn" onClick={() => setOpenEdit(true)}>
           Edit Goals
+        </Button>
+        <Button
+          className="glass-btn"
+          onClick={() =>
+            nav("/home/chat", {
+              state: {
+                autoPrompt: "Summarize my meals today and suggest what I should eat to complete my calorie and macro goals",
+              },
+            })
+          }
+        >
+          AI Summary
         </Button>
       </Box>
 

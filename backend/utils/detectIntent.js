@@ -10,12 +10,24 @@ export const detectIntent = (text = "") => {
         return INTENTS.GREETING;
     }
 
+    if (
+        q.includes("summarize") ||
+        q.includes("summary") ||
+        q.includes("today meals") ||
+        q.includes("what should i eat to complete") ||
+        q.includes("complete my goals today")
+    ) {
+        return INTENTS.SUMMARY_TODAY;
+    }
+
     /* ---------- DIET TODAY ---------- */
     if (
         /(what.*eat|what should i eat|diet today|today.*meal|today.*diet)/i.test(q)
     ) {
         return INTENTS.DIET_TODAY;
     }
+
+
 
     /* ---------- MEAL SUGGESTION ---------- */
     if (
