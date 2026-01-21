@@ -7,9 +7,12 @@ import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import CaloriesBarChart from "../components/CalorieBarChar";
-import { useGetDashboard } from "../Api/Api";
+import { useGetDashboard, useGetInsights } from "../Api/Api";
 import StatCard from "../components/StatCard";
 import { useNavigate } from "react-router-dom";
+import InsightCard from "../components/InisghtCard";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
+
 
 const MacroBar = ({ label, value, goal, color }) => {
   const percent = goal > 0 ? Math.min((value / goal) * 100, 100) : 0;
@@ -65,6 +68,9 @@ const Home = () => {
   /* 🔧 Replace with API later */
 
   const { data: dashboardData } = useGetDashboard()
+  const { data: insightData } = useGetInsights()
+
+
   const todayCalories =
     dashboardData?.data?.calories?.todayConsumed?.calories || 0;
 
@@ -235,9 +241,51 @@ const Home = () => {
           </Box>
         </Grid>
       </Grid>
+      {/* =================== AI INSIGHTS =================== */}
+      <Grid container spacing={3} sx={{ mt: { xs: 3, sm: 4 } }}>
+        <Grid size={{ xs: 12 }}>
+          <Box
+            className="glass-container"
+            onMouseMove={handleGlowMove}
+            sx={{
+              p: 2,
+              borderRadius: "20px",
+              position: "relative",
+              overflow: "hidden",
+              color: "white",
+            }}
+          >
+            <Box className="glass-layer" />
+
+            <Box sx={{ position: "relative", zIndex: 1 }}>
+              <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+                <LightbulbIcon sx={{ color: "#FBBF24" }} />
+                <Typography fontWeight={600}>Coach Insights</Typography>
+              </Stack>
+
+              {insightData?.data?.length > 0 ? (
+                <Box sx={{ maxHeight: 220, overflowY: "auto", pr: 0.5 }}>
+                  {insightData.data.slice(0, 4).map((i) => (
+                    <InsightCard
+                      key={i._id}
+                      title={i.title}
+                      message={i.message}
+                      priority={i.priority}
+                    />
+                  ))}
+                </Box>
+              ) : (
+                <Typography fontSize={13} sx={{ opacity: 0.7 }}>
+                  No insights yet. Keep logging meals and workouts.
+                </Typography>
+              )}
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
 
       {/* =================== BOTTOM =================== */}
-      <Grid container spacing={3} sx={{ mt: { xs: 6, sm: 5 } }}>
+      <Grid container spacing={3} sx={{ mt: { xs: 3, sm: 4 } }}>
         {/* RECENT MEALS */}
         <Grid size={{ xs: 12, md: 6 }}>
           <Box

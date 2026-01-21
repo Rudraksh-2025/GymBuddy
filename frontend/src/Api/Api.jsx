@@ -376,11 +376,22 @@ export const useGetDashboard = () => {
     });
 };
 
+// ai
 export const useAiChat = () => {
     return useMutation({
         mutationFn: async (message) => {
             const { data } = await axiosInstance.post("/ai/chat", { message });
             return data;
+        },
+    });
+};
+// get insights 
+export const useGetInsights = () => {
+    return useQuery({
+        queryKey: ["insights"],
+        queryFn: async () => {
+            const response = await axiosInstance.get("/ai/insight");
+            return response.data;
         },
     });
 };

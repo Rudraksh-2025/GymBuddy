@@ -9,6 +9,7 @@ import { buildPromptByIntent } from "../utils/buildPromptByIntent.js";
 import { detectIntent } from "../utils/detectIntent.js";
 import UserMemory from "../models/UserMemory.js";
 import { extractUserMemory } from "../utils/extractUserMemory.js";
+import insightSchema from '../models/insightSchema.js'
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -165,4 +166,12 @@ export const aiChat = async (req, res) => {
         console.error("AI CHAT ERROR:", err);
         res.status(500).json({ message: "AI Coach error" });
     }
+};
+
+export const getInsights = async (req, res) => {
+    const insights = await insightSchema.find({ userId: req.user.id })
+        .sort({ createdAt: -1 })
+        .limit(10);
+
+    res.json({ success: true, data: insights });
 };
