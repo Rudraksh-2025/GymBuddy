@@ -62,7 +62,7 @@ const Sidebar = ({ isActive, setActive, sidebarRef }) => {
             </Toolbar>
             {/* --- Menu List --- */}
             <List sx={{
-                height: '88vh', overflowY: 'auto', scrollbarWidth: "none",
+                scrollbarWidth: "none",
                 "&::-webkit-scrollbar": { display: "none" }, pt: 4
             }}>
                 {menuList.map((menu) => {
@@ -123,46 +123,46 @@ const Sidebar = ({ isActive, setActive, sidebarRef }) => {
 
                     // --- REGULAR MENU WITHOUT CHILDREN ---
                     return (
-                       <ListItemButton
-  key={menu.id}
-  selected={currentMenu === menu.id}
-  onClick={() =>
-    menu.id === "logout" ? handleLogout() : nav(menu.path)
-  }
-  sx={{
-    borderRadius: "14px",
-    mx: 1,
-    mb: 1,
-    px: 1.5,
+                        <ListItemButton
+                            key={menu.id}
+                            selected={currentMenu === menu.id}
+                            onClick={() =>
+                                menu.id === "logout" ? handleLogout() : nav(menu.path)
+                            }
+                            sx={{
+                                borderRadius: "14px",
+                                mx: 1,
+                                mb: 1,
+                                px: 1.5,
 
-    transition: "all 0.25s ease",
+                                transition: "all 0.25s ease",
 
-    "&:hover": {
-      background: "rgba(255,255,255,0.08)",
-    },
+                                "&:hover": {
+                                    background: "rgba(255,255,255,0.08)",
+                                },
 
-    /* SELECTED — GLASS PILL */
-    "&.Mui-selected": {
-      background:
-        "linear-gradient(135deg, rgba(99,102,241,0.9), rgba(139,92,246,0.9))",
-      backdropFilter: "blur(12px)",
-      boxShadow: `
+                                /* SELECTED — GLASS PILL */
+                                "&.Mui-selected": {
+                                    background:
+                                        "linear-gradient(135deg, rgba(99,102,241,0.9), rgba(139,92,246,0.9))",
+                                    backdropFilter: "blur(12px)",
+                                    boxShadow: `
         0 8px 20px rgba(139,92,246,0.45),
         inset 0 0 0.5px rgba(255,255,255,0.6)
       `,
 
-      "&:hover": {
-        background:
-          "linear-gradient(135deg, rgba(99,102,241,1), rgba(139,92,246,1))",
-      },
+                                    "&:hover": {
+                                        background:
+                                            "linear-gradient(135deg, rgba(99,102,241,1), rgba(139,92,246,1))",
+                                    },
 
-      "& .MuiTypography-root": {
-        fontWeight: 600,
-        color: "white",
-      },
-    },
-  }}
->
+                                    "& .MuiTypography-root": {
+                                        fontWeight: 600,
+                                        color: "white",
+                                    },
+                                },
+                            }}
+                        >
 
                             <ListItemIcon>
                                 <Box sx={{ boxShadow: "-3px 4px 23px rgba(0, 0, 0, 0.1)", backgroundColor: 'white', borderRadius: '8px', p: 0.5, width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -170,19 +170,19 @@ const Sidebar = ({ isActive, setActive, sidebarRef }) => {
                                 </Box>
                             </ListItemIcon>
 
-                           <ListItemText
-  primary={
-    <Typography
-      sx={{
-        fontSize: "14px",
-        fontWeight: 500,
-        color: "white",
-      }}
-    >
-      {menu.name}
-    </Typography>
-  }
-/>
+                            <ListItemText
+                                primary={
+                                    <Typography
+                                        sx={{
+                                            fontSize: "14px",
+                                            fontWeight: 500,
+                                            color: "white",
+                                        }}
+                                    >
+                                        {menu.name}
+                                    </Typography>
+                                }
+                            />
 
                         </ListItemButton>
                     );
