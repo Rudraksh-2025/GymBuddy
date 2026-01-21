@@ -3,11 +3,14 @@ import FoodLog from "../models/FoodLog.js";
 import Weight from "../models/Weight.js";
 import Workout from "../models/Workout.js";
 import DailyGoal from "../models/DailyGoal.js";
+import User from '../models/User.js';
+import { calculateBodyFat } from "../utils/bodyFat.js";
+
 
 export const getDashboardSummary = async (req, res) => {
     try {
         const userId = new mongoose.Types.ObjectId(req.user.id);
-
+        const user = await User.findById(userId);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
@@ -22,7 +25,12 @@ export const getDashboardSummary = async (req, res) => {
         const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
         endOfMonth.setHours(23, 59, 59, 999);
 
-
+        const bodyFat = calculateBodyFat({
+            gender: user.gender || "male",
+            waist: user.waistCircumference ?? 0,
+            neck: user.neckCircumference ?? 0,
+            height: user.height ?? 0,
+        });
 
 
         /* ---------------- CALORIES ---------------- */
@@ -235,7 +243,7 @@ export const getDashboardSummary = async (req, res) => {
                 weight: {
                     current: lastWeight?.weight || 0,
                     totalLost,
-                    bodyFat: lastWeight?.bodyFat || 0,
+                    bodyFat: bodyFat || 0,
                     target: goal?.targetWeight || 0,
                 },
 

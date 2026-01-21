@@ -56,7 +56,7 @@ const CalorieTracking = () => {
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
           <StatCard
             title="Weekly Avg Calories"
-            value={`${analytics?.data?.weekly?.averageCalories ?? 0} kcal`}
+            value={`${analytics?.data?.weekly?.averageCalories?.toFixed(0) ?? 0} kcal`}
             sub="Last 7 days"
             icon={<LocalFireDepartmentIcon />}
             color="#F59E0B"
@@ -68,7 +68,7 @@ const CalorieTracking = () => {
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
           <StatCard
             title="TDEE"
-            value={`${analytics?.data?.tdee ?? 0} kcal`}
+            value={`${analytics?.data?.tdee?.toFixed(0) ?? 0} kcal`}
             sub="Daily energy burn"
             icon={<TrendingUpIcon />}
             color="#16A34A"
@@ -79,7 +79,7 @@ const CalorieTracking = () => {
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
           <StatCard
             title="BMR"
-            value={`${analytics?.data?.bmr ?? 0} kcal`}
+            value={`${analytics?.data?.bmr?.toFixed(0) ?? 0} kcal`}
             sub="Resting burn"
             icon={<MonitorHeartIcon />}
             color="#EF4444"

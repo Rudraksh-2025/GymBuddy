@@ -79,6 +79,7 @@ const CustomDayPicker = ({ value, onChange }) => {
                             onChange(date);
                             setOpen(false);
                         }}
+                        disabled={{ after: new Date() }}
                         className="glass-day-picker"
                     />
                 </DialogContent>

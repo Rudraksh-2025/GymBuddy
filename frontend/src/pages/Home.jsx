@@ -50,22 +50,6 @@ const Home = () => {
     e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
     e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
   };
-  const PercentageChange = ({ flag, value }) => {
-    const isUp = flag === 'up';
-    return (
-      <Box component="span" sx={{ display: 'flex', alignItems: 'center', color: isUp ? '#16A34A' : 'red', fontWeight: 500 }}>
-        {isUp ? (
-          <ArrowUpward sx={{ color: '#16A34A', fontSize: 18, mr: 0.3 }} />
-        ) : (
-          <ArrowDownward sx={{ color: 'red', fontSize: 18, mr: 0.3 }} />
-        )}
-
-        <Typography variant="body2" sx={{ color: isUp ? '#16A34A' : 'red' }}>{value || 0}%</Typography>
-        <Typography variant="body2" sx={{ color: '#878787' }}>&nbsp;vs last week</Typography>
-      </Box>
-    );
-  };
-  /* 🔧 Replace with API later */
 
   const { data: dashboardData } = useGetDashboard()
   const { data: insightData } = useGetInsights()
@@ -91,7 +75,6 @@ const Home = () => {
           <StatCard
             title="Current Weight"
             value={`${dashboardData?.data?.weight?.current ?? "0"} kg`}
-            sub="this week"
             icon={<MonitorWeightIcon />}
             color="#22C55E"
           />
@@ -100,7 +83,6 @@ const Home = () => {
           <StatCard
             title="Body Fat"
             value={`${dashboardData?.data?.weight?.bodyFat ?? "0"}%`}
-            sub="-0.6% this month"
             icon={<TrendingDownIcon />}
             color="#06B6D4"
           />
@@ -109,7 +91,6 @@ const Home = () => {
           <StatCard
             title="Calories Burned"
             value="420 kcal"
-            sub="This week"
             icon={<LocalFireDepartmentIcon />}
             color="#F97316"
           />
@@ -118,7 +99,6 @@ const Home = () => {
           <StatCard
             title="Weekly Avg Calories"
             value={`${dashboardData?.data?.calories?.weeklyAvg ?? "0"} kcal`}
-            sub="Last 7 days"
             icon={<LocalFireDepartmentIcon />}
             color="#F59E0B"
 
@@ -128,12 +108,6 @@ const Home = () => {
           <StatCard
             title="Total Weight Lost"
             value={`${dashboardData?.data?.weight?.totalLost ?? 0} kg`}
-            sub={
-              <PercentageChange
-                flag={'up'}
-                value={20}
-              />
-            }
             icon={<TrendingDownIcon />}
             color="#EF4444"
           />
@@ -142,12 +116,6 @@ const Home = () => {
           <StatCard
             title="Steps Today"
             value="8,420"
-            sub={
-              <PercentageChange
-                flag="up"
-                value={12}
-              />
-            }
             icon={<DirectionsWalkIcon />}
             color="#22C55E"
           />

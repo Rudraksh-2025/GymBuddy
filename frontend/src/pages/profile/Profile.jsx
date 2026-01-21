@@ -1,11 +1,4 @@
-import {
-  Box,
-  Typography,
-  Button,
-  Grid,
-  FormHelperText,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, Button, Grid, FormHelperText, IconButton } from "@mui/material";
 import { useFormik } from "formik";
 import { profileValidation } from "../../common/FormValidation";
 import { useEffect, useState } from "react";
@@ -65,7 +58,6 @@ const Profile = () => {
       profilePhoto: profileData.data.profilePhoto || "",
       age: profileData.data.age || 0,
       height: profileData.data.height || 0,
-      weight: profileData.data.weight,
       activityLevel: profileData.data.activityLevel || "",
       goalType: profileData.data.goalType || "",
     });
@@ -209,18 +201,6 @@ const Profile = () => {
                   "Target Weight",
                   `${profileForm.values.targetWeight} kg`
                 )
-              )}
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
-              {edit ? (
-                <CustomInput
-                  label="Weight"
-                  placeholder="Enter Weight (kg)"
-                  name="weight"
-                  formik={profileForm}
-                />
-              ) : (
-                displayField("Weight", `${profileForm.values.weight} kg`)
               )}
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: edit ? 6 : 4 }}>
@@ -452,7 +432,6 @@ const super_admin = {
   targetWeight: "",
   profilePhoto: "",
   email: "",
-  weight: "",
   height: "",
   age: "",
   activityLevel: "",

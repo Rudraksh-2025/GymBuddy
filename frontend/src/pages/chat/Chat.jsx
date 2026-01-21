@@ -3,6 +3,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import { useAiChat } from "../../Api/Api";
+import { chatPrompts } from '../../utils/chatPrompts'
 
 const Chat = () => {
     const [input, setInput] = useState("");
@@ -24,8 +25,20 @@ const Chat = () => {
         });
     };
 
+    const sendPreset = (text) => {
+        const userMsg = { role: "user", text };
+        setMessages((p) => [...p, userMsg]);
+
+        mutate(text, {
+            onSuccess: (res) => {
+                setMessages((p) => [...p, { role: "ai", text: res.reply }]);
+            },
+        });
+    };
+
+
     return (
-        <Box sx={{ p: 0, height: '79vh', display: "flex", flexDirection: "column" }}>
+        <Box sx={{ p: 0, height: '88vh', display: "flex", flexDirection: "column" }}>
             <Box
                 sx={{
                     flex: 1,
@@ -93,6 +106,38 @@ const Chat = () => {
                 </Box>
             )}
 
+            {messages.length === 0 && (
+                <Box sx={{ py: 2, px: 0 }}>
+                    <Typography sx={{ color: "#9CA3AF", mb: 1 }}>
+                        Try asking:
+                    </Typography>
+
+                    <Stack spacing={1}>
+                        {chatPrompts.map((p, i) => (
+                            <Box
+                                key={i}
+                                onClick={() => sendPreset(p.message)}
+                                sx={{
+                                    p: 1.5,
+                                    borderRadius: "14px",
+                                    bgcolor: "rgba(255,255,255,0.08)",
+                                    border: "1px solid rgba(255,255,255,0.15)",
+                                    color: "white",
+                                    cursor: "pointer",
+                                    transition: "0.2s",
+                                    "&:hover": {
+                                        bgcolor: "rgba(255,255,255,0.15)",
+                                    },
+                                }}
+                            >
+                                {p.label}
+                            </Box>
+                        ))}
+                    </Stack>
+                </Box>
+            )}
+
+
             <Stack display={'flex'} alignItems={'flex-end'} direction="row" spacing={1}>
                 <TextField
                     fullWidth
@@ -114,7 +159,7 @@ const Chat = () => {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                 />
-                <IconButton onClick={sendMessage} sx={{ color: 'white' }} disabled={isPending}>
+                <IconButton onClick={sendMessage} sx={{ color: 'white', px: 0 }} disabled={isPending}>
                     <SendIcon />
                 </IconButton>
             </Stack>

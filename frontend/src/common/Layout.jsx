@@ -58,7 +58,7 @@ function Layout() {
             >
                 <Navbar streak={profile?.data?.streak} setActive={setActive} isActive={isActive} profilePhoto={profile?.data?.profilePhoto} />
                 <Toolbar /> {/* Push content below AppBar height */}
-                <div style={{ padding: "15px", overflowX: 'hidden', overflowY: 'auto', height: '100%' }}>
+                <div style={{ padding: "15px", overflowX: 'hidden', overflowY: 'auto' }}>
                     <Outlet />
                 </div>
             </div>

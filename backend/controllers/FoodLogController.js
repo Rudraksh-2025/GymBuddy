@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 import FoodLog from "../models/FoodLog.js";
 
-/* ---------------------------------------------------
-   CREATE FOOD LOG
---------------------------------------------------- */
 export const createFoodLog = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -50,9 +47,6 @@ export const createFoodLog = async (req, res) => {
     }
 };
 
-/* ---------------------------------------------------
-   DELETE FOOD LOG BY ID
---------------------------------------------------- */
 export const deleteFoodLogById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -81,9 +75,6 @@ export const deleteFoodLogById = async (req, res) => {
     }
 };
 
-/* ---------------------------------------------------
-   GET ALL FOOD LOGS (DATE-WISE, MEAL-WISE)
---------------------------------------------------- */
 export const getFoodLogsByDate = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -127,9 +118,6 @@ export const getFoodLogsByDate = async (req, res) => {
     }
 };
 
-/* ---------------------------------------------------
-   GET FOOD LOG BY ID
---------------------------------------------------- */
 export const getFoodLogById = async (req, res) => {
     try {
         const { id } = req.params;

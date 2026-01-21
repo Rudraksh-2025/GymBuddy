@@ -68,7 +68,7 @@ const FoodTracking = () => {
         className='glass-container'
         onMouseMove={handleGlowMove}
         sx={{
-          mt: 5,
+          mt: 0,
           borderRadius: "20px",
           position: "relative",
           overflow: "hidden",

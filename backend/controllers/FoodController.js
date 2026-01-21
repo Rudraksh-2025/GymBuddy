@@ -18,11 +18,11 @@ export const getFoodSummary = async (req, res) => {
     let goal = await DailyGoal.findOne({ userId }).lean();
 
     let bmr, tdee, calories, protein, carbs, fats, macrosPct;
-
+    bmr = calcBMR(user);
+    tdee = calcTDEE(bmr, user.activityLevel);
     // ---------- AUTO CALCULATE IF NOT SET ----------
     if (!goal) {
-      bmr = calcBMR(user);
-      tdee = calcTDEE(bmr, user.activityLevel);
+
       calories = Math.round(applyGoalType(tdee, user.goalType));
 
       macrosPct = { protein: 25, carbs: 50, fats: 25 };
@@ -44,11 +44,8 @@ export const getFoodSummary = async (req, res) => {
         carbs: goal.carbsPct,
         fats: goal.fatsPct,
       };
-      bmr = goal.bmr;
-      tdee = goal.tdee;
     }
 
-    // ---------- BASE DATE (FILTER) ----------
     const baseDate = req.query.date
       ? new Date(req.query.date)
       : new Date();
@@ -60,7 +57,6 @@ export const getFoodSummary = async (req, res) => {
       });
     }
 
-    // ---------- DATE RANGES ----------
     const startOfDay = new Date(baseDate);
     startOfDay.setHours(0, 0, 0, 0);
 
@@ -70,7 +66,6 @@ export const getFoodSummary = async (req, res) => {
     const startOfWeek = new Date(startOfDay);
     startOfWeek.setDate(startOfWeek.getDate() - 6);
 
-    // ---------- DAY CONSUMED (CAL + MACROS) ----------
     const todayAgg = await FoodLog.aggregate([
       {
         $match: {
@@ -96,7 +91,7 @@ export const getFoodSummary = async (req, res) => {
       fats: todayAgg[0]?.fats || 0,
     };
 
-    // ---------- WEEKLY CALORIE TOTAL (ENDING ON BASE DATE) ----------
+    // WEEKLY CALORIE TOTAL
     const weeklyAgg = await FoodLog.aggregate([
       {
         $match: {
@@ -137,7 +132,7 @@ export const getFoodSummary = async (req, res) => {
     return res.json({
       success: true,
       data: {
-        date: startOfDay, // reference date used
+        date: startOfDay,
         today: {
           goal: { calories, protein, carbs, fats },
           consumed: consumedData,
