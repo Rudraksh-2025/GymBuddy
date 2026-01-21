@@ -35,7 +35,8 @@ const AddWeightDialog = ({ open, onClose }) => {
       date,
       weight: weightFloat,
     });
-
+    setDate(dayjs().format("YYYY-MM-DD"))
+    setWeight("")
     onClose();
   };
 
@@ -177,7 +178,11 @@ const AddWeightDialog = ({ open, onClose }) => {
         }}
       >
         <Button
-          onClick={onClose}
+          onClick={() => {
+            setDate(dayjs().format("YYYY-MM-DD"))
+            setWeight("")
+            onClose();
+          }}
           sx={{
             textTransform: "none",
             color: "white",

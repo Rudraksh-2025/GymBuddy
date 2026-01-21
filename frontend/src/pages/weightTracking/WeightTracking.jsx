@@ -3,6 +3,7 @@ import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import { FormateDate } from '../../utils/FormateDate'
 import { useDeleteWeight, useGetWeightMetrices, useGetWeightLogs } from '../../Api/Api'
+import calender from '../../assets/images/calender.svg'
 import CustomPagination from '../../common/custom/CustomPagination'
 import DeleteIcon from "@mui/icons-material/Delete";
 import WeightChart from "../../components/weight/WeightChart";
@@ -16,13 +17,23 @@ import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import MonitorWeightIcon from "@mui/icons-material/MonitorWeight";
 import StatCard from "../../components/StatCard";
+import { subDays } from "date-fns";
+import CustomDateRangePicker from '../../common/custom/CustomDateRangePicker'
 
 const WeightTracking = () => {
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
+
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [selectedWeightId, setSelectedWeightId] = useState(null);
+  const [range, setRange] = useState([
+    {
+      startDate: subDays(new Date(), 7),
+      endDate: new Date(),
+      key: 'selection'
+    }
+  ]);
+  const startDate = range[0].startDate.toISOString();
+  const endDate = range[0].endDate.toISOString();
 
   const client = useQueryClient()
 
@@ -42,12 +53,9 @@ const WeightTracking = () => {
     );
   };
   const { data: analytics } = useGetWeightMetrices()
-  const { data: weightData, isLoading } = useGetWeightLogs()
+  const { data: weightData, isLoading } = useGetWeightLogs(startDate, endDate)
   const { mutate: deleteWeight } = useDeleteWeight();
 
-
-  const totalUsers = weightData?.pagination?.totalCount;
-  const totalPages = Math.ceil(totalUsers / rowsPerPage);
 
   const handleDeleteConfirm = () => {
     if (!selectedWeightId) return;
@@ -87,8 +95,13 @@ const WeightTracking = () => {
 
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
+      <CustomDateRangePicker
+        value={range}
+        onChange={setRange}
+        icon={calender}
+      />
       {/* ---------------- ANALYTICS BOX ---------------- */}
-      <Grid container spacing={3} mb={5}>
+      <Grid container spacing={3} mb={5} mt={3}>
         {/* Target Weight */}
         <Grid size={{ xs: 12, md: 6, lg: 3 }}>
           <StatCard
@@ -208,7 +221,7 @@ const WeightTracking = () => {
             </Typography>
           ) : Array.isArray(weightData?.data) && weightData?.data?.length > 0 ? (
             <>
-              <TableContainer>
+              <TableContainer sx={{ maxHeight: 900 }}>
                 <Table sx={{ "& .MuiTableCell-root": { fontSize: "15px", color: "white", } }}>
                   {/* Glass Header */}
                   <TableHead>
@@ -237,6 +250,9 @@ const WeightTracking = () => {
                         key={user._id}
                         sx={{
                           alignItems: 'center',
+                          "&:last-child td, &:last-child th": {
+                            borderBottom: "none",
+                          },
                           "&:hover": {
                             background: "rgba(255,255,255,0.05)",
                           },
@@ -289,13 +305,7 @@ const WeightTracking = () => {
                 </Table>
               </TableContainer>
 
-              <CustomPagination
-                totalPages={totalPages}
-                setCurrentPage={setCurrentPage}
-                setRowsPerPage={setRowsPerPage}
-                rowsPerPage={rowsPerPage}
-                currentPage={currentPage}
-              />
+
             </>
           ) : (
             <Typography align="center" sx={{ mt: 1, pb: 2, opacity: 0.7 }}>

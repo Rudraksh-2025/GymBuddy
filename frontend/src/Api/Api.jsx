@@ -194,12 +194,12 @@ export const useCreateWeight = (onSuccess, onError) => {
     })
 }
 // Get weight logs
-export const useGetWeightLogs = (id) => {
+export const useGetWeightLogs = (startDate, endDate) => {
     return useQuery({
-        queryKey: ['weight', id],
+        queryKey: ['weight', startDate, endDate],
         queryFn: async () => {
             const response = await axiosInstance.get(`/weight`,
-                { params: { exerciseId: id } }
+                { params: { startDate, endDate } }
             );
             return response.data
         },

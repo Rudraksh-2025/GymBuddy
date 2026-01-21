@@ -54,9 +54,9 @@ export const addWeight = async (req, res) => {
 export const getWeightHistory = async (req, res) => {
   try {
     const userId = req.user.id; // from auth middleware
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
-    const skip = (page - 1) * limit;
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = parseInt(req.query.limit) || 5;
+    // const skip = (page - 1) * limit;
 
     const filter = { userId };
 
@@ -69,20 +69,13 @@ export const getWeightHistory = async (req, res) => {
 
     const [weights, totalCount] = await Promise.all([
       Weight.find(filter)
-        .sort({ date: -1 }) // latest first
-        .skip(skip)
-        .limit(limit),
+        .sort({ date: -1 }),
       Weight.countDocuments(filter),
     ]);
 
     res.status(200).json({
       success: true,
       data: weights,
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(totalCount / limit),
-        totalCount,
-      },
     });
   } catch (error) {
     res.status(500).json({
