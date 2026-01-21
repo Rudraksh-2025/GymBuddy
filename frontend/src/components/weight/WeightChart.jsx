@@ -87,6 +87,7 @@ const WeightChart = ({ data = [] }) => {
                 borderRadius: "10px",
                 color: "white",
               }}
+              labelFormatter={(value) => FormateDate(value)}
               labelStyle={{ color: "rgba(255,255,255,0.7)" }}
             />
 
