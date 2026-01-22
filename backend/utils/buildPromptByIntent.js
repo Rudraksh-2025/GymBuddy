@@ -8,7 +8,9 @@ export const buildPromptByIntent = ({
     mealsText,
     workoutsText,
     message,
-    memoryText
+    memoryText,
+    weekStats,
+    monthStats
 }) => {
     const baseRules = `
             RULES (VERY IMPORTANT):
@@ -92,6 +94,41 @@ export const buildPromptByIntent = ({
   - One easy meal idea
   `;
     }
+
+    if (intent === INTENTS.WEIGHT_SUMMARY) {
+        return `
+${baseRules}
+
+WEEK PROGRESS:
+Start: ${weekStats?.start || "-"} kg
+End: ${weekStats?.end || "-"} kg
+Change: ${weekStats?.diff || 0} kg
+Trend: ${weekStats?.trend || "stable"}
+
+MONTH PROGRESS:
+Start: ${monthStats?.start || "-"} kg
+End: ${monthStats?.end || "-"} kg
+Change: ${monthStats?.diff || 0} kg
+Trend: ${monthStats?.trend || "stable"}
+
+TARGET WEIGHT:
+${goal?.targetWeight || "not set"} kg
+
+TASK:
+- Explain week progress
+- Explain month trend
+- Say if pace is good
+- Give 2 actions to improve fat loss
+
+FORMAT:
+- Weekly summary
+- Monthly summary
+- Goal distance
+- Diet action
+- Training action
+`;
+    }
+
 
 
 

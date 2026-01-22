@@ -43,6 +43,31 @@ const CalorieTracking = () => {
   };
 
 
+
+  const formatPromptDate = (dateObj) => {
+    const day = dateObj.getDate();
+
+    const suffix =
+      day % 10 === 1 && day !== 11 ? "st" :
+        day % 10 === 2 && day !== 12 ? "nd" :
+          day % 10 === 3 && day !== 13 ? "rd" : "th";
+
+    const month = dateObj.toLocaleString("en-US", { month: "short" });
+
+    return `${day}${suffix} ${month}`;
+  };
+  const isToday = (d) => {
+    const t = new Date();
+    return (
+      d.getDate() === t.getDate() &&
+      d.getMonth() === t.getMonth() &&
+      d.getFullYear() === t.getFullYear()
+    );
+  };
+
+
+
+
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
       {/* ---------------- ANALYTICS BOX ---------------- */}
@@ -52,17 +77,20 @@ const CalorieTracking = () => {
           Edit Goals
         </Button>
         <Button
-          className="glass-btn"
-          onClick={() =>
+          sx={{ color: 'white', fontSize: '0.9rem' }}
+          onClick={() => {
+            const prompt = isToday(date)
+              ? "Summarize my meals today and suggest what I should eat to complete my calorie and macro goals"
+              : `Summarize my meals on ${formatPromptDate(date)}`;
+
             nav("/home/chat", {
-              state: {
-                autoPrompt: "Summarize my meals today and suggest what I should eat to complete my calorie and macro goals",
-              },
-            })
-          }
+              state: { autoPrompt: prompt },
+            });
+          }}
         >
-          AI Summary
+          Summarize with AI ✨
         </Button>
+
       </Box>
 
       <Grid container spacing={3} sx={{ my: { xs: 3, sm: 5 } }}>
