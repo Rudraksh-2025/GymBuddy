@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Chip, IconButton } from "@mui/material";
+import { Box, Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Chip, IconButton, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import { FormateDate } from '../../utils/FormateDate'
 import { useDeleteWeight, useGetWeightMetrices, useGetWeightLogs } from '../../Api/Api'
@@ -21,7 +22,7 @@ import { subDays } from "date-fns";
 import CustomDateRangePicker from '../../common/custom/CustomDateRangePicker'
 
 const WeightTracking = () => {
-
+  const nav = useNavigate();
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [selectedWeightId, setSelectedWeightId] = useState(null);
@@ -95,11 +96,23 @@ const WeightTracking = () => {
 
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
-      <CustomDateRangePicker
-        value={range}
-        onChange={setRange}
-        icon={calender}
-      />
+      <Box sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}>
+        <CustomDateRangePicker value={range} onChange={setRange} icon={calender} />
+
+        <Button
+          sx={{ color: 'white', fontSize: '0.9rem' }}
+          onClick={() =>
+            nav("/home/chat", {
+              state: {
+                autoPrompt: "Summarize my weight progress for this week and this month",
+              },
+            })
+          }
+        >
+          Summarize with AI ✨
+        </Button>
+      </Box>
+
       {/* ---------------- ANALYTICS BOX ---------------- */}
       <Grid container spacing={3} mb={5} mt={3}>
         {/* Target Weight */}
