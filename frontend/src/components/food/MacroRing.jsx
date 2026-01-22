@@ -80,7 +80,7 @@ const MacroRing = ({
           }}
         >
           <Typography fontSize="22px" fontWeight={700}>
-            {remaining}
+            {remaining?.toFixed(0)}
           </Typography>
           <Typography variant="body2" sx={{ opacity: 0.8 }}>
             Remaining {unit}

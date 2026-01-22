@@ -1,6 +1,7 @@
 import { INTENTS } from "./intents.js";
 
 export const detectIntent = (text = "") => {
+
     const q = text.toLowerCase().trim();
 
     /* ---------- GREETING ---------- */
@@ -11,14 +12,22 @@ export const detectIntent = (text = "") => {
     }
 
     if (
-        q.includes("summarize") ||
-        q.includes("summary") ||
+        q.includes("Summarize my meals") ||
+        q.includes("what I should eat to complete my calorie and macro goals") ||
         q.includes("today meals") ||
         q.includes("what should i eat to complete") ||
         q.includes("complete my goals today")
     ) {
         return INTENTS.SUMMARY_TODAY;
     }
+    if (
+        q.includes("weight progress") ||
+        q.includes("weight summary") ||
+        q.includes("Summarize my weight progress")
+    ) {
+        return INTENTS.WEIGHT_SUMMARY;
+    }
+
 
     /* ---------- DIET TODAY ---------- */
     if (

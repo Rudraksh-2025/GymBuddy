@@ -4,12 +4,14 @@ import User from "../models/User.js";
 import FoodLog from "../models/FoodLog.js";
 import ExerciseLog from "../models/Workout.js";
 import DailyGoal from "../models/DailyGoal.js";
+import Weight from '../models/Weight.js'
 import AiChat from "../models/AiChat.js";
 import { buildPromptByIntent } from "../utils/buildPromptByIntent.js";
 import { detectIntent } from "../utils/detectIntent.js";
 import UserMemory from "../models/UserMemory.js";
 import { extractUserMemory } from "../utils/extractUserMemory.js";
 import insightSchema from '../models/insightSchema.js'
+import { extractDateFromText } from "../utils/extractDateFromText.js";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -49,12 +51,67 @@ export const aiChat = async (req, res) => {
         const goal = await DailyGoal.findOne({ userId }).lean();
 
         /* ---------------- DATE ---------------- */
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const extractedDate = extractDateFromText(message);
+
+        let startDate, endDate;
+
+        if (extractedDate) {
+            startDate = extractedDate.start;
+            endDate = extractedDate.end;
+        } else {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            startDate = today;
+            endDate = new Date();
+        }
+
+        let weekStats = null;
+        let monthStats = null;
+
+        const now = new Date();
+
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - now.getDay());
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        const weekLogs = await Weight.find({
+            userId,
+            date: { $gte: startOfWeek },
+        }).sort({ date: 1 });
+
+        const monthLogs = await Weight.find({
+            userId,
+            date: { $gte: startOfMonth },
+        }).sort({ date: 1 });
+
+        const calcStats = (logs) => {
+            if (logs.length < 2) return null;
+            const start = logs[0].weight;
+            const end = logs[logs.length - 1].weight;
+
+            return {
+                start,
+                end,
+                diff: Number((start - end).toFixed(1)),
+                trend: end < start ? "decreasing" : "increasing",
+            };
+        };
+
+        weekStats = calcStats(weekLogs);
+        monthStats = calcStats(monthLogs);
+
+
 
         /* ---------------- FOOD AGG ---------------- */
         const foodAgg = await FoodLog.aggregate([
-            { $match: { userId: userObjectId, date: { $gte: today } } },
+            {
+                $match: {
+                    userId: userObjectId,
+                    date: { $gte: startDate, $lte: endDate },
+                }
+            },
             {
                 $group: {
                     _id: null,
@@ -76,7 +133,7 @@ export const aiChat = async (req, res) => {
         /* ---------------- MEALS ---------------- */
         const todayMeals = await FoodLog.find({
             userId,
-            date: { $gte: today },
+            date: { $gte: startDate, $lte: endDate },
         })
             .populate("foodId", "name")
             .select("foodId mealType calories")
@@ -92,7 +149,7 @@ export const aiChat = async (req, res) => {
         /* ---------------- WORKOUTS ---------------- */
         const todayWorkouts = await ExerciseLog.find({
             userId,
-            date: { $gte: today },
+            date: { $gte: startDate, $lte: endDate },
         })
             .populate("exerciseId", "exerciseName")
             .select("exerciseId sets reps duration")
@@ -133,6 +190,8 @@ export const aiChat = async (req, res) => {
             mealsText,
             workoutsText,
             message,
+            weekStats,
+            monthStats,
             memoryText
         });
 

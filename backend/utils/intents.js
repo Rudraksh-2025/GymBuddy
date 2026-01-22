@@ -8,5 +8,5 @@ export const INTENTS = {
     MOTIVATION: "motivation",
     GENERAL: "general",
     SUMMARY_TODAY: "SUMMARY_TODAY",
-
+    WEIGHT_SUMMARY: "WEIGHT_SUMMARY",
 };
