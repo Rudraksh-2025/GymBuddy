@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import FoodLog from "../models/FoodLog.js";
+import { addXP } from "../scripts/xpService.js";
 
 export const createFoodLog = async (req, res) => {
     try {
@@ -21,6 +22,8 @@ export const createFoodLog = async (req, res) => {
                 message: "Missing required fields",
             });
         }
+        await addXP(userId, 25, "Logged meals");
+
 
         const log = await FoodLog.create({
             userId,

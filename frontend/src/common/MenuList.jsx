@@ -5,7 +5,7 @@ import {
     LogoutOutlined,
     BarChartOutlined,
     CoffeeOutlined,
-    FireOutlined
+    FireOutlined, TrophyOutlined,
 } from '@ant-design/icons';
 
 const icons = {
@@ -15,7 +15,7 @@ const icons = {
     LogoutOutlined,
     BarChartOutlined,
     CoffeeOutlined,
-    FireOutlined
+    FireOutlined, TrophyOutlined,
 };
 
 export const menuList = [
@@ -25,15 +25,13 @@ export const menuList = [
         path: "/home",
         icon: icons.DashboardOutlined,
     },
-    // {
-    //     id: "users",
-    //     name: "List of Users",
-    //     path: "/home/users",
-    //     icon: icons.UserOutlined,
-    //     info: "User Information",
-    //     view: "Users",
-    //     edit: "Edit User"
-    // },
+    {
+        id: "leaderboard",
+        name: "Leaderboard",
+        path: "/home/leaderboard",
+        icon: icons.TrophyOutlined,
+        info: "Friends Leaderboard",
+    },
     {
         id: "exercise",
         name: "Exercise",

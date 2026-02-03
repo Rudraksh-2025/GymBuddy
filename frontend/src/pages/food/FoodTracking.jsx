@@ -98,7 +98,7 @@ const FoodTracking = () => {
         onMouseMove={handleGlowMove}
         sx={{
           mt: 2,
-          borderRadius: "20px",
+          borderRadius: "10px",
           position: "relative",
           overflow: "hidden",
           color: "white",

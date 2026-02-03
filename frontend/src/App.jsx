@@ -15,6 +15,7 @@ import WeightTracking from "./pages/weightTracking/WeightTracking";
 import FoodTracking from "./pages/food/FoodTracking";
 import CalorieTracking from "./pages/calorie/CalorieTracking";
 import Chat from "./pages/chat/Chat";
+import Friends from "./pages/friends/Friends";
 
 function App() {
 
@@ -52,13 +53,6 @@ function App() {
       ),
       children: [
         { path: "", element: <Home /> },
-        // {
-        //   path: "users",
-        //   children: [
-        //     { path: "", element: <ListOfUser /> },
-        //     { path: ":id", element: <UserInformation /> },
-        //   ],
-        // },
         {
           path: "exercise",
           children: [
@@ -76,6 +70,12 @@ function App() {
           path: "food",
           children: [
             { path: "", element: <FoodTracking /> },
+          ],
+        },
+        {
+          path: "leaderboard",
+          children: [
+            { path: "", element: <Friends /> },
           ],
         },
         {

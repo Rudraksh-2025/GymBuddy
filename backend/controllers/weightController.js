@@ -2,6 +2,7 @@
 import Weight from "../models/Weight.js";
 import User from '../models/User.js'
 import { calculateBodyFat } from '../utils/bodyFat.js'
+import { addXP } from "../scripts/xpService.js";
 
 // Add new weight entry
 export const addWeight = async (req, res) => {
@@ -18,6 +19,9 @@ export const addWeight = async (req, res) => {
     const userId = req.user.id;
     const entryDate = new Date(date);
 
+
+
+
     // Find previous entry BEFORE this date
     const previousEntry = await Weight.findOne({
       userId,
@@ -27,7 +31,7 @@ export const addWeight = async (req, res) => {
     const change = previousEntry
       ? Number((weight - previousEntry.weight).toFixed(1))
       : 0;
-
+    await addXP(userId, 25, "Logged Weight");
     const newWeight = await Weight.create({
       userId,
       date: entryDate,

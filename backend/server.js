@@ -13,6 +13,7 @@ import foodLogRoutes from './routes/foodLogRoutes.js'
 import cors from 'cors'
 import { auth } from './middleware/authMiddleware.js';
 import { updateStreak } from './middleware/streakMiddleware.js'
+import friends from './routes/friends.js'
 import aiRoutes from './routes/aiRoutes.js'
 const app = express();
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use("/api/weight", weightRoutes);
 app.use('/api/exercises', exerciseRoutes)
 app.use("/api/profile", profileRoutes);
 app.use('/api/foodLog', foodLogRoutes)
+app.use('/api/friends', friends)
 
 
 app.get('/', (req, res) => res.send('Auth API running'));

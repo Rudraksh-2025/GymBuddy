@@ -71,6 +71,14 @@ const userSchema = new mongoose.Schema({
     min: 0,
     default: 66,
   },
+  /* ---------- FITNESS ---------- */
+  xp: { type: Number, default: 0 },
+  rank: { type: String, default: "Beginner" },
+  dailyXP: { type: Number, default: 0 },
+
+  /* ---------- SOCIAL ---------- */
+  friendCode: { type: String, unique: true },
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   passwordHash: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },

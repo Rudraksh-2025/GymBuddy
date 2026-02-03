@@ -396,6 +396,27 @@ export const useGetInsights = () => {
     });
 };
 
+// get friends leaderboard
+export const useGetFriendsLeaderboard = () => {
+    return useQuery({
+        queryKey: ['leaderboard'],
+        queryFn: async () => {
+            const response = await axiosInstance.get(`/friends`)
+            return response.data
+        }
+    })
+}
+// add friend
+export const useCreateFriend = (onSuccess, onError) => {
+    return useMutation({
+        mutationFn: async (data) => {
+            const response = await axiosInstance.post('/friends', data)
+            return response.data
+        },
+        onSuccess,
+        onError
+    })
+}
 
 
 
@@ -412,6 +433,7 @@ export const useLogin = () => {
             toast.success("User Logged In Successfully")
             saveToken(data.accessToken);
             localStorage.setItem('user', JSON.stringify(data.user.id))
+            localStorage.setItem('friendCode', JSON.stringify(data.user.friendCode))
             localStorage.setItem('userName', JSON.stringify(data.user.name))
             localStorage.setItem('userEmail', JSON.stringify(data.user.email))
             navigate('/home');

@@ -2,6 +2,7 @@
 import ExerciseLog from "../models/Workout.js";
 import Exercise from "../models/Exercise.js";
 import mongoose from "mongoose";
+import { addXP } from "../scripts/xpService.js";
 
 // Get exercises by muscle group with last log + max weight
 export const getExercisesByGroup = async (req, res) => {
@@ -127,7 +128,7 @@ export const addExerciseLog = async (req, res) => {
       date: date || new Date()
     });
     await log.save();
-
+    await addXP(req.user.id, 25, "Logged Exercise");
     res.status(201).json({ message: "Exercise log added", data: log });
     return;
   } catch (err) {

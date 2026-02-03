@@ -5,6 +5,7 @@ import User from '../models/User.js'
 import { signAccessToken, signRefreshToken, signEmailToken, verifyRefreshToken, verifyEmailToken } from '../utils/jwt.js';
 import { sendVerificationEmail } from '../utils/mailer.js';
 import DailyGoal from '../models/DailyGoal.js';
+import { generateFriendCode } from '../utils/generateFriendCode.js';
 
 const SALT_ROUNDS = 12;
 const REFRESH_EXPIRES_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
@@ -25,7 +26,15 @@ export const register = async (req, res) => {
         if (existing) return res.status(400).json({ message: 'Email already in use' });
 
         const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-        const user = new User({ name, email, passwordHash, height, gender, age, weight, activityLevel, goalType });
+
+        let friendCode;
+        let exists = true;
+
+        while (exists) {
+            friendCode = generateFriendCode(name);
+            exists = await User.findOne({ friendCode });
+        }
+        const user = new User({ name, email, passwordHash, height, gender, age, weight, activityLevel, goalType, friendCode });
         await user.save();
 
 
@@ -117,7 +126,8 @@ export const login = async (req, res) => {
             maxAge: REFRESH_EXPIRES_MS
         });
 
-        return res.json({ accessToken, user: { id: user._id, email: user.email, name: user.name } });
+
+        return res.json({ accessToken, user: { id: user._id, email: user.email, name: user.name, friendCode: user.friendCode } });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Server error' });
