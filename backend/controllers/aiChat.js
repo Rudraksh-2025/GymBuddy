@@ -10,7 +10,7 @@ import { buildPromptByIntent } from "../utils/buildPromptByIntent.js";
 import { detectIntent } from "../utils/detectIntent.js";
 import UserMemory from "../models/UserMemory.js";
 import { extractUserMemory } from "../utils/extractUserMemory.js";
-import insightSchema from '../models/insightSchema.js'
+import Insight from '../models/insightSchema.js'
 import { extractDateFromText } from "../utils/extractDateFromText.js";
 
 const openai = new OpenAI({
@@ -231,9 +231,13 @@ export const aiChat = async (req, res) => {
 };
 
 export const getInsights = async (req, res) => {
-    const insights = await insightSchema.find({ userId: req.user.id })
-        .sort({ createdAt: -1 })
-        .limit(10);
-
-    res.json({ success: true, data: insights });
+    try {
+        const userId = req.user?._id || req.user?.id;
+        const userInsights = await Insight.find({ userId });
+        res.json({ success: true, data: userInsights });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false });
+    }
 };
+

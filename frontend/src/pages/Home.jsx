@@ -278,12 +278,15 @@ const Home = () => {
               </Stack>
 
               <Divider sx={{ my: 1, borderColor: "rgba(255,255,255,0.15)" }} />
-
-              {dashboardData?.data?.meals.map((m, i) => (
+              {dashboardData?.data?.meals.length > 0 ? (dashboardData?.data?.meals.map((m, i) => (
                 <Typography key={i} fontSize={14} mb={0.8} sx={{ opacity: 0.85 }}>
                   • {m}
                 </Typography>
-              ))}
+              ))) : (
+                <Typography fontSize={14} mb={0.8} sx={{ opacity: 0.85 }}>
+                  No Meals Found
+                </Typography>
+              )}
             </Box>
           </Box>
         </Grid>
@@ -318,6 +321,15 @@ const Home = () => {
                   • {w}
                 </Typography>
               ))}
+              {dashboardData?.data?.workouts?.recent?.length > 0 ? (
+                dashboardData?.data?.workouts?.recent?.map((w, i) => (
+                  <Typography key={i} fontSize={14} mb={0.8} sx={{ opacity: 0.85 }}>
+                    • {w}
+                  </Typography>
+                ))
+              ) : (<Typography fontSize={14} mb={0.8} sx={{ opacity: 0.85 }}>
+                No Workouts Found
+              </Typography>)}
             </Box>
           </Box>
         </Grid>

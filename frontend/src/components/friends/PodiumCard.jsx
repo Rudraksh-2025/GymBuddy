@@ -17,6 +17,7 @@ const PodiumCard = ({ data }) => {
                 justifyContent: "center",
                 alignItems: "flex-end",
                 gap: 3,
+                mt: 2,
                 mb: 4,
             }}
         >
