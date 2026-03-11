@@ -96,7 +96,7 @@ const WeightTracking = () => {
 
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}>
+      <Box sx={{ display: "flex", flexDirection: { xs: 'column', sm: 'row' }, justifyContent: { xs: "center", sm: "space-between" }, alignItems: 'center', gap: 2 }}>
         <CustomDateRangePicker value={range} onChange={setRange} icon={calender} />
 
         <Button
@@ -342,7 +342,7 @@ const WeightTracking = () => {
         />
       </Box>
 
-    </Box>
+    </Box >
   );
 };
 

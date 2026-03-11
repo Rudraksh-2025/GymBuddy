@@ -39,7 +39,7 @@ const Register = () => {
     const { mutate, isLoading, isPending } = useRegister();
 
     return (
-        <Box className='loginContainer'>
+        <Box className='loginContainer' sx={{ minHeight: { xs: '95.7vh' } }}>
             <Card className="loginCard">
                 {/* glossy overlay */}
                 <Box

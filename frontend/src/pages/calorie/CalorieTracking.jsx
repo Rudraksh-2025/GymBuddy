@@ -71,25 +71,28 @@ const CalorieTracking = () => {
   return (
     <Box sx={{ p: { xs: 0, sm: 2 } }}>
       {/* ---------------- ANALYTICS BOX ---------------- */}
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <CustomDatePicker value={date} onChange={setDate} />
-        <Button className="glass-btn" onClick={() => setOpenEdit(true)}>
-          Edit Goals
-        </Button>
-        <Button
-          sx={{ color: 'white', fontSize: '0.9rem' }}
-          onClick={() => {
-            const prompt = isToday(date)
-              ? "Summarize my meals today and suggest what I should eat to complete my calorie and macro goals"
-              : `Summarize my meals on ${formatPromptDate(date)}`;
+      <Box sx={{ display: "flex", flexDirection: { xs: 'column', sm: 'row' }, justifyContent: { xs: "center", sm: "space-between" }, alignItems: 'center', gap: 2 }}>
 
-            nav("/home/chat", {
-              state: { autoPrompt: prompt },
-            });
-          }}
-        >
-          Summarize with AI ✨
-        </Button>
+        <CustomDatePicker value={date} onChange={setDate} />
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+          <Button className="glass-btn" onClick={() => setOpenEdit(true)}>
+            Edit Goals
+          </Button>
+          <Button
+            sx={{ color: 'white', fontSize: '0.9rem' }}
+            onClick={() => {
+              const prompt = isToday(date)
+                ? "Summarize my meals today and suggest what I should eat to complete my calorie and macro goals"
+                : `Summarize my meals on ${formatPromptDate(date)}`;
+
+              nav("/home/chat", {
+                state: { autoPrompt: prompt },
+              });
+            }}
+          >
+            Summarize with AI ✨
+          </Button>
+        </Box>
 
       </Box>
 

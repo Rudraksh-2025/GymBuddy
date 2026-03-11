@@ -28,7 +28,7 @@ const Login = () => {
     const { mutate, isPending } = useLogin();
 
     return (
-        <Box className="loginContainer" sx={{ minHeight: { xs: '85vh', sm: '100vh' } }}>
+        <Box className="loginContainer" sx={{ minHeight: { xs: '95.7vh' } }}>
             <Card className='loginCard'>
                 {/* glossy overlay */}
                 <Box
