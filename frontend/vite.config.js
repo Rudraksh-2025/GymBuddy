@@ -7,6 +7,9 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        maximumFileSizeToCacheInBytes: 5000000 // 5MB
+      },
       manifest: {
         name: 'My React App',
         short_name: 'ReactApp',
