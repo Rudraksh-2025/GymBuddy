@@ -1,35 +1,24 @@
-import nodemailer from 'nodemailer';
+import sgMail from "@sendgrid/mail";
 
-export const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: false, // true for 465
-    auth: {
-        user: 'drexx2069@gmail.com',
-        pass: 'xszwldjqwhnvcwhp'
-    }
-});
-transporter.verify((error, success) => {
-    if (error) {
-        console.log(process.env.SMTP_HOST, process.env.SMTP_PORT, process.env.SMTP_USER, process.env.SMTP_PASS)
-        console.error('SMTP Error:', error);
-    } else {
-        console.log('SMTP Server is ready to take our messages');
-    }
-});
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export async function sendVerificationEmail(to, otp) {
-    await transporter.sendMail({
-        from: process.env.EMAIL_FROM,
+    const msg = {
         to,
+        from: process.env.EMAIL_FROM, // verified sender in SendGrid
         subject: "Verify your Gym Buddy account",
         html: `
-      <p>Welcome! Please verify your email using the code below:</p>
-      <h2>${otp}</h2>
-      <p>This code will expire in 15 minutes.</p>
-    `
-    });
+            <p>Welcome! Please verify your email using the code below:</p>
+            <h2>${otp}</h2>
+            <p>This code will expire in 15 minutes.</p>
+        `
+    };
+
+    try {
+        await sgMail.send(msg);
+        console.log("Email sent successfully");
+    } catch (error) {
+        console.error("SendGrid Error:", error.response?.body || error.message);
+        throw error;
+    }
 }
-
-
