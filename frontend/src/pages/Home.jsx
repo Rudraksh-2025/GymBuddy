@@ -87,14 +87,14 @@ const Home = () => {
             color="#06B6D4"
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+        {/* <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <StatCard
             title="Calories Burned"
             value="420 kcal"
             icon={<LocalFireDepartmentIcon />}
             color="#F97316"
           />
-        </Grid>
+        </Grid> */}
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
           <StatCard
             title="Weekly Avg Calories"
@@ -112,7 +112,7 @@ const Home = () => {
             color="#EF4444"
           />
         </Grid>
-        <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+        {/* <Grid size={{ xs: 12, md: 6, lg: 3 }}>
           <StatCard
             title="Steps Today"
             value="8,420"
@@ -120,7 +120,7 @@ const Home = () => {
             color="#22C55E"
           />
 
-        </Grid>
+        </Grid> */}
 
       </Grid>
 
