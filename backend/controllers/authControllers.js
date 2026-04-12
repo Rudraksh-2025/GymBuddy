@@ -37,6 +37,7 @@ export const register = async (req, res) => {
 
         // send OTP email
         try {
+            console.log("called")
             await sendVerificationEmail(user.email, otp);
         } catch (e) {
             console.error("Email send failed", e);
