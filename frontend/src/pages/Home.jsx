@@ -71,7 +71,7 @@ const Home = () => {
       {/* =================== TOP STATS =================== */}
       <Grid container spacing={3}>
 
-        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
           <StatCard
             title="Current Weight"
             value={`${dashboardData?.data?.weight?.current ?? "0"} kg`}
@@ -79,7 +79,7 @@ const Home = () => {
             color="#22C55E"
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
           <StatCard
             title="Body Fat"
             value={`${dashboardData?.data?.weight?.bodyFat ?? "0"}%`}
@@ -95,7 +95,7 @@ const Home = () => {
             color="#F97316"
           />
         </Grid> */}
-        <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
           <StatCard
             title="Weekly Avg Calories"
             value={`${dashboardData?.data?.calories?.weeklyAvg ?? "0"} kcal`}
@@ -104,7 +104,7 @@ const Home = () => {
 
           />
         </Grid>
-        <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
           <StatCard
             title="Total Weight Lost"
             value={`${dashboardData?.data?.weight?.totalLost ?? 0} kg`}
